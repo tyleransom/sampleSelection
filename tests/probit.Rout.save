@@ -1,0 +1,168 @@
+
+R version 2.6.2 (2008-02-08)
+Copyright (C) 2008 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library( sampleSelection )
+Loading required package: maxLik
+Loading required package: systemfit
+Loading required package: Matrix
+Loading required package: lattice
+
+Attaching package: 'Matrix'
+
+
+	The following object(s) are masked from package:stats :
+
+	 xtabs 
+
+Loading required package: car
+Loading required package: lmtest
+Loading required package: zoo
+> options( digits = 6 )
+> 
+> ## loading and preparing data
+> data( Mroz87 )
+> Mroz87$kids  <- ( Mroz87$kids5 + Mroz87$kids618 > 0 )
+> Mroz87$age30.39 <- Mroz87$age < 40
+> Mroz87$age50.60 <- Mroz87$age >= 50
+> 
+> ## A simple single MC trial: note probit assumes normal errors
+> set.seed( 20080225 )
+> x <- runif( 100 )
+> e <- 0.5 * rnorm( 100 )
+> y <- x + e
+> probitResult <- probit( (y > 0) ~ x )
+> print( probitResult )
+
+Call:
+ probit(formula = (y > 0) ~ x) 
+
+Coefficients:
+(Intercept)           x 
+       0.32        1.44 
+
+> summary( probitResult )
+--------------------------------------------
+Probit binary choice model/Maximum Likelihood estimation
+Newton-Raphson maximisation, 5 iterations
+Return code 1: gradient close to zero. May be a solution
+Log-Likelihood: -40.6908 
+100 observations (16 zeros and 84 ones) and 2 free parameters (df = 98)
+Estimates:
+            Estimate Std. error t value   Pr(> t)
+(Intercept) 0.320181   0.300305 1.06619 0.2863399
+x           1.443034   0.583996 2.47096 0.0134750
+Significance test:
+chi2(1) = 6.55241 (p=0.0104742)
+--------------------------------------------
+> 
+> ## female labour force participation probability
+> lfpResult <- probit( lfp ~ kids + age30.39 + age50.60 + educ + hushrs +
++    huseduc + huswage + mtr + motheduc, data = Mroz87 )
+> print( lfpResult )
+
+Call:
+ probit(formula = lfp ~ kids + age30.39 + age50.60 + educ + hushrs +      huseduc + huswage + mtr + motheduc, data = Mroz87) 
+
+Coefficients:
+ (Intercept)     kidsTRUE age30.39TRUE age50.60TRUE         educ       hushrs 
+    9.75e+00    -2.31e-01     1.78e-01    -5.14e-01     1.22e-01    -7.35e-04 
+     huseduc      huswage          mtr     motheduc 
+   -3.10e-02    -2.14e-01    -1.05e+01    -5.84e-03 
+
+> summary( lfpResult )
+--------------------------------------------
+Probit binary choice model/Maximum Likelihood estimation
+Newton-Raphson maximisation, 5 iterations
+Return code 1: gradient close to zero. May be a solution
+Log-Likelihood: -435.131 
+753 observations (325 zeros and 428 ones) and 10 free parameters (df = 743)
+Estimates:
+                 Estimate  Std. error   t value     Pr(> t)
+(Intercept)    9.74719982 1.139888649  8.551011 1.22016e-17
+kidsTRUE      -0.23059173 0.135232574 -1.705149 8.81666e-02
+age30.39TRUE   0.17823410 0.117023910  1.523057 1.27744e-01
+age50.60TRUE  -0.51399565 0.148981720 -3.450058 5.60465e-04
+educ           0.12151818 0.030061631  4.042301 5.29291e-05
+hushrs        -0.00073534 0.000103876 -7.079051 1.45145e-12
+huseduc       -0.03097194 0.022452428 -1.379447 1.67757e-01
+huswage       -0.21449775 0.024015485 -8.931643 4.19726e-19
+mtr          -10.49015764 1.152888911 -9.099019 9.11517e-20
+motheduc      -0.00583622 0.016637874 -0.350779 7.25754e-01
+Significance test:
+chi2(9) = 159.484 (p=9.50543e-30)
+--------------------------------------------
+> 
+> 
+> ## Greene( 2003 ): example 22.8, page 786 (only probit part )
+> greene <- probit( lfp ~ age + I( age^2 ) + faminc + kids + educ, data = Mroz87 )
+> print( greene )
+
+Call:
+ probit(formula = lfp ~ age + I(age^2) + faminc + kids + educ,      data = Mroz87) 
+
+Coefficients:
+(Intercept)         age    I(age^2)      faminc    kidsTRUE        educ 
+  -4.16e+00    1.85e-01   -2.43e-03    4.58e-06   -4.49e-01    9.82e-02 
+
+> summary( greene )
+--------------------------------------------
+Probit binary choice model/Maximum Likelihood estimation
+Newton-Raphson maximisation, 4 iterations
+Return code 1: gradient close to zero. May be a solution
+Log-Likelihood: -490.848 
+753 observations (325 zeros and 428 ones) and 6 free parameters (df = 747)
+Estimates:
+                Estimate  Std. error  t value     Pr(> t)
+(Intercept) -4.15681e+00 1.40209e+00 -2.96473 0.003029483
+age          1.85395e-01 6.59667e-02  2.81044 0.004947438
+I(age^2)    -2.42590e-03 7.73540e-04 -3.13610 0.001712131
+faminc       4.58045e-06 4.20642e-06  1.08892 0.276189979
+kidsTRUE    -4.48987e-01 1.30911e-01 -3.42970 0.000604256
+educ         9.81823e-02 2.29841e-02  4.27174 0.000019395
+Significance test:
+chi2(5) = 48.0507 (p=3.46824e-09)
+--------------------------------------------
+> 
+> ## factors as dependent variable (from Achim Zeileis)
+> probit( lfp ~ exper, data = Mroz87 )
+
+Call:
+ probit(formula = lfp ~ exper, data = Mroz87) 
+
+Coefficients:
+(Intercept)       exper 
+    -0.4431      0.0605 
+
+> probit( factor( lfp ) ~ exper, data = Mroz87 )
+
+Call:
+ probit(formula = factor(lfp) ~ exper, data = Mroz87) 
+
+Coefficients:
+(Intercept)       exper 
+    -0.4431      0.0605 
+
+> probit( factor( lfp, labels = c( "no", "yes" ) ) ~ exper, data = Mroz87 )
+
+Call:
+ probit(formula = factor(lfp, labels = c("no", "yes")) ~ exper,      data = Mroz87) 
+
+Coefficients:
+(Intercept)       exper 
+    -0.4431      0.0605 
+
+> 

@@ -1,0 +1,16 @@
+coef.selection          Extract Coefficients from Selection Models
+coefTable               Coefficient Table
+heckitVcov              Heckit Variance Covariance Matrix
+invMillsRatio           Inverse Mill's Ratio of probit models
+linearPredictors        Calculates linear predictors for different
+                        models
+Mroz87                  U.S. Women's Labor Force Participation
+probit                  Probit binary choice model
+RandHIE                 RAND Health Insurance Experiment
+sampleSelection-deprecated
+                        Deprecated Functions in the sampleSelection
+                        package
+selection               Heckman-style selection models
+summary.selection       Summarizing Selection Estimations
+vcov.probit             Variance Covariance Matrix of probit models
+vcov.selection          Extract Variance Covariance Matrix
