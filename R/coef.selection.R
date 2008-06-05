@@ -1,5 +1,4 @@
 coef.selection <- function( object, part="full", ... ) {
-
    if( !( part %in% c( "full", "outcome" ) ) ) {
       stop( "argument 'part' must be either 'full' or 'outcome'" )
    }
@@ -14,7 +13,6 @@ coef.selection <- function( object, part="full", ... ) {
    }
    attributes( coefValues )$part <- part
    attributes( coefValues )$tobitType <- object$tobitType
-
    class( coefValues ) <- c( "coef.selection", class(coefValues) )
    return( coefValues )
 }

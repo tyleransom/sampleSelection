@@ -30,8 +30,11 @@ heckit5fit <- function(selection, outcome1, outcome2,
       stop( "the dependent variable of 'selection' has to contain",
          " exactly two levels (e.g. FALSE and TRUE)" )
    }
+   ysNames <- names( YS )
    YS <- as.integer(YS == YSLevels[ 2 ])
                                         # selection kept as integer internally
+   names( YS ) <- ysNames
+
    ## check for NA-s.  Because we have to find NA-s in several frames, we cannot use the standard na.
    ## functions here.  Find bad rows and remove them later.
    badRow <- is.na(YS)
@@ -132,20 +135,20 @@ heckit5fit <- function(selection, outcome1, outcome2,
    NXO1 <- ncol(XO1)
    NXO2 <- ncol(XO2)
    # Remove rows w/NA-s
-   XS <- XS[!badRow,]
+   XS <- XS[!badRow,,drop=FALSE]
    YS <- YS[!badRow]
-   XO1 <- XO1[!badRow,]
+   XO1 <- XO1[!badRow,,drop=FALSE]
    YO1 <- YO1[!badRow]
-   XO2 <- XO2[!badRow,]
+   XO2 <- XO2[!badRow,,drop=FALSE]
    YO2 <- YO2[!badRow]
    nObs <- length(YS)
    # few pre-calculations: split according to selection
    i1 <- YS == 0
    i2 <- YS == 1
-   XS1 <- XS[i1,]
-   XS2 <- XS[i2,]
-   XO1 <- XO1[i1,]
-   XO2 <- XO2[i2,]
+   XS1 <- XS[i1,,drop=FALSE]
+   XS2 <- XS[i2,,drop=FALSE]
+   XO1 <- XO1[i1,,drop=FALSE]
+   XO2 <- XO2[i2,,drop=FALSE]
    YO1 <- YO1[i1]
    YO2 <- YO2[i2]
    N1 <- length(YO1)

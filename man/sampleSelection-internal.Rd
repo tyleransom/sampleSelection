@@ -1,9 +1,5 @@
 \name{sampleSelection-internal}
-\alias{coef.summary.probit}
-\alias{model.frame.probit}
-\alias{model.matrix.probit}
-\alias{print.summary.probit}
-\alias{summary.probit}
+\alias{sampleSelection-internal}
 % Document the following:
 
 %%%%
@@ -16,9 +12,10 @@
 }
 
 \details{
-   These are either various methods, or functions, not to be called
-   directly by the user (or in some cases are just
-   waiting for proper documentation to be written :).
+%   These are either various methods, or functions, not to be called
+%   directly by the user (or in some cases are just
+%   waiting for proper documentation to be written :).
+   Currently, there are no internal functions in the sampleSelection package.
 }
 
 \keyword{ internal }

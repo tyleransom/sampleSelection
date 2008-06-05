@@ -81,8 +81,8 @@ probit <- function( formula, subset, start=NULL,
    if(N0 == 0 | N1 == 0) {
       stop("No variance in the response variable")
    }
-   x0 <- X[Y==0,]
-   x1 <- X[Y==1,]
+   x0 <- X[Y==0,,drop=FALSE]
+   x1 <- X[Y==1,,drop=FALSE]
    if(is.null(start)) {
       start <- rep( 0, nParam)
    }

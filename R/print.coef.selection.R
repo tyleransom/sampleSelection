@@ -2,13 +2,12 @@ print.coef.selection <- function( x, prefix = TRUE,
       digits = max(3, getOption("digits") - 3), ... ) {
 
    addToCoefNames <- function( coefValues, prefix, index ) {
-      if( !is.null( index ) ){
+      if( !is.null( index ) ) {
          names( coefValues )[ index ] <-
             paste( prefix, names( coefValues )[ index ], sep = "" )
       }
       return( coefValues )
    }
-
    if( attributes( x )$part == "full" && prefix ){
       if( attributes( x )$tobitType == 2) {
          x <- addToCoefNames( x, "S:", attributes( x )$index$betaS )

@@ -29,8 +29,9 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
           the environment from which \code{selection} is called.}
   \item{subset}{an optional index vector specifying a subset of
     observations to be used in the fitting process.}
-  \item{method}{how to estimate the model.  Either "ml" for Maximum
-    Likelihood, or "2step" for 2-step estimation.}
+  \item{method}{how to estimate the model.  Either \code{"ml"} for Maximum
+    Likelihood, \code{"2step"} for 2-step estimation,
+    or \code{"model.frame"} for returning the model frame (only).}
   \item{start}{vector, initial values for the ML estimation.  If
     \code{start} does not have names, names are constructed based on the
     model frame.}

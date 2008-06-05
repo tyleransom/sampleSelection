@@ -28,10 +28,12 @@ tobit5fit <- function(YS, XS, YO1, XO1, YO2, XO2, start,
        betaS <- beta[iBetaS]
         b1 <- beta[iBetaO1]
         sigma1 <- beta[iSigma1]
+       if(sigma1 <= 0) return(NA)
         rho1 <- beta[iRho1]
         if( ( rho1 < -1) || ( rho1 > 1)) return(NA)
         b2 <- beta[iBetaO2]
         sigma2 <- beta[iSigma2]
+       if(sigma2 <= 0) return(NA)
         rho2 <- beta[iRho2]
         if((rho2 < -1) || (rho2 > 1)) return(NA)
                                         # check the range
@@ -44,8 +46,8 @@ tobit5fit <- function(YS, XS, YO1, XO1, YO2, XO2, start,
         B1 <- -(XS0.betaS + rho1/sigma1*u1)/sqrt1r22
         B2 <- (XS1.betaS + rho2/sigma2*u2)/sqrt1r32
         loglik <- numeric(nObs)
-        loglik[YS == 0] <- -log( sigma1) - 0.5*( u1/sigma1)^2 + log( pnorm( B1)) - 1/2*log( 2*pi)
-        loglik[YS == 1] <- -log( sigma2) - 0.5*( u2/sigma2)^2 + log( pnorm( B2)) - 1/2*log( 2*pi)
+        loglik[YS == 0] <- -log( sigma1) - 0.5*( u1/sigma1)^2 + pnorm( B1, log.p=TRUE) - 1/2*log( 2*pi)
+       loglik[YS == 1] <- -log( sigma2) - 0.5*( u2/sigma2)^2 + pnorm( B2, log.p=TRUE) - 1/2*log( 2*pi)
        loglik
 }
     gradlik <- function(beta) {
@@ -55,10 +57,12 @@ tobit5fit <- function(YS, XS, YO1, XO1, YO2, XO2, start,
         betaS <- beta[iBetaS]
         b1 <- beta[iBetaO1]
         sigma1 <- beta[iSigma1]
+       if(sigma1 <= 0) return(NA)
         rho1 <- beta[iRho1]
         if( ( rho1 < -1) || ( rho1 > 1)) return(NA)
         b2 <- beta[iBetaO2]
         sigma2 <- beta[iSigma2]
+       if(sigma2 <= 0) return(NA)
         rho2 <- beta[iRho2]
         if((rho2 < -1) || (rho2 > 1)) return(NA)
                                         # check the range
@@ -93,9 +97,11 @@ tobit5fit <- function(YS, XS, YO1, XO1, YO2, XO2, start,
         betaS <- beta[iBetaS]
         b1 <- beta[iBetaO1]
         sigma1 <- beta[iSigma1]
+       if(sigma1 <= 0) return(NA)
         rho1 <- beta[iRho1]
         b2 <- beta[iBetaO2]
         sigma2 <- beta[iSigma2]
+       if(sigma2 <= 0) return(NA)
         rho2 <- beta[iRho2]
         XS0.bS <- XS0%*%betaS
         XS1.bS <- XS1%*%betaS

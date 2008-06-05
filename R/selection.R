@@ -142,10 +142,17 @@ selection <- function(selection, outcome,
       if(print.level > 0) {
          cat(sum(badRow), "invalid observations\n")
       }
+      if( method == "model.frame" ) {
+         mf <- mfS
+         mf <- cbind( mf, mfO[ , ! names( mfO ) %in% names( mf ) ] )
+         return( mf[ !badRow, ] )
+      }
       XS <- XS[!badRow,, drop=FALSE]
       YS <- YS[!badRow]
       XO <- XO[!badRow,, drop=FALSE]
       YO <- YO[!badRow]
+      YO[ YS == 0 ] <- NA
+      XO[ YS == 0, ] <- NA
       NXS <- ncol(XS)
       NXO <- ncol(XO)
       iGamma <- 1:NXS
@@ -217,6 +224,12 @@ selection <- function(selection, outcome,
       YO2 <- model.response(mf2, "numeric")
       badRow <- badRow | (is.na(YO2) & (!is.na(YS) & YS == 1))
       badRow <- badRow | (apply(XO2, 1, function(v) any(is.na(v))) & (!is.na(YS) & YS == 1))
+      if( method == "model.frame" ) {
+         mf <- mfS
+         mf <- cbind( mf, mf1[ , ! names( mf1 ) %in% names( mf ) ] )
+         mf <- cbind( mf, mf2[ , ! names( mf2 ) %in% names( mf ) ] )
+         return( mf[ !badRow, ] )
+      }
       ## indices in for the parameter vector.  These are returned in order to provide the user a way
       ## to extract certain components from the coefficients
       NXS <- ncol(XS)
@@ -228,6 +241,10 @@ selection <- function(selection, outcome,
       YO1 <- YO1[!badRow]
       XO2 <- XO2[!badRow,, drop=FALSE]
       YO2 <- YO2[!badRow]
+      YO1[ YS == 1 ] <- NA
+      YO2[ YS == 0 ] <- NA
+      XO1[ YS == 1, ] <- NA
+      XO2[ YS == 0, ] <- NA
       iBetaS <- 1:NXS
       iBetaO1 <- seq(tail(iBetaS, 1)+1, length=NXO1)
       iSigma1 <- tail(iBetaO1, 1) + 1
@@ -273,7 +290,7 @@ selection <- function(selection, outcome,
                param=list(param),
                call=cl,
                termsS=mtS,
-               termsO=switch(as.character(type), "1"=mtO, "5"=list(mtO1, mtO2), "0"=NULL),
+               termsO=switch(as.character(type), "2"=mtO, "5"=list(mtO1, mtO2), "0"=NULL),
                ys=switch(as.character(ys), "TRUE"=list(YS), "FALSE"=NULL),
                xs=switch(as.character(xs), "TRUE"=list(XS), "FALSE"=NULL),
                yo=switch(as.character(yo),
@@ -281,10 +298,10 @@ selection <- function(selection, outcome,
                                                                YO2)), "FALSE"=NULL),
                xo=switch(as.character(xo),
                "TRUE"=switch(as.character(type), "2"=list(XO), "5"=list(XO1, XO2)), "FALSE"=NULL),
-               mfs=switch(as.character(mfs), "TRUE"=list(mfS), "FALSE"=NULL),
+               mfs=switch(as.character(mfs), "TRUE"=list(mfS[!badRow,]), "FALSE"=NULL),
                mfo=switch(as.character(mfs),
-               "TRUE"=switch(as.character(type), "2"=list(mfO), "5"=list(mf1,
-                      mf2), "FALSE"=NULL))
+               "TRUE"=switch(as.character(type), "2"=list(mfO[!badRow,]),
+                  "5"=list(mf1[!badRow,], mf2[!badRow,]), "FALSE"=NULL))
                )
    class( result ) <- class( estimation ) 
    return(result)

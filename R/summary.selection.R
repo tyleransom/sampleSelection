@@ -5,7 +5,6 @@ summary.selection <- function(object, ...) {
       s <- summary.maxLik(object, ...)
    } else if( object$method == "2step" )  {
       s <- list()  # list for results that will be returned
-
       RSq <- function(model, intercept) {
          ## Calculate r-squared.  Note that the way lm() finds R2 is a bit naive -- it checks for intercept
          ## in the formula, but not whether the intercept is present in any of the data vectors (or matrices)
@@ -41,7 +40,6 @@ summary.selection <- function(object, ...) {
          iBetaS <- object$param$index$betaS
          s$rSquared <- list(R21=R21, R2adj1=R2adj1, R22=R22, R2adj2=R2adj2)
       }
-
       stdd <- sqrt(diag(vcov(object, part="full")))
       estcoef <- coef( object, part="full" )
       names( estcoef ) <- sub( "^[SO][12]?:", "", names( estcoef ) )
@@ -89,12 +87,12 @@ print.summary.selection <- function(x,
       cat( " (df = ", x$param$df, ")\n", sep="")
       if(part == "full") {
          cat("Probit selection equation:\n")
-         printCoefmat( x$estimate[ x$param$index$betaS, ],
+         printCoefmat( x$estimate[ x$param$index$betaS,,drop=FALSE],
             signif.legend = FALSE )
       }
       if( x$tobitType == 2 ) {
          cat("Outcome equation:\n")
-         printCoefmat( x$estimate[ x$param$index$betaO, ],
+         printCoefmat( x$estimate[ x$param$index$betaO,,drop=FALSE],
             signif.legend = ( part != "full" ) )
          if( x$method == "2step" ) {
             cat("Multiple R-Squared:", round(x$rSquared$R2, digits),
@@ -103,7 +101,7 @@ print.summary.selection <- function(x,
          }
       } else if( x$tobitType == 5 ) {
          cat("Outcome equation 1:\n")
-         printCoefmat( x$estimate[ x$param$index$betaO1, ],
+         printCoefmat( x$estimate[ x$param$index$betaO1,,drop=FALSE],
             signif.legend = FALSE )
          if( x$method == "2step" ) {
             cat("Multiple R-Squared:", round(x$rSquared$R21, digits),
@@ -111,7 +109,7 @@ print.summary.selection <- function(x,
                "\n", sep="")
          }
          cat("Outcome equation 2:\n")
-         printCoefmat( x$estimate[ x$param$index$betaO2, ],
+         printCoefmat( x$estimate[ x$param$index$betaO2,,drop=FALSE],
             signif.legend = ( part != "full" ) )
          if( x$method == "2step" ) {
             cat("Multiple R-Squared:", round(x$rSquared$R22, digits),
@@ -121,7 +119,7 @@ print.summary.selection <- function(x,
       }
       if(part=="full") {
          cat("Error terms:\n")
-         printCoefmat( x$estimate[ x$param$index$errTerms, ] )
+         printCoefmat( x$estimate[ x$param$index$errTerms,,drop=FALSE] )
       }
    }
    cat("--------------------------------------------\n")
