@@ -1,5 +1,5 @@
 
-R version 2.6.2 (2008-02-08)
+R version 2.7.0 (2008-04-22)
 Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -31,6 +31,14 @@ Attaching package: 'Matrix'
 Loading required package: car
 Loading required package: lmtest
 Loading required package: zoo
+
+Attaching package: 'zoo'
+
+
+	The following object(s) are masked from package:base :
+
+	 as.Date.numeric 
+
 > library(mvtnorm)
 > options(digits=6)
 > N <- 1500
@@ -24128,7 +24136,7 @@ Coefficients:
 Now run tobit5 without intercepts
 > print(coef(selection( ys ~ xs - 1, list( yo1 ~ xo1 - 1, yo2 ~ xo2 - 1))))
     S:  O1:xo1  sigma1    rho1  O2:xo2  sigma2    rho2  
--0.308   0.157   1.913   1.000   0.882   0.988   0.533  
+-1.032  -0.390   2.455   1.000   0.848   0.988   0.497  
 > # return just the model.frame
 > selection( ys ~ xs - 1, list( yo1 ~ xo1 - 1, yo2 ~ xo2 - 1 ),
 +    method = "model.frame" )
