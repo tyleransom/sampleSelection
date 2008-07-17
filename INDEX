@@ -1,3 +1,5 @@
+Mroz87                  U.S. Women's Labor Force Participation
+RandHIE                 RAND Health Insurance Experiment
 coef.probit             Extract Coefficients from Probit Models
 coef.selection          Extract Coefficients from Selection Models
 coefTable               Coefficient Table
@@ -12,11 +14,9 @@ model.frame.selection   Data of Selection Models
 model.matrix.probit     Design Matrix of Probit Models
 model.matrix.selection
                         Design Matrix of Selection Models
-Mroz87                  U.S. Women's Labor Force Participation
 nlswork                 National Longitudinal Survey of Young Working
                         Women
 probit                  Probit binary choice model
-RandHIE                 RAND Health Insurance Experiment
 residuals.probit        Residuals of probit models
 residuals.selection     Residuals of Selection Models
 sampleSelection-deprecated
