@@ -9,7 +9,7 @@ print.summary.probit <- function( x, ... ) {
           x$NActivePar, " free parameters (df = ",
           x$nObs - x$NActivePar, ")\n", sep="")
       cat("Estimates:\n")
-      print(x$estimate)
+      printCoefmat( x$estimate, ... )
    }
    cat("Significance test:\n")
    cat("chi2(", x$LRT$df, ") = ", x$LRT$LRT, " (p=", x$LRT$pchi2, ")\n", sep="")

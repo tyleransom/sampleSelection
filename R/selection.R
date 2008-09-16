@@ -65,13 +65,13 @@ selection <- function(selection, outcome,
        stop( "argument 'selection' must be either a formula or a list of two formulas" )
    if(print.level > 0)
        cat("Tobit", type, "model\n")
-   probitEndogenous <- model.frame( selection, data = data )[ , 1 ]
+   probitEndogenous <- model.frame( selection, data = data)[ , 1 ]
    probitLevels <- levels( as.factor( probitEndogenous ) )
    if( length( probitLevels ) != 2 ) {
       stop( "the left hand side of 'selection' has to contain",
          " exactly two levels (e.g. FALSE and TRUE)" )
    }
-   data$probitDummy <- probitEndogenous == probitLevels[ 2 ]
+   # data$probitDummy <- probitEndogenous == probitLevels[ 2 ]
    ## now check whether two-step method was requested
    cl <- match.call()
    if(method == "2step") {

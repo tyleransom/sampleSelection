@@ -187,3 +187,20 @@ cat("Now run tobit2 without intercepts\n")
 print(coef(selection( ys ~ xs - 1, yo ~ xo - 1)))
 # return just the model.frame
 selection( ys ~ xs - 1, yo ~ xo - 1, method = "model.frame" )
+
+# NA-s in data frames (Nelson Villoria)
+vc <- diag(2)
+vc[2,1] <- vc[1,2] <- -0.8
+eps <- rmvnorm(N, rep(0, 2), vc)
+xs <- runif(N)
+ys <- xs + eps[,1] > 0
+xo <- runif(N)
+yo <- (xo + eps[,2])*(ys > 0)
+xs[sample(N, NNA)] <- NA
+ys[sample(N, NNA)] <- NA
+xo[sample(N, NNA)] <- NA
+yo[sample(N, NNA)] <- NA
+data <- data.frame(ys, xs, yo, xo)
+rm(eps, xs, ys, xo, yo)
+testTobit2ML <- selection(ys~xs, yo ~xo, data=data, method="ml")
+print(summary(testTobit2ML))

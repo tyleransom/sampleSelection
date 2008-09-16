@@ -1,5 +1,5 @@
 
-R version 2.7.0 (2008-04-22)
+R version 2.7.2 (2008-08-25)
 Copyright (C) 2008 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
@@ -70,9 +70,11 @@ Return code 1: gradient close to zero. May be a solution
 Log-Likelihood: -40.6908 
 100 observations (16 zeros and 84 ones) and 2 free parameters (df = 98)
 Estimates:
-            Estimate Std. error t value   Pr(> t)
-(Intercept) 0.320181   0.300305 1.06619 0.2863399
-x           1.443034   0.583996 2.47096 0.0134750
+            Estimate Std. error t value Pr(> t)  
+(Intercept)   0.3202     0.3003   1.066  0.2863  
+x             1.4430     0.5840   2.471  0.0135 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 Significance test:
 chi2(1) = 6.55241 (p=0.0104742)
 --------------------------------------------
@@ -211,17 +213,19 @@ Return code 1: gradient close to zero. May be a solution
 Log-Likelihood: -435.131 
 753 observations (325 zeros and 428 ones) and 10 free parameters (df = 743)
 Estimates:
-                 Estimate  Std. error   t value     Pr(> t)
-(Intercept)    9.74719982 1.139888649  8.551011 1.22016e-17
-kidsTRUE      -0.23059173 0.135232574 -1.705149 8.81666e-02
-age30.39TRUE   0.17823410 0.117023910  1.523057 1.27744e-01
-age50.60TRUE  -0.51399565 0.148981720 -3.450058 5.60465e-04
-educ           0.12151818 0.030061631  4.042301 5.29291e-05
-hushrs        -0.00073534 0.000103876 -7.079051 1.45145e-12
-huseduc       -0.03097194 0.022452428 -1.379447 1.67757e-01
-huswage       -0.21449775 0.024015485 -8.931643 4.19726e-19
-mtr          -10.49015764 1.152888911 -9.099019 9.11517e-20
-motheduc      -0.00583622 0.016637874 -0.350779 7.25754e-01
+               Estimate Std. error t value  Pr(> t)    
+(Intercept)   9.747e+00  1.140e+00   8.551  < 2e-16 ***
+kidsTRUE     -2.306e-01  1.352e-01  -1.705  0.08817 .  
+age30.39TRUE  1.782e-01  1.170e-01   1.523  0.12774    
+age50.60TRUE -5.140e-01  1.490e-01  -3.450  0.00056 ***
+educ          1.215e-01  3.006e-02   4.042 5.29e-05 ***
+hushrs       -7.353e-04  1.039e-04  -7.079 1.45e-12 ***
+huseduc      -3.097e-02  2.245e-02  -1.379  0.16776    
+huswage      -2.145e-01  2.402e-02  -8.932  < 2e-16 ***
+mtr          -1.049e+01  1.153e+00  -9.099  < 2e-16 ***
+motheduc     -5.836e-03  1.664e-02  -0.351  0.72575    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 Significance test:
 chi2(9) = 159.484 (p=9.50543e-30)
 --------------------------------------------
@@ -1257,13 +1261,15 @@ Return code 1: gradient close to zero. May be a solution
 Log-Likelihood: -490.848 
 753 observations (325 zeros and 428 ones) and 6 free parameters (df = 747)
 Estimates:
-                Estimate  Std. error  t value     Pr(> t)
-(Intercept) -4.15681e+00 1.40209e+00 -2.96473 0.003029483
-age          1.85395e-01 6.59667e-02  2.81044 0.004947438
-I(age^2)    -2.42590e-03 7.73540e-04 -3.13610 0.001712131
-faminc       4.58045e-06 4.20642e-06  1.08892 0.276189979
-kidsTRUE    -4.48987e-01 1.30911e-01 -3.42970 0.000604256
-educ         9.81823e-02 2.29841e-02  4.27174 0.000019395
+              Estimate Std. error t value  Pr(> t)    
+(Intercept) -4.157e+00  1.402e+00  -2.965 0.003029 ** 
+age          1.854e-01  6.597e-02   2.810 0.004947 ** 
+I(age^2)    -2.426e-03  7.735e-04  -3.136 0.001712 ** 
+faminc       4.580e-06  4.206e-06   1.089 0.276190    
+kidsTRUE    -4.490e-01  1.309e-01  -3.430 0.000604 ***
+educ         9.818e-02  2.298e-02   4.272 1.94e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 Significance test:
 chi2(5) = 48.0507 (p=3.46824e-09)
 --------------------------------------------
