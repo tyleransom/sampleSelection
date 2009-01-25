@@ -189,7 +189,7 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
   invMillsRatio may be meaningless.
   }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de},
+\author{Arne Henningsen,
    Ott Toomet \email{otoomet@ut.ee}}
 
 \seealso{\code{\link{lm}}, \code{\link{glm}}, \code{\link{binomial}}}

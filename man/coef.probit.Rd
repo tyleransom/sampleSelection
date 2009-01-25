@@ -25,7 +25,7 @@
       their standard errors, t-values, and p-values.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de}}
+\author{Arne Henningsen}
 
 \seealso{\code{\link{coefficients}}, \code{\link{probit}}, and
    \code{\link{summary.probit}}}

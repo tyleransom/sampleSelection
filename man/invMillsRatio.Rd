@@ -54,7 +54,7 @@
   Unpublished, University of Kiel, Germany.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de}}
+\author{Arne Henningsen}
 
 \examples{
 ## Wooldridge( 2003 ): example 17.5, page 590

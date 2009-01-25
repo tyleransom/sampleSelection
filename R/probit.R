@@ -1,4 +1,5 @@
-probit <- function( formula, subset, start=NULL,
+probit <- function(formula, subset, na.action,
+                   start=NULL,
                    data=sys.frame(sys.parent()),
                    x=FALSE, y=FALSE, model=FALSE,
                    method="ML", 

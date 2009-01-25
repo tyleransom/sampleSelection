@@ -39,7 +39,7 @@
       their standard errors, t-values, and p-values.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de},
+\author{Arne Henningsen,
    Ott Toomet (\email{otoomet@ut.ee})}
 
 \seealso{\code{\link{coefficients}}, \code{\link{selection}},

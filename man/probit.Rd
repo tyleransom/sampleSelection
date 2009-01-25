@@ -6,7 +6,7 @@
   This function calculates probit binary choice model
 }
 \usage{
-probit(formula, subset, start = NULL, data = sys.frame(sys.parent()),
+probit(formula, subset, na.action, start = NULL, data = sys.frame(sys.parent()),
        x=FALSE, y = FALSE, model = FALSE, method="ML", ... )
 }
 \arguments{
@@ -15,6 +15,11 @@ probit(formula, subset, start = NULL, data = sys.frame(sys.parent()),
     (see also details).}
   \item{subset}{an optional vector specifying a subset of observations to be
     used in the fitting process.}
+  \item{na.action}{a function which indicates what should happen when the data
+          contain 'NA's.  The default is set by the 'na.action' setting
+          of 'options', and is 'na.fail' if that is unset.  The
+          'factory-fresh' default is 'na.omit'.  Another possible value
+          is 'NULL', no action.  Value 'na.exclude' can be useful.}
   \item{start}{inital value of parameters.}
   \item{data}{an optional data frame containing the variables in the
     model. If not found in data, the
@@ -45,8 +50,10 @@ probit(formula, subset, start = NULL, data = sys.frame(sys.parent()),
   \item{LRT}{Likelihood ration test.  The full model is tested against
     H0: the parameters have no effect on the result.  This is a list
     with components
+    \itemize{
     \item{LRT}{The LRT value}
     \item{df}{Degrees of freedom for LRT (= df of the model - 1)}
+    }
     LRT is distributed by chi2(df) under H0.}
   \item{nParam}{Number of parameters of the model including constant}
   \item{nObs}{Number of the observations}

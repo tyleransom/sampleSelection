@@ -32,7 +32,7 @@
    are set to \code{NA}.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de}}
+\author{Arne Henningsen}
 
 \seealso{\code{\link{selection}},
    \code{\link{model.matrix}}, and \code{\link{model.matrix.probit}}}

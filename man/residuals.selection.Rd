@@ -35,7 +35,7 @@
    A numeric vector of the residuals.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de}}
+\author{Arne Henningsen}
 
 \seealso{\code{\link{selection}}, \code{\link{fitted.selection}},
    \code{\link{residuals}}, and \code{\link{residuals.probit}}}

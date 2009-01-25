@@ -20,7 +20,7 @@
    A data.frame containing all variables used for the estimation.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de},
+\author{Arne Henningsen,
    Ott Toomet \email{otoomet@ut.ee}}
 
 \seealso{\code{\link{probit}}, and \code{\link{model.frame}}}

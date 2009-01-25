@@ -38,7 +38,7 @@
    A numeric vector of the fitted values.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de}}
+\author{Arne Henningsen}
 
 \seealso{\code{\link{selection}}, \code{\link{residuals.selection}}
    \code{\link{fitted}}, and \code{\link{fitted.probit}}}

@@ -20,7 +20,7 @@
    The design matrix of the probit model.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de},
+\author{Arne Henningsen,
    Ott Toomet \email{otoomet@ut.ee}}
 
 \seealso{\code{\link{probit}},

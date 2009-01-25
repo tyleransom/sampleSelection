@@ -37,7 +37,7 @@
    Print methods return the argument invisibly.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de}, Ott
+\author{Arne Henningsen, Ott
   Toomet \email{otoomet@ut.ee}}
 
 \seealso{\code{\link{selection}}}

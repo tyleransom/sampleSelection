@@ -16,7 +16,7 @@
    A numeric vector of the fitted values.
 }
 \author{
-   Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de}
+   Arne Henningsen
 }
 
 \seealso{\code{\link[stats]{fitted}}, \code{\link{probit}}.}

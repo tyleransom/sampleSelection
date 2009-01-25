@@ -48,7 +48,7 @@ heckit5fit( selection, outcome1, outcome2, data = sys.frame(sys.parent()),
    see \code{\link{selection}}.
 }
 
-\author{Arne Henningsen \email{ahenningsen@agric-econ.uni-kiel.de},
+\author{Arne Henningsen,
    Ott Toomet \email{otoomet@ut.ee}}
 
 \seealso{\code{\link{selection}}, \code{\link{heckit}}}
