@@ -185,14 +185,24 @@ selection <- function(selection, outcome,
                     NXS=ncol(XS), NXO=ncol(XO),
                     N0=sum(YS==0), N1=sum(YS==1),
                     nObs=length(YS), nParam=length(start),
-                    df=length(YS) - length(start))
+                    df=length(YS) - length(start),
+                    levels=YSLevels
+                           # levels[1]: selection 1; levels[2]: selection 2
+                    )
    }
    else if(type == 5) {
+      ## extract the outcome formulas.  Anyone able to explain why do we need to do the complicated stuff?
       oArg <- match("outcome", names(mf), 0)
                                         # find the outcome argument
       ocome <- as.list(mf[[oArg]])
       formula1 <- ocome[[2]]
       formula2 <- ocome[[3]]
+                                        # If the formulas are not written explicitly but given as variables, 'formula*' are
+                                        # the corresponding variable names and we have to extract the formulas in a different way:
+      if(!("formula" %in% class(formula1)))
+          formula1 <- outcome[[1]]
+      if(!("formula" %in% class(formula2)))
+          formula2 <- outcome[[2]]
                                         # Now we have extracted both formulas
       m <- match(c("outcome", "data", "subset", "weights",
                    "offset"), names(mf), 0)
@@ -281,7 +291,10 @@ selection <- function(selection, outcome,
                     NXO1=ncol(XO1), NXO2=ncol(XO2),
                     N1=sum(YS==0), N2=sum(YS==1),
                     nObs=length(YS), nParam=length(start),
-                    df=length(YS) - length(start))
+                    df=length(YS) - length(start),
+                    levels=YSLevels
+                           # levels[1]: selection 1; levels[2]: selection 2
+                    )
    }
    ## now fit the model
    result <- c(estimation,

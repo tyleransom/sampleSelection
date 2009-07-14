@@ -1,4 +1,4 @@
 coef.probit <- function( object, ... ) {
-   result <- coef.maxLik( object )
+   result <- maxLik:::coef.maxLik( object )
    return( result )
 }

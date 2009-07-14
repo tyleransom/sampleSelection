@@ -1,6 +1,6 @@
 
-R version 2.7.2 (2008-08-25)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.9.0 (2009-04-17)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -27,6 +27,11 @@ Attaching package: 'Matrix'
 	The following object(s) are masked from package:stats :
 
 	 xtabs 
+
+
+	The following object(s) are masked from package:base :
+
+	 rcond 
 
 Loading required package: car
 Loading required package: lmtest
@@ -68,7 +73,8 @@ Probit binary choice model/Maximum Likelihood estimation
 Newton-Raphson maximisation, 5 iterations
 Return code 1: gradient close to zero. May be a solution
 Log-Likelihood: -40.6908 
-100 observations (16 zeros and 84 ones) and 2 free parameters (df = 98)
+Model: Y == TRUE in contrary to FALSE 
+100 observations (16 'negative' and 84 'positive') and 2 free parameters (df = 98)
 Estimates:
             Estimate Std. error t value Pr(> t)  
 (Intercept)   0.3202     0.3003   1.066  0.2863  
@@ -211,7 +217,8 @@ Probit binary choice model/Maximum Likelihood estimation
 Newton-Raphson maximisation, 5 iterations
 Return code 1: gradient close to zero. May be a solution
 Log-Likelihood: -435.131 
-753 observations (325 zeros and 428 ones) and 10 free parameters (df = 743)
+Model: Y == 1 in contrary to 0 
+753 observations (325 'negative' and 428 'positive') and 10 free parameters (df = 743)
 Estimates:
                Estimate Std. error t value  Pr(> t)    
 (Intercept)   9.747e+00  1.140e+00   8.551  < 2e-16 ***
@@ -1259,7 +1266,8 @@ Probit binary choice model/Maximum Likelihood estimation
 Newton-Raphson maximisation, 4 iterations
 Return code 1: gradient close to zero. May be a solution
 Log-Likelihood: -490.848 
-753 observations (325 zeros and 428 ones) and 6 free parameters (df = 747)
+Model: Y == 1 in contrary to 0 
+753 observations (325 'negative' and 428 'positive') and 6 free parameters (df = 747)
 Estimates:
               Estimate Std. error t value  Pr(> t)    
 (Intercept) -4.157e+00  1.402e+00  -2.965 0.003029 ** 

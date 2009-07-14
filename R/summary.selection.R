@@ -2,7 +2,7 @@ summary.selection <- function(object, ...) {
    ## object      object of class "selection"
 
    if( object$method == "ml" ) {
-      s <- summary.maxLik(object, ...)
+      s <- maxLik:::summary.maxLik(object, ...)
    } else if( object$method == "2step" )  {
       s <- list()  # list for results that will be returned
       RSq <- function(model, intercept) {
@@ -66,8 +66,8 @@ print.summary.selection <- function(x,
    }
    if( x$method == "ml" ) {
       cat( "Maximum Likelihood estimation\n" )
-      cat(x$type, ", ", x$iterations, " iterations\n", sep="")
-      cat("Return code ", x$code, ": ", x$message, "\n", sep="")
+      cat(maximType(x), ", ", nIter(x), " iterations\n", sep="")
+      cat("Return code ", returnCode(x), ": ", returnMessage(x), "\n", sep="")
       if(!is.null(x$estimate)) {
          cat("Log-Likelihood:", logLik(x), "\n")
       }
@@ -77,13 +77,13 @@ print.summary.selection <- function(x,
    if(!is.null(x$estimate)) {
       cat( x$param$nObs, "observations" )
       if( x$tobitType == 2 ) {
-         cat( " (", x$param$N0, " censored and ", x$param$N1, " observed)",
+         cat( " (", x$param$N0, " censored and ", x$param$N1, " observed)\n",
             sep = "" )
       } else {
-         cat( " (", x$param$N1, " selection 1 and ",
-            x$param$N2, " selection 2)", sep = "" )
+         cat( ": ", x$param$N1, " selection 1 (", x$param$levels[1], ") and ",
+            x$param$N2, " selection 2 (", x$param$levels[2], ")\n", sep = "" )
       }
-      cat( " and", x$param$nParam, "free parameters" )
+      cat( x$param$nParam, "free parameters" )
       cat( " (df = ", x$param$df, ")\n", sep="")
       if(part == "full") {
          cat("Probit selection equation:\n")

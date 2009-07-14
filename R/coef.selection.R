@@ -3,7 +3,7 @@ coef.selection <- function( object, part="full", ... ) {
       stop( "argument 'part' must be either 'full' or 'outcome'" )
    }
    if("maxLik" %in% class(object))
-      coefValues <- coef.maxLik(object)
+      coefValues <- maxLik:::coef.maxLik(object)
    else
        coefValues <- object$coefficients
    if( part == "outcome" ) {

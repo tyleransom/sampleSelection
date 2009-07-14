@@ -1,11 +1,12 @@
 print.summary.probit <- function( x, ... ) {
    cat("--------------------------------------------\n")
    cat("Probit binary choice model/Maximum Likelihood estimation\n")
-   cat(x$type, ", ", x$iterations, " iterations\n", sep="")
-   cat("Return code ", x$code, ": ", x$message, "\n", sep="")
+   cat(maximType(x), ", ", nIter(x), " iterations\n", sep="")
+   cat("Return code ", returnCode(x), ": ", returnMessage(x), "\n", sep="")
    if(!is.null(x$estimate)) {
-      cat("Log-Likelihood:", x$loglik, "\n")
-      cat(x$nObs, " observations (", x$N0, " zeros and ", x$N1, " ones) and ",
+      cat("Log-Likelihood:", logLik(x), "\n")
+      cat("Model: Y ==", x$levels[2], "in contrary to", x$levels[1], "\n")
+      cat(x$nObs, " observations (", x$N0, " 'negative' and ", x$N1, " 'positive') and ",
           x$NActivePar, " free parameters (df = ",
           x$nObs - x$NActivePar, ")\n", sep="")
       cat("Estimates:\n")

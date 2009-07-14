@@ -4,6 +4,18 @@ heckit5fit <- function(selection, outcome1, outcome2,
                     xs=FALSE, xo=FALSE,
                     mfs=FALSE, mfo=FALSE,
                     print.level=0, ... ) {
+   checkIMRcollinearity <- function(X, tol=1e6) {
+      ## This small utility checks whether inverse Mills ratio is (virtually) collinear to the other explanatory
+      ## variables.  IMR is in the last columns.
+      ## In case of collinearity it returns TRUE, otherwise FALSE
+      X <- X[!apply(X, 1, function(row) any(is.na(row))),]
+      if(kappa(X) < tol)
+          return(FALSE)
+      if(kappa(X[,-ncol(X)]) > tol)
+          return(FALSE)
+                                        # it is multicollinear, but not (just) due to IMR
+      return(TRUE)
+   }
    ## Do a few sanity checks...
    if( class( selection ) != "formula" ) {
       stop( "argument 'selection' must be a formula" )
@@ -35,7 +47,7 @@ heckit5fit <- function(selection, outcome1, outcome2,
                                         # selection kept as integer internally
    names( YS ) <- ysNames
 
-   ## check for NA-s.  Because we have to find NA-s in several frames, we cannot use the standard na.
+   ## check for NA-s.  Because we have to find NA-s in several frames, we cannot use the standard 'na.'
    ## functions here.  Find bad rows and remove them later.
    badRow <- is.na(YS)
    badRow <- badRow | apply(XS, 1, function(v) any(is.na(v)))
@@ -167,7 +179,13 @@ heckit5fit <- function(selection, outcome1, outcome2,
                                         # lambdas are inverse Mills ratios
    XO1 <- cbind(XO1, invMillsRatio1)
    XO2 <- cbind(XO2, invMillsRatio2)
-                                        # lambda1 is a matrix -- we need to remove the dim in order to 
+                                        # lambda1 is a matrix -- we need to remove the dim in order to
+   if(checkIMRcollinearity(XO1)) {
+      warning("Inverse Mills Ratio is virtually multicollinear to the rest of explanatory variables in the outcome equation 1")
+   }
+   if(checkIMRcollinearity(XO2)) {
+      warning("Inverse Mills Ratio is virtually multicollinear to the rest of explanatory variables in the outcome equation 2")
+   }
    lm1 <- lm(YO1 ~ -1 + XO1)
    lm2 <- lm(YO2 ~ -1 + XO2)
                                         # XO includes the constant
@@ -236,7 +254,10 @@ heckit5fit <- function(selection, outcome1, outcome2,
                                         # The location of results in the coef vector
                  oIntercept1=intercept1, oIntercept2=intercept2,
                  nObs=nObs, nParam=nParam, df=nObs-nParam + 2,
-                 NXS=NXS, NXO1=NXO1, NXO2=NXO2, N1=N1, N2=N2)
+                 NXS=NXS, NXO1=NXO1, NXO2=NXO2, N1=N1, N2=N2,
+                 levels=YSLevels
+                           # levels[1]: selection 1; levels[2]: selection 2
+                 )
    #
    result <- list(probit=probitResult,
                   lm1=lm1,

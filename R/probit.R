@@ -103,7 +103,9 @@ probit <- function(formula, subset, na.action,
    result <- c(estimation,
                LRT=list(list(LRT=LRT, df=nParam-1)),
                                         # there are df-1 constraints
-               param=list(list(nParam=nParam,nObs=nObs, N1=N1, N0=N0)),
+               param=list(list(nParam=nParam,nObs=nObs, N1=N1, N0=N0,
+                               levels=YLevels)),
+                           # Probit: estimates for Y == levels[2] as opposite of levels[1]
                df=nObs - nParam,
                call=cl,
                terms=mt,

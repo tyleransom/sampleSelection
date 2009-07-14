@@ -1,6 +1,6 @@
 
-R version 2.7.2 (2008-08-25)
-Copyright (C) 2008 The R Foundation for Statistical Computing
+R version 2.9.0 (2009-04-17)
+Copyright (C) 2009 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -27,6 +27,11 @@ Attaching package: 'Matrix'
 	The following object(s) are masked from package:stats :
 
 	 xtabs 
+
+
+	The following object(s) are masked from package:base :
+
+	 rcond 
 
 Loading required package: car
 Loading required package: lmtest
@@ -63,7 +68,8 @@ S:(Intercept)          S:age     S:I(age^2)       S:faminc     S:kidsTRUE
 --------------------------------------------
 Tobit 2 model (sample selection model)
 2-step Heckman / heckit estimation
-753 observations (325 censored and 428 observed) and 14 free parameters (df = 740)
+753 observations (325 censored and 428 observed)
+14 free parameters (df = 740)
 Probit selection equation:
              Estimate Std. Error t value Pr(>|t|)    
 (Intercept) -4.16e+00   1.40e+00   -2.96  0.00313 ** 
@@ -116,7 +122,8 @@ Probit binary choice model/Maximum Likelihood estimation
 Newton-Raphson maximisation, 4 iterations
 Return code 1: gradient close to zero. May be a solution
 Log-Likelihood: -490.848 
-753 observations (325 zeros and 428 ones) and 6 free parameters (df = 747)
+Model: Y == 1 in contrary to 0 
+753 observations (325 'negative' and 428 'positive') and 6 free parameters (df = 747)
 Estimates:
                 Estimate Std. error t value  Pr(> t)    
 XS(Intercept) -4.157e+00  1.402e+00  -2.965 0.003029 ** 
@@ -4128,7 +4135,8 @@ S:(Intercept)     S:nwifeinc         S:educ        S:exper   S:I(exper^2)
 --------------------------------------------
 Tobit 2 model (sample selection model)
 2-step Heckman / heckit estimation
-753 observations (325 censored and 428 observed) and 15 free parameters (df = 739)
+753 observations (325 censored and 428 observed)
+15 free parameters (df = 739)
 Probit selection equation:
             Estimate Std. Error t value Pr(>|t|)    
 (Intercept)  0.27008    0.50859    0.53   0.5956    
@@ -4179,9 +4187,11 @@ F-statistic:  288 on 5 and 423 DF,  p-value: <2e-16
 --------------------------------------------
 Probit binary choice model/Maximum Likelihood estimation
 Newton-Raphson maximisation, 5 iterations
-Return code 1: gradient close to zero. May be a solution
+Return code 2: successive function values within tolerance limit.
+May be a solution
 Log-Likelihood: -401.302 
-753 observations (325 zeros and 428 ones) and 8 free parameters (df = 745)
+Model: Y == 1 in contrary to 0 
+753 observations (325 'negative' and 428 'positive') and 8 free parameters (df = 745)
 Estimates:
                Estimate Std. error t value  Pr(> t)    
 XS(Intercept)  0.270077   0.508593   0.531  0.59540    
@@ -4205,7 +4215,7 @@ chi2(7) = 227.142 (p=2.00867e-45)
 S:(Intercept)     S:nwifeinc         S:educ        S:exper   S:I(exper^2)  
    0.27007677    -0.01202374     0.13090473     0.12334759    -0.00188708  
         S:age        S:kids5      S:kids618  O:(Intercept)         O:educ  
-  -0.05285267    -0.86832851     0.03600496    -0.57810319     0.10906552  
+  -0.05285267    -0.86832850     0.03600496    -0.57810319     0.10906552  
       O:exper   O:I(exper^2)  invMillsRatio          sigma            rho  
    0.04388734    -0.00085911     0.03226186     0.66362875     0.04861433  
 > print( coef( wooldridge, part = "outcome" ), digits = 5 )
@@ -4219,7 +4229,7 @@ educ           0.13090473 0.02525420  5.18348 2.8133e-07
 exper          0.12334759 0.01871640  6.59035 8.3424e-11
 I(exper^2)    -0.00188708 0.00059999 -3.14521 1.7262e-03
 age           -0.05285267 0.00847724 -6.23466 7.6101e-10
-kids5         -0.86832851 0.11852231 -7.32629 6.2083e-13
+kids5         -0.86832850 0.11852231 -7.32629 6.2083e-13
 kids618        0.03600496 0.04347679  0.82814 4.0786e-01
 (Intercept)   -0.57810319 0.30500620 -1.89538 5.8432e-02
 educ           0.10906552 0.01552295  7.02608 4.8301e-12
@@ -4572,7 +4582,7 @@ invMillsRatio -0.03103081  8.7226e-04  1.2845e-03 -2.6522e-05    1.7856e-02
      345      346      347      348      349      350      351      352 
 0.958797 0.512285 0.886167 0.784004 0.124275 0.875832 0.819057 0.444416 
      353      354      355      356      357      358      359      360 
-0.651072 0.919555 0.789289 0.581917 0.936751 0.586516 0.244459 0.890948 
+0.651072 0.919555 0.789289 0.581916 0.936751 0.586516 0.244459 0.890948 
      361      362      363      364      365      366      367      368 
 0.630079 0.782865 0.728357 0.570921 0.871377 0.336460 0.706435 0.844341 
      369      370      371      372      373      374      375      376 
@@ -4954,7 +4964,7 @@ invMillsRatio -0.03103081  8.7226e-04  1.2845e-03 -2.6522e-05    1.7856e-02
       345       346       347       348       349       350       351       352 
  0.041203  0.487715  0.113833  0.215996  0.875725  0.124168  0.180943  0.555584 
       353       354       355       356       357       358       359       360 
- 0.348928  0.080445  0.210711  0.418083  0.063249  0.413484  0.755541  0.109052 
+ 0.348928  0.080445  0.210711  0.418084  0.063249  0.413484  0.755541  0.109052 
       361       362       363       364       365       366       367       368 
  0.369921  0.217135  0.271643  0.429079  0.128623  0.663540  0.293565  0.155659 
       369       370       371       372       373       374       375       376 
@@ -5456,7 +5466,7 @@ invMillsRatio -0.03103081  8.7226e-04  1.2845e-03 -2.6522e-05    1.7856e-02
 397             1      6      37         1369     0.804744
 398             1     16      13          169     0.106189
 399             1     14      14          196     0.542682
-400             1     15      17          289     0.868848
+400             1     15      17          289     0.868847
 401             1     14       5           25     0.633169
 402             1      8       2            4     2.070481
 403             1     14       0            0     1.443233
@@ -8478,7 +8488,7 @@ attr(,"assign")
 397      0.804744
 398      0.106189
 399      0.542682
-400      0.868848
+400      0.868847
 401      0.633169
 402      2.070481
 403      1.443233
@@ -8864,7 +8874,8 @@ Coefficients:
 --------------------------------------------
 Tobit 5 model (switching regression model)
 2-step Heckman / heckit estimation
-500 observations (162 selection 1 and 338 selection 2) and 12 free parameters (df = 490)
+500 observations: 162 selection 1 (FALSE) and 338 selection 2 (TRUE)
+12 free parameters (df = 490)
 Probit selection equation:
             Estimate Std. Error t value Pr(>|t|)    
 (Intercept)   0.0267     0.1116    0.24     0.81    

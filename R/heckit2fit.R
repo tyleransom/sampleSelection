@@ -2,6 +2,18 @@ heckit2fit <- function( selection, outcome,
                    data=sys.frame(sys.parent()),
                    inst = NULL,
                    print.level = 0, ... ) {
+   checkIMRcollinearity <- function(X, tol=1e6) {
+      ## This small utility checks whether inverse Mills ratio is (virtually) collinear to the other explanatory
+      ## variables.  IMR is in the last columns.
+      ## In case of collinearity it returns TRUE, otherwise FALSE
+      X <- X[!apply(X, 1, function(row) any(is.na(row))),]
+      if(kappa(X) < tol)
+          return(FALSE)
+      if(kappa(X[,-ncol(X)]) > tol)
+          return(FALSE)
+                                        # it is multicollinear, but not (just) due to IMR
+      return(TRUE)
+   }
    # What is the role of na.action here?  We cannot use na.omit -- we must not omit the observation
    # where outcome is not observed.  na-s cannot be passed either.
    # However, we can (and should?) omit the na-s in explanatory and probit outcomes.  This needs
@@ -115,6 +127,9 @@ heckit2fit <- function( selection, outcome,
    if( is.null( inst ) ) {
       if( print.level > 0 ) {
          cat ( "Estimating 2nd step (outcome) OLS model . . ." )
+      }
+      if(checkIMRcollinearity(cbind(XO, imrData$IMR1))) {
+         warning("Inverse Mills Ratio is (virtually) collinear to the rest of the explanatory variables")
       }
       outcomeMod <- lm(YO ~ -1 + XO + imrData$IMR1,
                       subset = YS == 1)

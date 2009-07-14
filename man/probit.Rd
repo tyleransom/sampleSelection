@@ -55,10 +55,14 @@ probit(formula, subset, na.action, start = NULL, data = sys.frame(sys.parent()),
     \item{df}{Degrees of freedom for LRT (= df of the model - 1)}
     }
     LRT is distributed by chi2(df) under H0.}
-  \item{nParam}{Number of parameters of the model including constant}
-  \item{nObs}{Number of the observations}
-  \item{N1}{Number of observations with non-zero (true) response}
-  \item{N0}{Number of observations with zero (false) response}
+  \item{param}{A list with following background information:
+    \itemize{
+      \item{nParam}{Number of parameters of the model including constant}
+      \item{nObs}{Number of the observations}
+      \item{N1}{Number of observations with non-zero (true) response}
+      \item{N0}{Number of observations with zero (false) response}
+    }
+  }
   \item{df}{Number of free parameters}
   \item{x}{if requested, the model matrix used.}
   \item{y}{if requested, the model response used.  The
