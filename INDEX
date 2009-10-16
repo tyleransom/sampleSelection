@@ -1,6 +1,5 @@
 Mroz87                  U.S. Women's Labor Force Participation
 RandHIE                 RAND Health Insurance Experiment
-coef.probit             Extract Coefficients from Probit Models
 coef.selection          Extract Coefficients from Selection Models
 coefTable               Coefficient Table
 fitted.probit           Fitted values of probit models
@@ -25,5 +24,4 @@ sampleSelection-deprecated
 selection               Heckman-style selection models
 summary.probit          Summarizing Probit Estimations
 summary.selection       Summarizing Selection Estimations
-vcov.probit             Variance Covariance Matrix of probit models
 vcov.selection          Extract Variance Covariance Matrix

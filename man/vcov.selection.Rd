@@ -33,7 +33,7 @@
    Ott Toomet \email{otoomet@ut.ee}
 }
 
-\seealso{\code{\link[stat]{vcov}}, \code{\link{selection}},
+\seealso{\code{\link[stats]{vcov}}, \code{\link{selection}},
    \code{\link{coef.selection}}.}
 \examples{
 ## Estimate a simple female wage model taking into account the labour
