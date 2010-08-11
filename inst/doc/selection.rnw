@@ -49,12 +49,11 @@
   URL: \url{http://www.obs.ee/~siim/}\\
 
   Arne Henningsen\\
-  Department of Agricultural Economics\\
-  University of Kiel\\
-  24098 Kiel, Germany\\
-  Telephone: +49 431/880/4445\\
-  E-mail: \email{ahenningsen@agric-econ.uni-kiel.de}\\
-  URL: \url{http://www.uni-kiel.de/agrarpol/ahenningsen/}
+  Institute of Food and Resource Economics\\
+  University of Copenhagen\\
+  1958 Frederiksberg, Denmark\\
+  E-mail: \email{arne.henningsen@gmail.com}\\
+  URL: \url{http://www.arne-henningsen.name/}
 }
 
 \begin{document}

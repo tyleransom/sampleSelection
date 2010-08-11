@@ -1,0 +1,19 @@
+THIS IS THE CHANGELOG OF THE "maxLik" PACKAGE
+
+Please note that only the most significant changes are reported here.
+A full ChangeLog is available in the log messages of the SVN repository
+on R-Forge.
+
+
+            CHANGES IN VERSION 0.6-10
+
+* added a NAMESPACE file
+
+* minor modifications so that the sampleSelection package works with the
+versions >= 0.7-3 of the maxLik package 
+
+
+
+            CHANGES IN VERSION 0.6-8 AND BEFORE
+
+* please take a look at the log messages of the SVN repository on R-Forge

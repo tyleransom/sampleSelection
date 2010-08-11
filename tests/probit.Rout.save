@@ -1,6 +1,6 @@
 
-R version 2.9.0 (2009-04-17)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -17,33 +17,20 @@ Type 'q()' to quit R.
 
 > library( sampleSelection )
 Loading required package: maxLik
+Loading required package: miscTools
 Loading required package: systemfit
 Loading required package: Matrix
 Loading required package: lattice
 
 Attaching package: 'Matrix'
 
+The following object(s) are masked from 'package:base':
 
-	The following object(s) are masked from package:stats :
-
-	 xtabs 
-
-
-	The following object(s) are masked from package:base :
-
-	 rcond 
+    det
 
 Loading required package: car
 Loading required package: lmtest
 Loading required package: zoo
-
-Attaching package: 'zoo'
-
-
-	The following object(s) are masked from package:base :
-
-	 as.Date.numeric 
-
 > options( digits = 6 )
 > 
 > ## loading and preparing data
@@ -71,9 +58,9 @@ Coefficients:
 --------------------------------------------
 Probit binary choice model/Maximum Likelihood estimation
 Newton-Raphson maximisation, 5 iterations
-Return code 1: gradient close to zero. May be a solution
+Return code 1: gradient close to zero
 Log-Likelihood: -40.6908 
-Model: Y == TRUE in contrary to FALSE 
+Model: Y == 'TRUE' in contrary to 'FALSE'
 100 observations (16 'negative' and 84 'positive') and 2 free parameters (df = 98)
 Estimates:
             Estimate Std. error t value Pr(> t)  
@@ -215,9 +202,9 @@ Coefficients:
 --------------------------------------------
 Probit binary choice model/Maximum Likelihood estimation
 Newton-Raphson maximisation, 5 iterations
-Return code 1: gradient close to zero. May be a solution
+Return code 1: gradient close to zero
 Log-Likelihood: -435.131 
-Model: Y == 1 in contrary to 0 
+Model: Y == '1' in contrary to '0'
 753 observations (325 'negative' and 428 'positive') and 10 free parameters (df = 743)
 Estimates:
                Estimate Std. error t value  Pr(> t)    
@@ -1264,9 +1251,9 @@ Coefficients:
 --------------------------------------------
 Probit binary choice model/Maximum Likelihood estimation
 Newton-Raphson maximisation, 4 iterations
-Return code 1: gradient close to zero. May be a solution
+Return code 1: gradient close to zero
 Log-Likelihood: -490.848 
-Model: Y == 1 in contrary to 0 
+Model: Y == '1' in contrary to '0'
 753 observations (325 'negative' and 428 'positive') and 6 free parameters (df = 747)
 Estimates:
               Estimate Std. error t value  Pr(> t)    

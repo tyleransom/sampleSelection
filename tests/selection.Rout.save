@@ -1,6 +1,6 @@
 
-R version 2.9.2 (2009-08-24)
-Copyright (C) 2009 The R Foundation for Statistical Computing
+R version 2.11.1 (2010-05-31)
+Copyright (C) 2010 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -17,38 +17,20 @@ Type 'q()' to quit R.
 
 > library(sampleSelection)
 Loading required package: maxLik
+Loading required package: miscTools
 Loading required package: systemfit
 Loading required package: Matrix
 Loading required package: lattice
 
 Attaching package: 'Matrix'
 
+The following object(s) are masked from 'package:base':
 
-	The following object(s) are masked from package:stats :
-
-	 contr.helmert,
-	 contr.poly,
-	 contr.SAS,
-	 contr.sum,
-	 contr.treatment,
-	 xtabs 
-
-
-	The following object(s) are masked from package:base :
-
-	 rcond 
+    det
 
 Loading required package: car
 Loading required package: lmtest
 Loading required package: zoo
-
-Attaching package: 'zoo'
-
-
-	The following object(s) are masked from package:base :
-
-	 as.Date.numeric 
-
 > library(mvtnorm)
 > options(digits=6)
 > N <- 1500
@@ -9274,7 +9256,7 @@ Coefficients:
 Tobit 5 model (switching regression model)
 Maximum Likelihood estimation
 Newton-Raphson maximisation, 10 iterations
-Return code 1: gradient close to zero. May be a solution
+Return code 1: gradient close to zero
 Log-Likelihood: -2774.84 
 1479 observations: 479 selection 1 (FALSE) and 1000 selection 2 (TRUE)
 10 free parameters (df = 1469)
@@ -32161,7 +32143,7 @@ S:(Intercept)           S:xs  O:(Intercept)           O:xo          sigma
 Tobit 2 model (sample selection model)
 Maximum Likelihood estimation
 Newton-Raphson maximisation, 5 iterations
-Return code 1: gradient close to zero. May be a solution
+Return code 1: gradient close to zero
 Log-Likelihood: -2159.85 
 1481 observations (461 censored and 1020 observed)
 6 free parameters (df = 1475)
@@ -45678,7 +45660,7 @@ Now run tobit2 without intercepts
 Tobit 2 model (sample selection model)
 Maximum Likelihood estimation
 Newton-Raphson maximisation, 3 iterations
-Return code 1: gradient close to zero. May be a solution
+Return code 1: gradient close to zero
 Log-Likelihood: -2113.9 
 1482 observations (483 censored and 999 observed)
 6 free parameters (df = 1476)
@@ -45697,4 +45679,33 @@ rho    -0.8275     0.0393   -21.1  <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 --------------------------------------------
+> 
+> ## Raphael Abiry: does 'start' argument work?
+> init <- coef(testTobit2ML)
+> testTobit2ML <- selection(ys~xs, yo ~xo, data=data, method="ml", start=init)
+> print(summary(testTobit2ML))
+--------------------------------------------
+Tobit 2 model (sample selection model)
+Maximum Likelihood estimation
+Newton-Raphson maximisation, 1 iterations
+Return code 1: gradient close to zero
+Log-Likelihood: -2113.9 
+1482 observations (483 censored and 999 observed)
+6 free parameters (df = 1476)
+Probit selection equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)  0.00944    0.05802    0.16    0.87    
+xs           0.93158    0.10380    8.97  <2e-16 ***
+Outcome equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)   0.1071     0.0661    1.62    0.10    
+xo            0.8452     0.0879    9.62  <2e-16 ***
+Error terms:
+      Estimate Std. error t value Pr(> t)    
+sigma   1.0150     0.0378    26.8  <2e-16 ***
+rho    -0.8275     0.0393   -21.1  <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+--------------------------------------------
+>                            # Note: should be only 1 iteration
 > 

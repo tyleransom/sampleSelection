@@ -204,3 +204,9 @@ data <- data.frame(ys, xs, yo, xo)
 rm(eps, xs, ys, xo, yo)
 testTobit2ML <- selection(ys~xs, yo ~xo, data=data, method="ml")
 print(summary(testTobit2ML))
+
+## Raphael Abiry: does 'start' argument work?
+init <- coef(testTobit2ML)
+testTobit2ML <- selection(ys~xs, yo ~xo, data=data, method="ml", start=init)
+print(summary(testTobit2ML))
+                           # Note: should be only 1 iteration

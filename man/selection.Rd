@@ -94,7 +94,7 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
   'selection' returns an object of class "selection".
   If the model estimated by Maximum Likelihood (argument method = "ml"),
   this object is a list, which has all the components of 'maxLik', and in
-  addition the elements 'twoStep', 'init', 'param', termS, termO,
+  addition the elements 'twoStep', 'start, 'param', termS, termO,
   and if requested 'ys', 'xs', 'yo', 'xo', 'mfs', and 'mfo'.
   If a tobit-2 (sample selection) model is estimated by the
   two-step method (argument method = "2step"),
@@ -112,7 +112,7 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
     1st step (probit estimation) (only for two-step estimations).}
   \item{twoStep}{(only if initial values not given)
     results of the 2-step estimation, used for initial values}
-  \item{init}{initial values for ML estimation}
+  \item{start}{initial values for ML estimation}
   \item{termsS, termsO}{terms for the selection and outcome equation}
   \item{ys, xs, yo, xo, mfs, mfo}{response, matrix and frame of the
     selection- and outcome equations (as a list of two for the latter).

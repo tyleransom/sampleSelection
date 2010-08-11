@@ -74,9 +74,13 @@ tobit2fit <- function(YS, XS, YO, XO, start,
        g <- beta[ibetaS]
        b <- beta[ibetaO]
        sigma <- beta[isigma]
-       if(sigma < 0) return(NA)
+       if(sigma < 0) {
+         return( matrix( NA, nrow = nParam, ncol = nParam ) )
+       }
        rho <- beta[irho]
-       if( ( rho < -1) || ( rho > 1)) return(NA)
+       if( ( rho < -1) || ( rho > 1)) {
+         return( matrix( NA, nrow = nParam, ncol = nParam ) )
+       }
        XS0.g <- as.vector(XS0 %*% g)
        XS1.g <- as.vector(XS1 %*% g)
        XO1.b <- as.vector(XO1 %*% b)

@@ -159,8 +159,11 @@ selection <- function(selection, outcome,
       iBeta <- max(iGamma) + seq(length=NXO)
       iSigma <- max(iBeta) + 1
       iRho <- max(iSigma) + 1
+      nParam <- iRho
       twoStep <- NULL
       if(is.null(start)) {
+                           # start values by Heckman 2-step method
+         start <- numeric(nParam)
          twoStep <- heckit2fit(selection, outcome, data=data,
             print.level = print.level, ... )
          coefs <- coef(twoStep, part="full")
