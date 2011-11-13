@@ -14,7 +14,7 @@
 \arguments{
    \item{formula}{object of class \code{selection}.}
    \item{\dots}{further arguments passed to other methods
-      (e.g. \code{\link{model.frame}} or \code{\link{model.frame.probit}}).}
+      (e.g. \code{\link{model.frame}} or \code{\link{model.frame.binaryChoice}}).}
 }
 \value{
    A data.frame containing all variables used for the estimation.
@@ -23,6 +23,6 @@
 \author{Arne Henningsen}
 
 \seealso{\code{\link{selection}},
-   \code{\link{model.frame}}, and \code{\link{model.frame.probit}}}
+   \code{\link{model.frame}}, and \code{\link{model.frame.binaryChoice}}}
 
 \keyword{methods}

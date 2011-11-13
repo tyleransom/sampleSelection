@@ -1,18 +1,18 @@
-\name{model.frame.probit}
-\alias{model.frame.probit}
+\name{model.frame.binaryChoice}
+\alias{model.frame.binaryChoice}
 
-\title{Data of Probit Models}
+\title{Data of Binary Choice Models}
 
 \description{
-   Return the variables used for estimating a probit model
+   Return the variables used for estimating a binary choice model
 }
 
 \usage{
-\method{model.frame}{probit}( formula, ... )
+\method{model.frame}{binaryChoice}( formula, ... )
 }
 
 \arguments{
-   \item{formula}{object of class \code{probit}.}
+   \item{formula}{object of class \code{binaryChoice}.}
    \item{\dots}{further arguments passed to other methods
       (e.g. \code{\link{model.frame}}).}
 }

@@ -43,3 +43,11 @@ residuals( greene, type = "deviance" )
 probit( lfp ~ exper, data = Mroz87 )
 probit( factor( lfp ) ~ exper, data = Mroz87 )
 probit( factor( lfp, labels = c( "no", "yes" ) ) ~ exper, data = Mroz87 )
+
+## NA in data/linear predictors/na.exclude (by Gabor Grothendieck)
+x <- runif(20)
+y <- x + rnorm(length(x)) > 0
+y[1] <- y[4] <- NA
+m <- probit(y ~ x, na.action = na.exclude)
+length(linearPredictors(m))
+                           # should be 20

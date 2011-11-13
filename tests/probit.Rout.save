@@ -1,7 +1,8 @@
 
-R version 2.11.1 (2010-05-31)
-Copyright (C) 2010 The R Foundation for Statistical Computing
+R version 2.14.0 (2011-10-31)
+Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
+Platform: i686-pc-linux-gnu (32-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -29,8 +30,19 @@ The following object(s) are masked from 'package:base':
     det
 
 Loading required package: car
+Loading required package: MASS
+Loading required package: nnet
+Loading required package: survival
+Loading required package: splines
 Loading required package: lmtest
 Loading required package: zoo
+
+Attaching package: 'zoo'
+
+The following object(s) are masked from 'package:base':
+
+    as.Date, as.Date.numeric
+
 > options( digits = 6 )
 > 
 > ## loading and preparing data
@@ -2087,4 +2099,13 @@ Coefficients:
 (Intercept)       exper 
     -0.4431      0.0605 
 
+> 
+> ## NA in data/linear predictors/na.exclude (by Gabor Grothendieck)
+> x <- runif(20)
+> y <- x + rnorm(length(x)) > 0
+> y[1] <- y[4] <- NA
+> m <- probit(y ~ x, na.action = na.exclude)
+> length(linearPredictors(m))
+[1] 20
+>                            # should be 20
 > 

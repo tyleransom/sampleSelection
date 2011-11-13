@@ -17,7 +17,7 @@
       "outcome" for the design matrix/matrices of the outcome equation(s) or
       "selection" for the design matrix of the selection equation.}
    \item{\dots}{further arguments passed to other methods
-      (e.g. \code{\link{model.matrix.probit}} or \code{\link{model.matrix}}).}
+      (e.g. \code{\link{model.matrix.binaryChoice}} or \code{\link{model.matrix}}).}
 }
 \value{
    If argument \code{part} is \code{"selection"},
@@ -35,6 +35,6 @@
 \author{Arne Henningsen}
 
 \seealso{\code{\link{selection}},
-   \code{\link{model.matrix}}, and \code{\link{model.matrix.probit}}}
+   \code{\link{model.matrix}}, and \code{\link{model.matrix.binaryChoice}}}
 
 \keyword{methods}

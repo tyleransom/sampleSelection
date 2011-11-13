@@ -144,7 +144,7 @@ selection <- function(selection, outcome,
       }
       if( method == "model.frame" ) {
          mf <- mfS
-         mf <- cbind( mf, mfO[ , ! names( mfO ) %in% names( mf ) ] )
+         mf <- cbind( mf, mfO[ , ! names( mfO ) %in% names( mf ), drop = FALSE ] )
          return( mf[ !badRow, ] )
       }
       XS <- XS[!badRow,, drop=FALSE]

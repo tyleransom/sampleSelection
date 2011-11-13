@@ -1,4 +1,4 @@
-model.matrix.probit <- function (object, ...) {
+model.matrix.binaryChoice <- function (object, ...) {
     if (n_match <- match("x", names(object), 0)) 
         object[[n_match]]
     else {

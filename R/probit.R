@@ -1,10 +1,5 @@
-probit <- function(formula, subset, na.action,
-                   start=NULL,
-                   data=sys.frame(sys.parent()),
-                   x=FALSE, y=FALSE, model=FALSE,
-                   method="ML", 
-                   ...) {
-   ## Probit binary choice model
+probit <- function(formula, ...) {
+   ## Probit binary choice model.  Essentially a wrapper for "binaryCoice"
    ## formula: model formula, response must be either a logical or numeric vector containing only 0-s and
    ##          1-s
    ## start:      initial value of the parameters
@@ -25,93 +20,63 @@ probit <- function(formula, subset, na.action,
    ##  x         model matrix (only if requested)
    ##  call      call
    ##  terms     terms
+   ##
    loglik <- function( beta) {
-      xb0 <- x0 %*% beta
-      xb1 <- x1 %*% beta
-      loglik <- sum(pnorm( xb0, log=TRUE, lower.tail=FALSE)) + sum(pnorm( xb1, log.p=TRUE))
-   }
-   gradlik <- function(beta) {
-      ## gradient is 1 x nParam matrix
-      xb0 <- x0 %*% beta
-      xb1 <- x1 %*% beta
-      gradlik <- - t(dnorm(xb0)/pnorm(xb0, lower.tail=FALSE)) %*% x0 +
-          t(dnorm(xb1)/pnorm(xb1)) %*% x1
-   }
-   hesslik <- function(beta) {
-      xb0 <- as.vector( x0 %*% beta)
-      xb1 <- as.vector( x1 %*% beta)
-      F0 <- pnorm( xb0)
-      F1 <- pnorm( xb1)
-      f0 <- dnorm( xb0)
-      f1 <- dnorm( xb1)
-      yF0 <- pnorm( xb0, lower.tail=FALSE)
-      loglik2 <- t( x1) %*% ( x1 * ( -f1*xb1*F1 - f1*f1)/F1/F1) -
-         t( x0) %*% ( x0 * ( -f0*xb0*yF0 + f0*f0)/yF0/yF0)
+      ## probit loglik, using Demidenko (2001) robust method
+      x0 <- get("x0", envir=probitFrame + 1)
+      x1 <- get("x1", envir=probitFrame + 1)
+      Y <- get("Y", envir=probitFrame + 1)
+      xb0 <- drop(x0 %*% beta)
+      xb1 <- drop(x1 %*% beta)
+      loglik <- numeric(length(Y))
+      loglik[Y == 0] <- pnorm(xb0, lower.tail=FALSE, log.p=TRUE)
+      loglik[Y == 1] <- pnorm(xb1, lower.tail=TRUE, log.p=TRUE)
+      ##
+      f0 <- dnorm(xb0)
+      f1 <- dnorm(xb1)
+      F0 <- pnorm(xb0, lower.tail=FALSE)
+      F1 <- pnorm(xb1, lower.tail=TRUE)
+      gradlik <- matrix(0, length(Y), length(beta))
+      theta3 <- ifelse(xb1 < -nCutoff, -xb1,
+                       ifelse(xb1 > nCutoff, f1, f1/F1))
+      theta4 <- -ifelse(xb0 < -nCutoff, f0,
+                       ifelse(xb0 > nCutoff, xb0, f0/F0))
+      gradlik[Y == 1,] <- theta3*x1
+      gradlik[Y == 0,] <- theta4*x0
+      ##
+      theta5 <- -ifelse(xb1 < -nCutoff, 1,
+                        ifelse(xb1 > nCutoff, xb1*f1 + f1^2,
+                               xb1*f1/F1 + f1^2/F1^2))
+      theta6 <- -ifelse(xb0 < -nCutoff, f0^2 - xb1*f0,
+                        ifelse(xb0 > nCutoff, 1,
+                               f0^2/F0^2 - xb0*f0/F0))
+      hesslik <- t( x1) %*% ( x1 * theta5) + t( x0) %*% ( x0 * theta6)
                     # note that df/db' = -f (x'b) x'
+      ## The following code can be used to compute Fisher Scoring approximation for the Hessian
+      ## Note, it may be invertible in case of huge outliers where the Hessian is not.  However,
+      ## the value of those standard errors are negligible anyway, so we do not use it by default.
+      ## 
+      ## theta7 <- -ifelse(xb1 < -nCutoff, -xb1*f1,
+      ##                   ifelse(xb1 > nCutoff, xb1*f1,
+      ##                          f1^2/F1/pnorm(xb1, lower.tail=FALSE)))
+      ## theta8 <- -ifelse(xb0 < -nCutoff, -xb0*f0,
+      ##                   ifelse(xb0 > nCutoff, xb0*f0,
+      ##                          f0^2/F0/pnorm(xb0, lower.tail=TRUE)))
+      ## FScore <- t( x1) %*% ( x1 * theta7) + t( x0) %*% ( x0 * theta8)
+      attr(loglik, "gradient") <- gradlik
+      attr(loglik, "hessian") <- hesslik
+      loglik
    }
-   cl <- match.call()
-   mf <- match.call(expand.dots = FALSE)
-   m <- match(c("formula", "data", "subset", "weights", "na.action",
-                "offset"), names(mf), 0)
-   mf <- mf[c(1, m)]
-   mf$drop.unused.levels <- TRUE
-   mf[[1]] <- as.name("model.frame")
-   eval(data)
-                                        # we need to eval() data here, otherwise the evaluation of the
-                                        # model frame will be wrong if called from inside a function
-                                        # inside a function (sorry, I can't understand it either :-(
-   mf <- eval(mf, envir=parent.frame())
-   if (method == "model.frame")
-       return(mf)
-   else if (method != "ML")
-       warning("method = ", method, " is not supported. Using \"ML\"")
-   mt <- attr(mf, "terms")
-   Y <- model.response( mf )
-   YLevels <- levels( as.factor( Y ) )
-   if( length( YLevels ) != 2 ) {
-      stop( "the left hand side of the 'formula' has to contain",
-         " exactly two levels (e.g. FALSE and TRUE)" )
-   }
-   Y <- as.integer(Y == YLevels[ 2 ])
-                                        # selection will be kept as integer internally
-   X <- model.matrix(mt, mf, contrasts)
-   nParam <- ncol( X)
-   nObs <- length( Y)
-   N1 <- sum(Y == 1)
-   N0 <- nObs - N1
-   if(N0 == 0 | N1 == 0) {
-      stop("No variance in the response variable")
-   }
-   x0 <- X[Y==0,,drop=FALSE]
-   x1 <- X[Y==1,,drop=FALSE]
-   if(is.null(start)) {
-      start <- rep( 0, nParam)
-   }
-   if(is.null(names(start))) {
-      names(start) <- dimnames(X)[[2]]
-   }
-   ## Main estimation
-   estimation <- maxLik(loglik, gradlik, hesslik, start,
-                        method="Newton-Raphson", ...)
-   ## compare.derivatives(gradlik, hesslik, t0=start)
-                                        #
-   ## Likelihood ratio test: H0 -- all the coefficients, except intercept
-   ## are zeros.  ML estimate for this model is qnorm(N1/nObs)
-   ll.bar <- loglik(c(qnorm(N1/nObs), rep(0, nParam-1)))
-   LRT <- 2*(estimation$maximum - ll.bar)
-                                        #
-   result <- c(estimation,
-               LRT=list(list(LRT=LRT, df=nParam-1)),
-                                        # there are df-1 constraints
-               param=list(list(nParam=nParam,nObs=nObs, N1=N1, N0=N0,
-                               levels=YLevels)),
-                           # Probit: estimates for Y == levels[2] as opposite of levels[1]
-               df=nObs - nParam,
-               call=cl,
-               terms=mt,
-               x=switch(x, "1"=list(X), "0"=NULL),
-               y=switch(y, "1"=list(Y), "0"=NULL),
-               model=switch(model, "1"=list(mf), "0"=NULL))
-   class(result) <- c("probit", class(estimation))
+   nCutoff <- 5
+   probitFrame <- sys.nframe()
+                           # the binaryChoice would create a few necessary variables in the next
+                           # frame
+   result <- binaryChoice(formula, ..., userLogLik=loglik)
+   cl <- class(result)
+   result <- c(result,
+               family=list(binomial(link="probit"))
+                           # NA action and the removed cases
+               )
+   class(result) <- c("probit", cl)
    result
 }

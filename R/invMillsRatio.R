@@ -38,7 +38,7 @@ invMillsRatio <- function( x, all = FALSE ) {
       if( vglmLink == "identity" ) {
          rho <- x@predictors[ , 3 ]
       } else if( vglmLink == "rhobit" ){
-         rho <- rhobit( x@predictors[ , 3 ], inv = TRUE )
+         rho <- rhobit( x@predictors[ , 3 ], inverse = TRUE )
       } else {
          stop( "the bivariate probit (binom2.rho) must be either estimated",
             " with link 'rhobit' or 'identity'" )

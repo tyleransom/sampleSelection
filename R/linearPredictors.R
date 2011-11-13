@@ -3,5 +3,7 @@ linearPredictors <- function( x, ... ) {
 }
 
 linearPredictors.probit <- function( x, ... ) {
-   model.matrix(x) %*% x$estimate
+   mm <- naresid(na.action(x), model.matrix(x))
+                           # naresid works (for now).  Should we keep it or replace it?
+   mm %*% x$estimate
 }

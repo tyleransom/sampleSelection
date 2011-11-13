@@ -6,6 +6,9 @@
 \description{
   This is the frontend for estimating Heckman-style selection models either with
   one or two outcomes (also known as generalized tobit models).
+
+  For model specification and more details, see Henningsen and Toomet
+  (2008) and the included vignette \dQuote{Sample Selection Models}.
 }
 
 \usage{
@@ -181,6 +184,11 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
   Asymetric covariance matrices of two-stage probit and two-stage tobit
   methods for simultaneous equations models with selectivity.
   \emph{Econometrica}, 48, p. 491-503.
+
+  Toomet, O. and A. Henningsen, (2008)
+  Sample Selection Models in R: Package sampleSelection.
+  \emph{Journal of Statistical Software} 27(7),
+  \url{http://www.jstatsoft.org/v27/i07/}
 
   Wooldridge, J. M. (2003)
   \emph{Introductory Econometrics: A Modern Approach, 2e}, Thomson South-Western.

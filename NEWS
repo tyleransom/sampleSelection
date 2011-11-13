@@ -1,8 +1,19 @@
-THIS IS THE CHANGELOG OF THE "maxLik" PACKAGE
+THIS IS THE CHANGELOG OF THE "sampleSelection" PACKAGE
 
 Please note that only the most significant changes are reported here.
 A full ChangeLog is available in the log messages of the SVN repository
 on R-Forge.
+
+
+            CHANGES IN VERSION 0.6-12 (2011-11-13)
+
+* fixed a bug that occurred in the fitted( ..., part = "outcome" ), 
+model.matrix( ..., part = "outcome" ), and model.frame() methods as well as 
+in selection( ..., method = "model.frame" ) if all regressors of the outcome 
+equation are already included in the selection equation. Thanks to Timothée 
+Carayol for reporting this bug!
+
+* fixed partial argument matching in invMillsRatio() and probit()
 
 
             CHANGES IN VERSION 0.6-10
