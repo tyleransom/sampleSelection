@@ -2,7 +2,7 @@
 R version 2.14.0 (2011-10-31)
 Copyright (C) 2011 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
-Platform: i686-pc-linux-gnu (32-bit)
+Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -41,7 +41,7 @@ Attaching package: 'zoo'
 
 The following object(s) are masked from 'package:base':
 
-    as.Date, as.Date.numeric
+    as.Date
 
 > library(mvtnorm)
 > options(digits=6)
@@ -16650,7 +16650,7 @@ attr(,"assign")
 +    method = "ml", mfs = TRUE, mfo = TRUE )
 > mfTestTobit5MlMf <- model.frame( testTobit5MlMf )
 > all.equal( mfTestTobit5Ml, mfTestTobit5MlMf )
-[1] TRUE
+[1] "Attributes: < Length mismatch: comparison on first 2 components >"
 > 
 > # return just the model.frame
 > selection( ys~xs, list( yo1 ~ xo1, yo2 ~ xo2 ), method="model.frame" )
@@ -38154,7 +38154,8 @@ attr(,"assign")
 > testTobit2MlMf <- selection(ys~xs, yo ~xo, method="ml", mfs = TRUE, mfo = TRUE)
 > mfTestTobit2MlMf <- model.frame( testTobit2MlMf )
 > all.equal( mfTestTobit2Ml, mfTestTobit2MlMf )
-[1] TRUE
+[1] "Attributes: < Length mismatch: comparison on first 2 components >"
+>                            # attributes (terms) differ here, I don't exactly know how to improve that
 > 
 > # return just the model.frame
 > selection( ys~xs, yo ~xo, method = "model.frame" )
@@ -45720,4 +45721,9 @@ rho    -0.8275     0.0393   -21.1  <2e-16 ***
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 --------------------------------------------
 >                            # Note: should be only 1 iteration
+> 
+> ## Chris Hane: 'fitted' method and a little complex models
+> data <- cbind(data, xF=rbinom(nrow(data), 1, 0.5))
+> testComplex <- selection(ys~xs + factor(xF), yo ~xo, data=data, method="ml")
+> f <- fitted(testComplex, "selection")
 > 

@@ -48,6 +48,7 @@ summary.selection <- function(object, ...) {
    s$param    <- object$param
    s$tobitType <- object$tobitType
    s$method <- object$method
+   s$activePar <- activePar(object)
    class( s ) <- c( "summary.selection", class( s ) )
    return( s )
 }
@@ -83,7 +84,7 @@ print.summary.selection <- function(x,
          cat( ": ", x$param$N1, " selection 1 (", x$param$levels[1], ") and ",
             x$param$N2, " selection 2 (", x$param$levels[2], ")\n", sep = "" )
       }
-      cat( x$param$nParam, "free parameters" )
+      cat(sum(x$activePar), "free parameters" )
       cat( " (df = ", x$param$df, ")\n", sep="")
       if(part == "full") {
          cat("Probit selection equation:\n")

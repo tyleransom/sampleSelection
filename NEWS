@@ -4,6 +4,10 @@ Please note that only the most significant changes are reported here.
 A full ChangeLog is available in the log messages of the SVN repository
 on R-Forge.
 
+	CHANGES IN VERSION 0.7-0 (2012-03-04)
+
+* Binary-outcome selection models
+
 
             CHANGES IN VERSION 0.6-12 (2011-11-13)
 

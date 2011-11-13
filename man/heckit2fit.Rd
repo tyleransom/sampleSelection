@@ -14,7 +14,8 @@
 }
 
 \usage{
-heckit2fit( selection, outcome, data, inst = NULL, print.level = 0, ... )
+heckit2fit( selection, outcome, data=sys.frame(sys.parent()),
+   inst = NULL, print.level = 0)
 
 heckit5fit( selection, outcome1, outcome2, data = sys.frame(sys.parent()),
    ys = FALSE, yo = FALSE, xs = FALSE, xo = FALSE, mfs = FALSE,

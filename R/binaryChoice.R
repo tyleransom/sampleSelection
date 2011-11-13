@@ -10,6 +10,7 @@ binaryChoice <- function(formula, subset, na.action,
                          logCdfLower=NULL, logCdfUpper=NULL,
                          pdf,logPdf=NULL,
                          gradPdf,
+                         maxMethod="Newton-Raphson",
                    ...) {
    ## formula: model formula, response must be either a logical or numeric vector containing only 0-s and
    ##          1-s
@@ -100,7 +101,8 @@ binaryChoice <- function(formula, subset, na.action,
    ## Binary choice specific stuff
    cl <- match.call(call=sys.call(sys.parent()))
                            # documentation claims 'sys.call(sys.parent())' is the default
-                           # value for 'call'.  But in this way it works !?
+                           # value for 'call'.  But in this way it works -- oterwise we just see the
+                           # values for the last (passed through) arguments, not their original values
    mf <- match.call(expand.dots = FALSE)
    m <- match(c("formula", "data", "subset", "weights", "na.action",
                 "offset"), names(mf), 0)
@@ -152,11 +154,11 @@ binaryChoice <- function(formula, subset, na.action,
    ## Main estimation
    if(is.null(userLogLik)) {
       estimation <- maxLik(genericLoglik, start=start,
-                           method="Newton-Raphson", ...)
+                           method=maxMethod, ...)
    }
    else {
       estimation <- maxLik(userLogLik, start=start,
-                           method="Newton-Raphson", ...)
+                           method=maxMethod, ...)
    }
    ## compare.derivatives(gradlik, hesslik, t0=start)
                                         #
@@ -165,7 +167,7 @@ binaryChoice <- function(formula, subset, na.action,
    ll.bar <- N0*log(N0) + N1*log(N1) - (N0 + N1)*log(N0 + N1)
                                         # log-likelihood of the H0
    LRT <- 2*(logLik(estimation) - ll.bar)
-                                        # note: this assumes that the model includes constant
+                                        # note: this assumes that the model includes the constant
    result <- c(estimation,
                LRT=list(list(LRT=LRT, df=nParam-1)),
                                         # there are df-1 constraints

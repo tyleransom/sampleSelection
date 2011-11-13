@@ -17,7 +17,8 @@
       (e.g. \code{\link{model.frame}} or \code{\link{model.frame.binaryChoice}}).}
 }
 \value{
-   A data.frame containing all variables used for the estimation.
+   A data.frame containing all variables used for the estimation.  The
+   \dQuote{terms} attribute contains the terms for the selection equation.
 }
 
 \author{Arne Henningsen}

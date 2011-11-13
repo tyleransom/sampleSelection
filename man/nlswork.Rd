@@ -19,25 +19,25 @@
    \describe{
       \item{idcode}{NLS ID.}
       \item{year}{interview year.}
-      \item{birth\_yr}{birth year.}
+      \item{birth_yr}{birth year.}
       \item{age}{age in current year.}
       \item{race}{1=white, 2=black, 3=other.}
       \item{msp}{1 if married, spouse present.}
-      \item{nev\_mar}{1 if never married.}
+      \item{nev_mar}{1 if never married.}
       \item{grade}{current grade completed.}
       \item{collgrad}{1 if college graduate.}
-      \item{not\_smsa}{1 if not SMSA.}
-      \item{c\_city}{1 if central city.}
+      \item{not_smsa}{1 if not SMSA.}
+      \item{c_city}{1 if central city.}
       \item{south}{1 if south.}
-      \item{ind\_code}{industry of employment.}
-      \item{occ\_code}{occupation.}
+      \item{ind_code}{industry of employment.}
+      \item{occ_code}{occupation.}
       \item{union}{1 if union.}
-      \item{wks\_ue}{weeks unemployed last year.}
-      \item{ttl\_exp}{total work experience.}
+      \item{wks_ue}{weeks unemployed last year.}
+      \item{ttl_exp}{total work experience.}
       \item{tenure}{job tenure, in years.}
       \item{hours}{usual hours worked.}
-      \item{wks\_work}{weeks worked last year.}
-      \item{ln\_wage}{ln(wage/GNP deflator).}
+      \item{wks_work}{weeks worked last year.}
+      \item{ln_wage}{ln(wage/GNP deflator).}
    }
 }
 

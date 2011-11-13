@@ -15,6 +15,7 @@ userLogLik=NULL,
              cdfLower, cdfUpper=function(x) 1 - cdfLower(x),
 logCdfLower=NULL, logCdfUpper=NULL,
 pdf, logPdf=NULL, gradPdf,
+maxMethod="Newton-Raphson",
              ... )
 }
 \arguments{
@@ -58,6 +59,10 @@ pdf, logPdf=NULL, gradPdf,
     functions.  Providing these may improve precision in extreme tail.
     If not provided, simply logs are takes of the corresponding non-log
     values.}
+  \item{maxMethod}{character, a maximisation method supported by
+    \code{\link[maxLik]{maxLik}}.  This is only useful if using
+    a user-supplied likelihood function.
+  }
   \item{\dots}{further arguments for \code{binaryChoice} and
     \code{\link[maxLik]{maxLik}}.
   }

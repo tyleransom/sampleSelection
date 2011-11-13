@@ -1,0 +1,94 @@
+
+R version 2.14.1 (2011-12-22)
+Copyright (C) 2011 The R Foundation for Statistical Computing
+ISBN 3-900051-07-0
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> 
+> options(digits=5)
+> 
+> ## Leeman Lucas (and many others): binary outcome
+> 
+> set.seed(0)
+> N <- 500
+> rho <- 0.7
+> library(mvtnorm)
+> eps <- rmvnorm(N, c(0,0), matrix(c(1,rho,rho,1), 2, 2))
+> xs <- runif(N)
+> ysX <- 3*xs + eps[,1]
+> ys <- ysX > 0
+> xo <- runif(N)
+> yoX <- -1 + 2*xo + eps[,2]
+> yo <- factor((yoX > 0)*(ys > 0))
+>                            # binary outcome, only observable if ys>0
+> print(table(ys, yo, exclude=NULL))
+       yo
+ys        0   1 <NA>
+  FALSE  84   0    0
+  TRUE  204 212    0
+  <NA>    0   0    0
+> library(sampleSelection)
+Loading required package: maxLik
+Loading required package: miscTools
+Loading required package: systemfit
+Loading required package: Matrix
+Loading required package: lattice
+
+Attaching package: 'Matrix'
+
+The following object(s) are masked from 'package:base':
+
+    det
+
+Loading required package: car
+Loading required package: MASS
+Loading required package: nnet
+Loading required package: survival
+Loading required package: splines
+Loading required package: lmtest
+Loading required package: zoo
+
+Attaching package: 'zoo'
+
+The following object(s) are masked from 'package:base':
+
+    as.Date
+
+> ss <- selection(ys~xs, yo ~xo)
+> print(summary(ss))
+--------------------------------------------
+Tobit 2 model (sample selection model)
+Maximum Likelihood estimation
+BHHH maximisation, 20 iterations
+Return code 2: successive function values within tolerance limit
+Log-Likelihood: -423.78 
+500 observations (84 censored and 416 observed)
+5 free parameters (df = 495)
+Probit selection equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)   -0.152      0.133   -1.15    0.25    
+xs             3.025      0.377    8.02 1.1e-15 ***
+Outcome equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)   -0.973      0.126   -7.74 1.0e-14 ***
+xo             1.768      0.237    7.45 9.2e-14 ***
+Error terms:
+    Estimate Std. error t value Pr(> t)    
+rho    0.631      0.181    3.49 0.00049 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+--------------------------------------------
+> 
+> 

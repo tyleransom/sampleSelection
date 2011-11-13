@@ -1,5 +1,4 @@
 model.matrix.selection <- function( object, part = "outcome", ... ) {
-
    if( !( part %in% c( "outcome", "selection" ) ) ) {
       stop( "argument 'part' must be either 'outcome' or 'selection'" )
    }

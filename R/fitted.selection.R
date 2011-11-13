@@ -27,12 +27,12 @@ fitted.selection <- function( object, part = "outcome", ... ) {
    # maximum likelihood estimation
    } else if( object$method == "ml" ) {
       if( part == "selection" ) {
-         result <- drop( pnorm( model.matrix( object, part = "selection" ) %*%
-            coef( object )[ object$param$index$betaS ] ) )
+         modelMatrix <- model.matrix( object, part = "selection" )
+         result <- drop( pnorm(modelMatrix %*% coef( object )[ object$param$index$betaS ] ) )
       } else if( part == "outcome" ) {
          if( object$tobitType == 2 ) {
-            result <- drop( model.matrix( object ) %*%
-               coef( object )[ object$param$index$betaO ] )
+            modelMatrix <- model.matrix( object )
+            result <- drop(modelMatrix %*% coef( object )[ object$param$index$betaO ] )
          } else if( object$tobitType == 5 ) {
             mm <- model.matrix( object )
             response <- model.frame( object )[ , 1 ]

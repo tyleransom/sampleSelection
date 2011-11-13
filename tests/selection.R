@@ -164,6 +164,7 @@ all.equal( mmoTestTobit2Ml, mmoTestTobit2MlMm )
 testTobit2MlMf <- selection(ys~xs, yo ~xo, method="ml", mfs = TRUE, mfo = TRUE)
 mfTestTobit2MlMf <- model.frame( testTobit2MlMf )
 all.equal( mfTestTobit2Ml, mfTestTobit2MlMf )
+                           # attributes (terms) differ here, I don't exactly know how to improve that
 
 # return just the model.frame
 selection( ys~xs, yo ~xo, method = "model.frame" )
@@ -210,3 +211,8 @@ init <- coef(testTobit2ML)
 testTobit2ML <- selection(ys~xs, yo ~xo, data=data, method="ml", start=init)
 print(summary(testTobit2ML))
                            # Note: should be only 1 iteration
+
+## Chris Hane: 'fitted' method and a little complex models
+data <- cbind(data, xF=rbinom(nrow(data), 1, 0.5))
+testComplex <- selection(ys~xs + factor(xF), yo ~xo, data=data, method="ml")
+f <- fitted(testComplex, "selection")
