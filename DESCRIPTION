@@ -1,16 +1,16 @@
 Package: sampleSelection
-Version: 0.7-0
-Date: 2011/11/13
+Version: 0.7-2
+Date: 2012/08/14
 Title: Sample Selection Models
-Author: Arne Henningsen <arne.henningsen@googlemail.com>, Ott Toomet
+Author: Arne Henningsen <arne.henningsen@gmail.com>, Ott Toomet
         <otoomet@ut.ee>
-Maintainer: Arne Henningsen <arne.henningsen@googlemail.com>
+Maintainer: Arne Henningsen <arne.henningsen@gmail.com>
 Depends: R (>= 2.10), maxLik (>= 0.7-3), systemfit (>= 1.0-0)
 Imports: miscTools (>= 0.6-3)
 Suggests: VGAM, MASS, mvtnorm, plm
 Description: Estimation of Sample Selection Models
 License: GPL (>= 2)
 URL: http://www.sampleSelection.org
-Packaged: 2012-03-04 19:02:43 UTC; siim
+Packaged: 2012-08-14 13:28:33 UTC; arne
 Repository: CRAN
-Date/Publication: 2012-03-05 07:20:18
+Date/Publication: 2012-08-14 13:59:45

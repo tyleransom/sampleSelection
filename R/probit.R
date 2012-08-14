@@ -32,24 +32,18 @@ probit <- function(formula, ...) {
       loglik[Y == 0] <- pnorm(xb0, lower.tail=FALSE, log.p=TRUE)
       loglik[Y == 1] <- pnorm(xb1, lower.tail=TRUE, log.p=TRUE)
       ##
-      f0 <- dnorm(xb0)
-      f1 <- dnorm(xb1)
-      F0 <- pnorm(xb0, lower.tail=FALSE)
-      F1 <- pnorm(xb1, lower.tail=TRUE)
+      f0 <- dnorm(xb0, log = TRUE)
+      f1 <- dnorm(xb1, log = TRUE)
+      F0 <- pnorm(xb0, lower.tail=FALSE, log.p = TRUE)
+      F1 <- pnorm(xb1, lower.tail=TRUE, log.p = TRUE)
       gradlik <- matrix(0, length(Y), length(beta))
-      theta3 <- ifelse(xb1 < -nCutoff, -xb1,
-                       ifelse(xb1 > nCutoff, f1, f1/F1))
-      theta4 <- -ifelse(xb0 < -nCutoff, f0,
-                       ifelse(xb0 > nCutoff, xb0, f0/F0))
+      theta3 <- exp( f1 - F1 )
+      theta4 <- - exp( f0 - F0 )
       gradlik[Y == 1,] <- theta3*x1
       gradlik[Y == 0,] <- theta4*x0
       ##
-      theta5 <- -ifelse(xb1 < -nCutoff, 1,
-                        ifelse(xb1 > nCutoff, xb1*f1 + f1^2,
-                               xb1*f1/F1 + f1^2/F1^2))
-      theta6 <- -ifelse(xb0 < -nCutoff, f0^2 - xb1*f0,
-                        ifelse(xb0 > nCutoff, 1,
-                               f0^2/F0^2 - xb0*f0/F0))
+      theta5 <- - xb1 * exp( f1 - F1 ) - exp( f1 - F1 )^2
+      theta6 <- - exp( f0 - F0 )^2 + xb0 * exp( f0 - F0 )
       hesslik <- t( x1) %*% ( x1 * theta5) + t( x0) %*% ( x0 * theta6)
                     # note that df/db' = -f (x'b) x'
       ## The following code can be used to compute Fisher Scoring approximation for the Hessian
@@ -67,7 +61,7 @@ probit <- function(formula, ...) {
       attr(loglik, "hessian") <- hesslik
       loglik
    }
-   nCutoff <- 5
+   # nCutoff <- 5
    probitFrame <- sys.nframe()
                            # the binaryChoice would create a few necessary variables in the next
                            # frame

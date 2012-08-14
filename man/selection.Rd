@@ -6,7 +6,7 @@
 \description{
   This is the frontend for estimating Heckman-style selection models either with
   one or two outcomes (also known as generalized tobit models).  It
-  supports binary outcomes in one outcome equation case.
+  supports binary outcomes in the single-outcome case.
 
   For model specification and more details, see Henningsen and Toomet
   (2008) and the included vignette \dQuote{Sample Selection Models}.
@@ -60,7 +60,7 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
    For tobit-2 (sample selection) models,
    only those observations are included in the second step estimation
    (argument 'outcome'), where this variable equals the second element
-   of its levels (e.g. 'TRUE' or '1').
+   of its levels (e.g. 'TRUE' or '1').  
 
    For tobit-5 (switching regression) models,
    in the second step the first outcome equation
@@ -84,7 +84,9 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
   restrictions) are not necessary.  However, if no instruments are
   supplied, the results are based solely on the assumption on
   multivariate normality.  This may or may not be an appropriate
-  assumption for a particular problem.
+  assumption for a particular problem.  Note also that standard errors
+  tend to be large without a strong
+  exclusion restriction.
 
   The (generic) function 'coef' ('\code{\link{coef.selection}}')
   can be used to extract the estimated coefficients.

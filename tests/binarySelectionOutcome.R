@@ -20,3 +20,23 @@ library(sampleSelection)
 ss <- selection(ys~xs, yo ~xo)
 print(summary(ss))
 
+# binary outcome NA if unobserved
+yo[ !ys ] <- NA
+print(table(ys, yo, exclude=NULL))
+ssN <- selection(ys~xs, yo ~xo)
+print(summary(ssN))
+all.equal(ss,ssN)
+
+# binary outcome logical
+yo <- yoX > 0 & ys
+print(table(ys, yo, exclude=NULL))
+ssL <- selection(ys~xs, yo ~xo)
+print(summary(ssL))
+all.equal(ss,ssL)
+
+# binary outcome logical and NA if unobserved
+yo[ !ys ] <- NA
+print(table(ys, yo, exclude=NULL))
+ssLN <- selection(ys~xs, yo ~xo)
+print(summary(ssLN))
+all.equal(ssL,ssLN)

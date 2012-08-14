@@ -1,6 +1,6 @@
 
-R version 2.14.1 (2011-12-22)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.0 (2012-03-30)
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -45,18 +45,9 @@ Loading required package: miscTools
 Loading required package: systemfit
 Loading required package: Matrix
 Loading required package: lattice
-
-Attaching package: 'Matrix'
-
-The following object(s) are masked from 'package:base':
-
-    det
-
 Loading required package: car
 Loading required package: MASS
 Loading required package: nnet
-Loading required package: survival
-Loading required package: splines
 Loading required package: lmtest
 Loading required package: zoo
 
@@ -64,14 +55,14 @@ Attaching package: 'zoo'
 
 The following object(s) are masked from 'package:base':
 
-    as.Date
+    as.Date, as.Date.numeric
 
 > ss <- selection(ys~xs, yo ~xo)
 > print(summary(ss))
 --------------------------------------------
 Tobit 2 model (sample selection model)
 Maximum Likelihood estimation
-BHHH maximisation, 20 iterations
+BHHH maximisation, 9 iterations
 Return code 2: successive function values within tolerance limit
 Log-Likelihood: -423.78 
 500 observations (84 censored and 416 observed)
@@ -91,4 +82,115 @@ rho    0.631      0.181    3.49 0.00049 ***
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
 --------------------------------------------
 > 
+> # binary outcome NA if unobserved
+> yo[ !ys ] <- NA
+> print(table(ys, yo, exclude=NULL))
+       yo
+ys        0   1 <NA>
+  FALSE   0   0   84
+  TRUE  204 212    0
+  <NA>    0   0    0
+> ssN <- selection(ys~xs, yo ~xo)
+> print(summary(ssN))
+--------------------------------------------
+Tobit 2 model (sample selection model)
+Maximum Likelihood estimation
+BHHH maximisation, 9 iterations
+Return code 2: successive function values within tolerance limit
+Log-Likelihood: -423.78 
+500 observations (84 censored and 416 observed)
+5 free parameters (df = 495)
+Probit selection equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)   -0.152      0.133   -1.15    0.25    
+xs             3.025      0.377    8.02 1.1e-15 ***
+Outcome equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)   -0.973      0.126   -7.74 1.0e-14 ***
+xo             1.768      0.237    7.45 9.2e-14 ***
+Error terms:
+    Estimate Std. error t value Pr(> t)    
+rho    0.631      0.181    3.49 0.00049 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+--------------------------------------------
+> all.equal(ss,ssN)
+[1] TRUE
 > 
+> # binary outcome logical
+> yo <- yoX > 0 & ys
+> print(table(ys, yo, exclude=NULL))
+       yo
+ys      FALSE TRUE <NA>
+  FALSE    84    0    0
+  TRUE    204  212    0
+  <NA>      0    0    0
+> ssL <- selection(ys~xs, yo ~xo)
+> print(summary(ssL))
+--------------------------------------------
+Tobit 2 model (sample selection model)
+Maximum Likelihood estimation
+BHHH maximisation, 9 iterations
+Return code 2: successive function values within tolerance limit
+Log-Likelihood: -423.78 
+500 observations (84 censored and 416 observed)
+5 free parameters (df = 495)
+Probit selection equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)   -0.152      0.133   -1.15    0.25    
+xs             3.025      0.377    8.02 1.1e-15 ***
+Outcome equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)   -0.973      0.126   -7.74 1.0e-14 ***
+xo             1.768      0.237    7.45 9.2e-14 ***
+Error terms:
+    Estimate Std. error t value Pr(> t)    
+rho    0.631      0.181    3.49 0.00049 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+--------------------------------------------
+> all.equal(ss,ssL)
+[1] "Component 14: Component 10: Component 12: Attributes: < Component 2: Modes: numeric, character >"              
+[2] "Component 14: Component 10: Component 12: Attributes: < Component 2: target is numeric, current is character >"
+[3] "Component 14: Component 10: Component 12: Component 1: Modes: numeric, logical"                                
+[4] "Component 14: Component 10: Component 12: Component 1: names for current but not for target"                   
+[5] "Component 14: Component 10: Component 12: Component 1: target is numeric, current is logical"                  
+> 
+> # binary outcome logical and NA if unobserved
+> yo[ !ys ] <- NA
+> print(table(ys, yo, exclude=NULL))
+       yo
+ys      FALSE TRUE <NA>
+  FALSE     0    0   84
+  TRUE    204  212    0
+  <NA>      0    0    0
+> ssLN <- selection(ys~xs, yo ~xo)
+> print(summary(ssLN))
+--------------------------------------------
+Tobit 2 model (sample selection model)
+Maximum Likelihood estimation
+BHHH maximisation, 9 iterations
+Return code 2: successive function values within tolerance limit
+Log-Likelihood: -423.78 
+500 observations (84 censored and 416 observed)
+5 free parameters (df = 495)
+Probit selection equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)   -0.152      0.133   -1.15    0.25    
+xs             3.025      0.377    8.02 1.1e-15 ***
+Outcome equation:
+            Estimate Std. error t value Pr(> t)    
+(Intercept)   -0.973      0.126   -7.74 1.0e-14 ***
+xo             1.768      0.237    7.45 9.2e-14 ***
+Error terms:
+    Estimate Std. error t value Pr(> t)    
+rho    0.631      0.181    3.49 0.00049 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+--------------------------------------------
+> all.equal(ssL,ssLN)
+[1] TRUE
+> 
+> proc.time()
+   user  system elapsed 
+ 11.404   0.092  11.533 

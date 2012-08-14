@@ -92,7 +92,7 @@ heckit2fit <- function( selection, outcome,
    NXO <- ncol(XO)
    YO <- model.response(mfO)
    if(is.factor(YO))
-       YO <- as.integer(YO)
+       YO <- as.numeric(as.character(YO))
    ## Remove NA observations
    badRow <- badRow | (is.na(YO) & (!is.na(YS) & YS == 1))
    badRow <- badRow | (apply(XO, 1, function(v) any(is.na(v))) & (!is.na(YS) & YS == 1))

@@ -1,6 +1,6 @@
 
-R version 2.14.0 (2011-10-31)
-Copyright (C) 2011 The R Foundation for Statistical Computing
+R version 2.15.1 (2012-06-22) -- "Roasted Marshmallows"
+Copyright (C) 2012 The R Foundation for Statistical Computing
 ISBN 3-900051-07-0
 Platform: x86_64-pc-linux-gnu (64-bit)
 
@@ -22,18 +22,9 @@ Loading required package: miscTools
 Loading required package: systemfit
 Loading required package: Matrix
 Loading required package: lattice
-
-Attaching package: 'Matrix'
-
-The following object(s) are masked from 'package:base':
-
-    det
-
 Loading required package: car
 Loading required package: MASS
 Loading required package: nnet
-Loading required package: survival
-Loading required package: splines
 Loading required package: lmtest
 Loading required package: zoo
 
@@ -41,7 +32,7 @@ Attaching package: 'zoo'
 
 The following object(s) are masked from 'package:base':
 
-    as.Date
+    as.Date, as.Date.numeric
 
 > library(mvtnorm)
 > options(digits=6)
@@ -18211,6 +18202,83 @@ Coefficients:
           rho1  O2:(Intercept)          O2:xo2          sigma2            rho2  
         0.9035          0.0709          0.9362          0.9980          0.4722  
 
+> 
+> # with pre-defined list of outcome equations (works since revision 1420)
+> oList <- list( yo1 ~ xo1, yo2 ~ xo2 )
+> selection( ys ~ xs, oList, method = "2step" )
+
+Call:
+ selection(selection = ys ~ xs, outcome = oList, method = "2step") 
+
+Coefficients:
+ S:(Intercept)            S:xs  O1:(Intercept)          O1:xo1  invMillsRatio1  
+       0.07977         0.78112         0.61886         0.99753        -1.51527  
+        sigma1            rho1  O2:(Intercept)          O2:xo2  invMillsRatio2  
+       1.29259         0.99000        -0.00343         0.92760         0.61858  
+        sigma2            rho2  
+       0.99291         0.62300  
+
+> selection( factor( ys ) ~ xs, oList, method = "2step" )
+
+Call:
+ selection(selection = factor(ys) ~ xs, outcome = oList, method = "2step") 
+
+Coefficients:
+ S:(Intercept)            S:xs  O1:(Intercept)          O1:xo1  invMillsRatio1  
+       0.07977         0.78112         0.61886         0.99753        -1.51527  
+        sigma1            rho1  O2:(Intercept)          O2:xo2  invMillsRatio2  
+       1.29259         0.99000        -0.00343         0.92760         0.61858  
+        sigma2            rho2  
+       0.99291         0.62300  
+
+> selection( factor( ys, labels = c( "no", "yes" ) ) ~ xs, oList, method = "2step" )
+
+Call:
+ selection(selection = factor(ys, labels = c("no", "yes")) ~ xs,      outcome = oList, method = "2step") 
+
+Coefficients:
+ S:(Intercept)            S:xs  O1:(Intercept)          O1:xo1  invMillsRatio1  
+       0.07977         0.78112         0.61886         0.99753        -1.51527  
+        sigma1            rho1  O2:(Intercept)          O2:xo2  invMillsRatio2  
+       1.29259         0.99000        -0.00343         0.92760         0.61858  
+        sigma2            rho2  
+       0.99291         0.62300  
+
+> 
+> selection( ys ~ xs, oList )
+
+Call:
+ selection(selection = ys ~ xs, outcome = oList) 
+
+Coefficients:
+ S:(Intercept)            S:xs  O1:(Intercept)          O1:xo1          sigma1  
+        0.0021          0.9559          0.0712          0.9870          1.1214  
+          rho1  O2:(Intercept)          O2:xo2          sigma2            rho2  
+        0.9035          0.0709          0.9362          0.9980          0.4722  
+
+> selection( factor( ys ) ~ xs, oList )
+
+Call:
+ selection(selection = factor(ys) ~ xs, outcome = oList) 
+
+Coefficients:
+ S:(Intercept)            S:xs  O1:(Intercept)          O1:xo1          sigma1  
+        0.0021          0.9559          0.0712          0.9870          1.1214  
+          rho1  O2:(Intercept)          O2:xo2          sigma2            rho2  
+        0.9035          0.0709          0.9362          0.9980          0.4722  
+
+> selection( factor( ys, labels = c( "no", "yes" ) ) ~ xs, oList )
+
+Call:
+ selection(selection = factor(ys, labels = c("no", "yes")) ~ xs,      outcome = oList) 
+
+Coefficients:
+ S:(Intercept)            S:xs  O1:(Intercept)          O1:xo1          sigma1  
+        0.0021          0.9559          0.0712          0.9870          1.1214  
+          rho1  O2:(Intercept)          O2:xo2          sigma2            rho2  
+        0.9035          0.0709          0.9362          0.9980          0.4722  
+
+> 
 > # return just the model.frame
 > selection( ys ~ xs, list( yo1 ~ xo1, yo2 ~ xo2 ), method="model.frame" )
         ys         xs         yo1         xo1         yo2        xo2
@@ -45727,3 +45795,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > testComplex <- selection(ys~xs + factor(xF), yo ~xo, data=data, method="ml")
 > f <- fitted(testComplex, "selection")
 > 
+> proc.time()
+   user  system elapsed 
+ 10.184   0.432  10.616 

@@ -51,3 +51,14 @@ y[1] <- y[4] <- NA
 m <- probit(y ~ x, na.action = na.exclude)
 length(linearPredictors(m))
                            # should be 20
+
+# example, where the "cutoff" in the log likelihood function is used
+# (inspired by an example from Jon K. Peck)
+set.seed( 123 )
+nObs <- 1000
+dta2 <- data.frame( id = c( 1:nObs ) )
+for( i in 1:3 ) {
+   dta2[[ paste( "x", i, sep = "" ) ]] <- rnorm( nObs, 5, 3 )
+}
+dta2$y <- with( dta2, -5.5 + 0.25 * x1 + 0.6 * x2 + 0.85 * x3 + rnorm( nObs ) ) > 0
+p2 <- probit( y ~ x1 + x2 + x3, data=dta2 )

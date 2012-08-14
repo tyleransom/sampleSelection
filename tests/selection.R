@@ -88,6 +88,17 @@ selection( ys ~ xs, list( yo1 ~ xo1, yo2 ~ xo2 ) )
 selection( factor( ys ) ~ xs, list( yo1 ~ xo1, yo2 ~ xo2 ) )
 selection( factor( ys, labels = c( "no", "yes" ) ) ~ xs,
    list( yo1 ~ xo1, yo2 ~ xo2 ) )
+
+# with pre-defined list of outcome equations (works since revision 1420)
+oList <- list( yo1 ~ xo1, yo2 ~ xo2 )
+selection( ys ~ xs, oList, method = "2step" )
+selection( factor( ys ) ~ xs, oList, method = "2step" )
+selection( factor( ys, labels = c( "no", "yes" ) ) ~ xs, oList, method = "2step" )
+
+selection( ys ~ xs, oList )
+selection( factor( ys ) ~ xs, oList )
+selection( factor( ys, labels = c( "no", "yes" ) ) ~ xs, oList )
+
 # return just the model.frame
 selection( ys ~ xs, list( yo1 ~ xo1, yo2 ~ xo2 ), method="model.frame" )
 selection( factor( ys ) ~ xs, list( yo1 ~ xo1, yo2 ~ xo2 ), method="model.frame" )

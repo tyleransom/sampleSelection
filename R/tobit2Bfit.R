@@ -57,9 +57,10 @@ tobit2Bfit <- function(YS, XS, YO, XO, start,
                   function(x) pmvnorm(lower=x, corr=Sigma))
       lik[i11] <- f2
       loglik[i11] <- log(f2)
-      if(is.null(attr(beta, "grad")))
-          return(loglik)
       ## --- gradient ---
+      ## The d loglik/d rho was taken from Henry Nyberg "A Bivariate Autoregressive Probit Model:
+      ##   Predicting U.S. Business Cycle and Growth Rate Cycle Recessions",
+      ##   Helsinki University working paper 272 (2009)
       grad <- matrix(0, nObs, nParam)
       r <- sqrt(1 - rho^2)
       ## YS == 0, YO == 0
@@ -71,6 +72,10 @@ tobit2Bfit <- function(YS, XS, YO, XO, start,
       A <- dnorm(XO10.b)
       B <- A*pnorm((XS10.b - rho*XO10.b)/r)
       grad[i10,ibetaO] <- -XO[i10,]*B/lik[i10]
+      locmat <- -cbind(XS10.b, XO10.b)
+      pdf <- apply(locmat, 1,
+                   function(x) dmvnorm(x, c(0,0), Sigma))
+      grad[i10,iRho] <- -pdf/lik[i10]
       ## YS == 1, YO == 1
       A <- dnorm(XS11.b)
       B <- A*pnorm((XO11.b - rho*XS11.b)/r)
@@ -78,25 +83,18 @@ tobit2Bfit <- function(YS, XS, YO, XO, start,
       A <- dnorm(XO11.b)
       B <- A*pnorm((XS11.b - rho*XO11.b)/r)
       grad[i11,ibetaO] <- XO[i11,]*B/lik[i11]
-      ##
-      ## iOut <- seq(length=nObs)
-      ## loglik <- loglik[iOut]
-      ## attr(loglik, "gradientB") <- grad[iOut,,drop=FALSE]
-      ## return(loglik)
-      return(grad)
+      locmat <- -cbind(XS11.b, XO11.b)
+      pdf <- apply(locmat, 1,
+                   function(x) dmvnorm(x, c(0,0), Sigma))
+      grad[i11,iRho] <- pdf/lik[i11]
+      ## loglik <- sum(loglik)
+      ## grad <- colSums(grad)
+      attr(loglik, "gradient") <- grad
+      return(loglik)
    }
-   gradlik <- function(beta) {
-      rho <- beta[iRho]
-      if( ( rho < -1) || ( rho > 1)) return(NA)
-      betaG <- beta
-      attr(betaG, "grad") <- TRUE
-      grad <- loglik(betaG)
-      eps <- 1e-6
-      beta2 <- beta1 <- beta
-      beta2[iRho] <- beta2[iRho] + eps/2
-      beta1[iRho] <- beta1[iRho] - eps/2
-      grad[,iRho] <- (loglik(beta2) - loglik(beta1))/eps
-      grad
+   gradlik <- function(x) {
+      l <- loglik(x)
+      return(attr(l, "gradient"))
    }
     ## ---------------
     NXS <- ncol( XS)
@@ -124,21 +122,12 @@ tobit2Bfit <- function(YS, XS, YO, XO, start,
       cat( "Initial values:\n")
       print(start)
    }
-   ## pre-calculate a few values:
-   XS0 <- XS[YS==0,,drop=FALSE]
-   XS1 <- XS[YS==1,,drop=FALSE]
-   YO[is.na(YO)] <- 0
-   YO1 <- YO[YS==1]
-   XO1 <- XO[YS==1,,drop=FALSE]
-   N0 <- sum(YS==0)
-   N1 <- sum(YS==1)
    ## estimate
    library(mvtnorm)
-   ## compareDerivatives(loglik,
-   ##                    function(x) attr(loglik(x), "gradientB"),
+   ## compareDerivatives(loglik, gradlik,
    ##                    t0=start)
    ## stop()
-   result <- maxLik(loglik, gradlik,
+   result <- maxLik(loglik, 
                     start=start,
                     method=maxMethod,
                     print.level=print.level, ...)
