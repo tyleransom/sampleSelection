@@ -22,16 +22,21 @@
 
 \details{
    If the model was estimated by the 2-step method,
-   the fitted values of an outcome equation are calculated
+   the fitted values of the outcome equation are calculated
    using all regressors of this equation
-   including the inverse Mill's ratios.
+   including the inverse Mill's ratios,
+   i.e. the fitted values correspond to the conditional expectations
+   (see \code{\link{predict.selection}}).
 
    If the model was estimated by the maximum likelihood method,
-   the fitted values are calculated
-   using only the regressors of the respective (outcome/selection) equation.
-   In the future, we might add the option to
-   include expectations of the error term
-   based on the regressors of the other (selection/outcome) equation.
+   the fitted values of the outcome equation are calculated
+   by disregarding the selection equation,
+   i.e. the fitted values correspond to the unconditional expectations
+   (see \code{\link{predict.selection}}).
+   
+   The fitted values of the selection equation are probabilities.
+   If the dependent variable of the outcome equation is binary,
+   also the fitted values of the outcome equation are probabilities.
 }
 
 \value{
@@ -40,7 +45,9 @@
 
 \author{Arne Henningsen}
 
-\seealso{\code{\link{selection}}, \code{\link{residuals.selection}}
-   \code{\link{fitted}}, and \code{\link{fitted.probit}}}
+\seealso{
+   \code{\link{fitted}}, \code{\link{selection}},
+   \code{\link{residuals.selection}}, and \code{\link{selection-methods}}.
+}
 
 \keyword{methods}

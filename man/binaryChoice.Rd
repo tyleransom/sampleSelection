@@ -8,7 +8,7 @@
   \code{probit}. 
 }
 \usage{
-probit(formula, ...)
+probit(formula, weights = NULL, ...)
 binaryChoice(formula, subset, na.action, start = NULL, data = sys.frame(sys.parent()),
              x=FALSE, y = FALSE, model = FALSE, method="ML",
 userLogLik=NULL,
@@ -22,6 +22,8 @@ maxMethod="Newton-Raphson",
   \item{formula}{a symbolic description of the model to be fit, in the
     form \code{response ~ explanatory variables}
     (see also details).}
+  \item{weights}{an optional vector of \sQuote{prior weights} 
+    to be used in the fitting process. Should be NULL or a numeric vector.}
   \item{subset}{an optional vector specifying a subset of observations to be
     used in the fitting process.}
   \item{na.action}{a function which indicates what should happen when the data
@@ -112,7 +114,7 @@ maxMethod="Newton-Raphson",
       \item{N0}{Number of observations with zero (false) response}
     }
   }
-  \item{df}{Number of free parameters}
+  \item{df.residual}{degrees of freedom of the residuals.}
   \item{x}{if requested, the model matrix used.}
   \item{y}{if requested, the model response used.  The
    response is represented internally as 0/1 integer vector.}
@@ -131,10 +133,10 @@ maxMethod="Newton-Raphson",
   Demidenko, Eugene (2001) \dQuote{Computational aspects of probit
   model}, Mathematical Communications 6, 233-247
   }
-\author{Ott Toomet \email{otoomet@ut.ee}}
+\author{Ott Toomet \email{otoomet@ut.ee}, Arne Henningsen}
 \seealso{\code{\link[maxLik]{maxLik}} for ready-packaged likelihood maximisation
   routines and methods, \code{\link{glm}} for generalised linear models,
-  including probit, \code{\link{binomial}}.
+  including probit, \code{\link{binomial}}, and \code{\link{probit-methods}}.
 }
 \examples{
 ## A simple MC trial: note probit assumes normal errors

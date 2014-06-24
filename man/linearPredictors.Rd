@@ -10,6 +10,8 @@
 
 \usage{
 linearPredictors(x, ...)
+
+\method{linearPredictors}{probit}( x, ... )
 }
 
 \arguments{
@@ -26,7 +28,9 @@ linearPredictors(x, ...)
   the linear predictors for observations
 }
 
-\author{Ott Toomet \email{otoomet@ut.ee}}
+\author{Ott Toomet \email{otoomet@ut.ee}, Arne Henningsen}
+
+\seealso{\code{\link{probit}} and \code{\link{probit-methods}}.}
 
 \examples{
 data(Mroz87)

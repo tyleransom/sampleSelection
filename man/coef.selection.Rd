@@ -21,9 +21,9 @@
   \item{object}{object of class \code{selection}
     or \code{summary.selection}.}
   \item{part}{character string indication which parts to extract:
-   "full" for all estimated parameters (selection estimates,
+   \code{"full"} for all estimated parameters (selection estimates,
    outcome estimates, error variance and correlation)
-   or "outcome" for the outcome estimates only
+   or \code{"outcome"} for the outcome estimates only
    (including the coefficient of the inverse Mill's ratio
    in case of a two-step estimation).}
   \item{x}{object returned by \code{coef.selection}.}
@@ -42,8 +42,10 @@
 \author{Arne Henningsen,
    Ott Toomet (\email{otoomet@ut.ee})}
 
-\seealso{\code{\link{coefficients}}, \code{\link{selection}},
-   \code{\link{summary.selection}}, and \code{\link{vcov.selection}}}
+\seealso{
+   \code{\link{coef}}, \code{\link{selection}}, \code{\link{vcov.selection}},
+   and \code{\link{selection-methods}}.
+}
 
 \examples{
 ## Estimate a simple female wage model taking into account the labour

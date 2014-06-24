@@ -1,0 +1,596 @@
+
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library( "sampleSelection" )
+Loading required package: maxLik
+Loading required package: miscTools
+
+Please cite the 'maxLik' package as:
+Henningsen, Arne and Toomet, Ott (2011). maxLik: A package for maximum likelihood estimation in R. Computational Statistics 26(3), 443-458. DOI 10.1007/s00180-010-0217-1.
+
+If you have questions, suggestions, or comments regarding the 'maxLik' package, please use a forum or 'tracker' at maxLik's R-Forge site:
+https://r-forge.r-project.org/projects/maxlik/
+> options( digits = 3 )
+> 
+> ## Wooldridge( 2003 ): example 17.5, page 590
+> data(Mroz87)
+> myProbit <- glm( lfp ~ nwifeinc + educ + exper + I( exper^2 ) + age +
++       kids5 + kids618, family = binomial( link = "probit" ), data=Mroz87 )
+> Mroz87$IMR <- invMillsRatio( myProbit )$IMR1
+> myHeckit <- lm( log( wage ) ~ educ + exper + I( exper^2 ) + IMR,
++    data = Mroz87[ Mroz87$lfp == 1, ] )
+> 
+> # using NO labor force participation as endogenous variable
+> Mroz87$nolfp <- 1 - Mroz87$lfp
+> myProbit2 <- glm( nolfp ~ nwifeinc + educ + exper + I( exper^2 ) + age +
++       kids5 + kids618, family = binomial( link = "probit" ), data=Mroz87 )
+> all.equal( invMillsRatio( myProbit )$IMR1, invMillsRatio( myProbit2 )$IMR0 )
+[1] TRUE
+> # should be true
+> 
+> # example for bivariate probit
+> library( "mvtnorm" )
+> library( "VGAM" )
+Loading required package: splines
+Loading required package: stats4
+
+Attaching package: 'VGAM'
+
+The following object is masked from 'package:sampleSelection':
+
+    probit
+
+> set.seed( 321 )
+> 
+> nObs <- 10000
+> 
+> # error terms (trivariate normal)
+> sigma <- symMatrix( c( 2, 0.7, 1.2, 1, 0.5, 1 ) )
+> myData <- as.data.frame( rmvnorm( nObs, c( 0, 0, 0 ), sigma ) )
+> names( myData ) <- c( "e0", "e1", "e2" )
+> 
+> # exogenous variables (indepently normal)
+> myData$x0 <- rnorm( nObs )
+> myData$x1 <- rnorm( nObs )
+> myData$x2 <- rnorm( nObs )
+> 
+> # endogenous variables
+> myData$y0 <-   -1.5 + 0.8 * myData$x1 + myData$e0
+> myData$y1 <- (  0.3 + 0.4 * myData$x1 + 0.3 * myData$x2 + myData$e1 ) > 0
+> myData$y2 <- ( -0.1 + 0.6 * myData$x1 + 0.7 * myData$x2 + myData$e2 ) > 0
+> 
+> # bivariate probit (using rhobit transformation)
+> bProbit <- vglm( cbind( y1, y2 ) ~ x1 + x2, family = binom2.rho,
++    data = myData )
+> summary( bProbit )
+
+Call:
+vglm(formula = cbind(y1, y2) ~ x1 + x2, family = binom2.rho, 
+    data = myData)
+
+Pearson residuals:
+            Min   1Q Median  3Q Max
+probit(mu1)  -7 -0.9    0.4 0.7   3
+probit(mu2)  -6 -0.7   -0.2 0.7   8
+rhobit(rho)  -9 -0.6    0.2 0.5   9
+
+Coefficients:
+              Estimate Std. Error z value
+(Intercept):1      0.3       0.01      23
+(Intercept):2     -0.1       0.01      -7
+(Intercept):3      1.1       0.04      28
+x1:1               0.4       0.01      29
+x1:2               0.6       0.02      36
+x2:1               0.3       0.01      23
+x2:2               0.7       0.02      42
+
+Number of linear predictors:  3 
+
+Names of linear predictors: probit(mu1), probit(mu2), rhobit(rho)
+
+Dispersion Parameter for binom2.rho family:   1
+
+Log-likelihood: -10858 on 29993 degrees of freedom
+
+Number of iterations: 2 
+> 
+> # bivariate probit (NOT using rhobit transformation)
+> bProbit2 <- vglm( cbind( y1, y2 ) ~ x1 + x2, family = binom2.rho(
++    lrho = "identitylink" ), data = myData )
+> summary( bProbit2 )
+
+Call:
+vglm(formula = cbind(y1, y2) ~ x1 + x2, family = binom2.rho(lrho = "identitylink"), 
+    data = myData)
+
+Pearson residuals:
+            Min   1Q Median  3Q Max
+probit(mu1)  -7 -0.9    0.4 0.8   3
+probit(mu2)  -6 -0.7   -0.2 0.7   8
+rho          -9 -0.6    0.2 0.5   9
+
+Coefficients:
+              Estimate Std. Error z value
+(Intercept):1      0.3       0.01      23
+(Intercept):2     -0.1       0.01      -7
+(Intercept):3      0.5       0.01      34
+x1:1               0.4       0.01      29
+x1:2               0.6       0.02      36
+x2:1               0.3       0.01      23
+x2:2               0.7       0.02      42
+
+Number of linear predictors:  3 
+
+Names of linear predictors: probit(mu1), probit(mu2), rho
+
+Dispersion Parameter for binom2.rho family:   1
+
+Log-likelihood: -10858 on 29993 degrees of freedom
+
+Number of iterations: 2 
+> 
+> # inverse Mills Ratios
+> imr  <- invMillsRatio( bProbit )
+> imr2 <- invMillsRatio( bProbit2 )
+> all.equal( imr, imr2, tolerance = .Machine$double.eps ^ 0.25)
+[1] TRUE
+> 
+> # tests
+> # E[ e0 | y1* > 0 & y2* > 0 ]
+> mean( myData$e0[ myData$y1 & myData$y2 ] )
+[1] 0.834
+> mean( sigma[1,2] * imr$IMR11a + sigma[1,3] * imr$IMR11b, na.rm = TRUE )
+[1] 0.836
+> # E[ e0 | y1* > 0 & y2* <= 0 ]
+> mean( myData$e0[ myData$y1 & !myData$y2 ] )
+[1] -0.361
+> mean( sigma[1,2] * imr$IMR10a + sigma[1,3] * imr$IMR10b, na.rm = TRUE )
+[1] -0.385
+> # E[ e0 | y1* <= 0 & y2* > 0 ]
+> mean( myData$e0[ !myData$y1 & myData$y2 ] )
+[1] 0.385
+> mean( sigma[1,2] * imr$IMR01a + sigma[1,3] * imr$IMR01b, na.rm = TRUE )
+[1] 0.397
+> # E[ e0 | y1* <= 0 & y2* <= 0 ]
+> mean( myData$e0[ !myData$y1 & !myData$y2 ] )
+[1] -0.915
+> mean( sigma[1,2] * imr$IMR00a + sigma[1,3] * imr$IMR00b, na.rm = TRUE )
+[1] -0.878
+> # E[ e0 | y1* > 0 ]
+> mean( myData$e0[ myData$y1 ] )
+[1] 0.402
+> mean( sigma[1,2] * imr$IMR1X, na.rm = TRUE )
+[1] 0.395
+> # E[ e0 | y1* <= 0 ]
+> mean( myData$e0[ !myData$y1 ] )
+[1] -0.642
+> mean( sigma[1,2] * imr$IMR0X, na.rm = TRUE )
+[1] -0.611
+> # E[ e0 | y2* > 0 ]
+> mean( myData$e0[ myData$y2 ] )
+[1] 0.755
+> mean( sigma[1,3] * imr$IMRX1, na.rm = TRUE )
+[1] 0.759
+> # E[ e0 | y2* <= 0 ]
+> mean( myData$e0[ !myData$y2 ] )
+[1] -0.686
+> mean( sigma[1,3] * imr$IMRX0, na.rm = TRUE )
+[1] -0.674
+> 
+> # estimation for y1* > 0 and y2* > 0
+> selection <- myData$y1 & myData$y2
+> # OLS estimation
+> ols11 <- lm( y0 ~ x1, data = myData, subset = selection )
+> summary( ols11 )
+
+Call:
+lm(formula = y0 ~ x1, data = myData, subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.913 -0.816 -0.024  0.755  4.200 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.5372     0.0208   -25.9   <2e-16 ***
+x1            0.4943     0.0202    24.4   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.18 on 3876 degrees of freedom
+Multiple R-squared:  0.133,	Adjusted R-squared:  0.133 
+F-statistic:  597 on 1 and 3876 DF,  p-value: <2e-16
+
+> # heckman type estimation
+> heckit11 <- lm( y0 ~ x1 + IMR11a + IMR11b, data = cbind( myData, imr ),
++    subset = selection )
+> summary( heckit11 )
+
+Call:
+lm(formula = y0 ~ x1 + IMR11a + IMR11b, data = cbind(myData, 
+    imr), subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.465 -0.783 -0.046  0.717  4.586 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.9881     0.2414   -4.09  4.4e-05 ***
+x1            0.6541     0.0628   10.41  < 2e-16 ***
+IMR11a       -1.0083     0.8354   -1.21     0.23    
+IMR11b        1.4290     0.1430    9.99  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.12 on 3874 degrees of freedom
+Multiple R-squared:  0.218,	Adjusted R-squared:  0.217 
+F-statistic:  360 on 3 and 3874 DF,  p-value: <2e-16
+
+> 
+> # estimation for y1* > 0 and y2* <= 0
+> selection <- myData$y1 & !myData$y2
+> # OLS estimation
+> ols10 <- lm( y0 ~ x1, data = myData, subset = selection )
+> summary( ols10 )
+
+Call:
+lm(formula = y0 ~ x1, data = myData, subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.104 -0.730  0.009  0.738  4.747 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.8968     0.0239   -79.5   <2e-16 ***
+x1            0.4749     0.0271    17.6   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.11 on 2189 degrees of freedom
+Multiple R-squared:  0.123,	Adjusted R-squared:  0.123 
+F-statistic:  308 on 1 and 2189 DF,  p-value: <2e-16
+
+> # heckman type estimation
+> heckit10 <- lm( y0 ~ x1 + IMR10a + IMR10b, data = cbind( myData, imr ),
++    subset = selection )
+> summary( heckit10 )
+
+Call:
+lm(formula = y0 ~ x1 + IMR10a + IMR10b, data = cbind(myData, 
+    imr), subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.216 -0.627  0.064  0.664  3.912 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.7762     0.5802   -3.06   0.0022 ** 
+x1            0.9096     0.0693   13.13   <2e-16 ***
+IMR10a        0.9884     0.5211    1.90   0.0580 .  
+IMR10b        1.1651     0.1030   11.31   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.995 on 2187 degrees of freedom
+Multiple R-squared:  0.295,	Adjusted R-squared:  0.294 
+F-statistic:  304 on 3 and 2187 DF,  p-value: <2e-16
+
+> 
+> # estimation for y1* <= 0 and y2* > 0
+> selection <- !myData$y1 & myData$y2
+> # OLS estimation
+> ols01 <- lm( y0 ~ x1, data = myData, subset = selection )
+> summary( ols01 )
+
+Call:
+lm(formula = y0 ~ x1, data = myData, subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-2.815 -0.771 -0.014  0.748  3.411 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.0832     0.0382  -28.37   <2e-16 ***
+x1            0.3809     0.0402    9.47   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.09 on 823 degrees of freedom
+Multiple R-squared:  0.0983,	Adjusted R-squared:  0.0972 
+F-statistic: 89.8 on 1 and 823 DF,  p-value: <2e-16
+
+> # heckman type estimation
+> heckit01 <- lm( y0 ~ x1 + IMR01a + IMR01b, data = cbind( myData, imr ),
++    subset = selection )
+> summary( heckit01 )
+
+Call:
+lm(formula = y0 ~ x1 + IMR01a + IMR01b, data = cbind(myData, 
+    imr), subset = selection)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.4883 -0.6542  0.0264  0.6345  3.0166 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   -1.653      1.759   -0.94     0.35    
+x1             0.772      0.159    4.85  1.5e-06 ***
+IMR01a         0.619      1.043    0.59     0.55    
+IMR01b         1.214      0.134    9.03  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.943 on 821 degrees of freedom
+Multiple R-squared:  0.331,	Adjusted R-squared:  0.329 
+F-statistic:  135 on 3 and 821 DF,  p-value: <2e-16
+
+> 
+> # estimation for y1* <= 0 and y2* <= 0
+> selection <- !myData$y1 & !myData$y2
+> # OLS estimation
+> ols00 <- lm( y0 ~ x1, data = myData, subset = selection )
+> summary( ols00 )
+
+Call:
+lm(formula = y0 ~ x1, data = myData, subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.693 -0.821  0.027  0.842  3.965 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -2.5476     0.0242  -105.2   <2e-16 ***
+x1            0.5084     0.0233    21.8   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.21 on 3104 degrees of freedom
+Multiple R-squared:  0.133,	Adjusted R-squared:  0.132 
+F-statistic:  475 on 1 and 3104 DF,  p-value: <2e-16
+
+> # heckman type estimation
+> heckit00 <- lm( y0 ~ x1 + IMR00a + IMR00b, data = cbind( myData, imr ),
++    subset = selection )
+> summary( heckit00 )
+
+Call:
+lm(formula = y0 ~ x1 + IMR00a + IMR00b, data = cbind(myData, 
+    imr), subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.804 -0.761  0.051  0.780  3.798 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1.91755    0.25434   -7.54  6.2e-14 ***
+x1           0.74220    0.05287   14.04  < 2e-16 ***
+IMR00a       0.00757    0.40554    0.02     0.99    
+IMR00b       1.57196    0.17513    8.98  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.16 on 3102 degrees of freedom
+Multiple R-squared:  0.209,	Adjusted R-squared:  0.209 
+F-statistic:  274 on 3 and 3102 DF,  p-value: <2e-16
+
+> 
+> # estimation for y1* > 0
+> selection <- myData$y1
+> # OLS estimation
+> ols1X <- lm( y0 ~ x1, data = myData, subset = selection )
+> summary( ols1X )
+
+Call:
+lm(formula = y0 ~ x1, data = myData, subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.873 -0.886 -0.033  0.889  4.639 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.0686     0.0174   -61.6   <2e-16 ***
+x1            0.6738     0.0178    37.9   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.31 on 6067 degrees of freedom
+Multiple R-squared:  0.192,	Adjusted R-squared:  0.191 
+F-statistic: 1.44e+03 on 1 and 6067 DF,  p-value: <2e-16
+
+> # heckman type estimation
+> heckit1X <- lm( y0 ~ x1 + IMR1X, data = cbind( myData, imr ),
++    subset = selection )
+> summary( heckit1X )
+
+Call:
+lm(formula = y0 ~ x1 + IMR1X, data = cbind(myData, imr), subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.935 -0.882 -0.034  0.887  4.774 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.4618     0.0655  -22.33  < 2e-16 ***
+x1            0.8006     0.0270   29.66  < 2e-16 ***
+IMR1X         0.6448     0.1035    6.23  5.1e-10 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.31 on 6066 degrees of freedom
+Multiple R-squared:  0.197,	Adjusted R-squared:  0.196 
+F-statistic:  743 on 2 and 6066 DF,  p-value: <2e-16
+
+> 
+> # estimation for y1* <= 0
+> selection <- !myData$y1
+> # OLS estimation
+> ols0X <- lm( y0 ~ x1, data = myData, subset = selection )
+> summary( ols0X )
+
+Call:
+lm(formula = y0 ~ x1, data = myData, subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.062 -0.909  0.023  0.902  4.473 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -2.2035     0.0224   -98.2   <2e-16 ***
+x1            0.6214     0.0220    28.2   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.32 on 3929 degrees of freedom
+Multiple R-squared:  0.169,	Adjusted R-squared:  0.169 
+F-statistic:  798 on 1 and 3929 DF,  p-value: <2e-16
+
+> # heckman type estimation
+> heckit0X <- lm( y0 ~ x1 + IMR0X, data = cbind( myData, imr ),
++    subset = selection )
+> summary( heckit0X )
+
+Call:
+lm(formula = y0 ~ x1 + IMR0X, data = cbind(myData, imr), subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.118 -0.904  0.006  0.904  4.343 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.4380     0.1048  -13.72  < 2e-16 ***
+x1            0.8190     0.0343   23.88  < 2e-16 ***
+IMR0X         0.7998     0.1070    7.47  9.5e-14 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.32 on 3928 degrees of freedom
+Multiple R-squared:  0.18,	Adjusted R-squared:  0.18 
+F-statistic:  432 on 2 and 3928 DF,  p-value: <2e-16
+
+> 
+> # estimation for y2* > 0
+> selection <- myData$y2
+> # OLS estimation
+> olsX1 <- lm( y0 ~ x1, data = myData, subset = selection )
+> summary( olsX1 )
+
+Call:
+lm(formula = y0 ~ x1, data = myData, subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.819 -0.821 -0.028  0.773  4.296 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.6386     0.0185   -34.6   <2e-16 ***
+x1            0.5055     0.0182    27.7   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.18 on 4701 degrees of freedom
+Multiple R-squared:  0.141,	Adjusted R-squared:  0.14 
+F-statistic:  769 on 1 and 4701 DF,  p-value: <2e-16
+
+> # heckman type estimation
+> heckitX1 <- lm( y0 ~ x1 + IMRX1, data = cbind( myData, imr ),
++    subset = selection )
+> summary( heckitX1 )
+
+Call:
+lm(formula = y0 ~ x1 + IMRX1, data = cbind(myData, imr), subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.255 -0.766 -0.051  0.714  4.732 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.4685     0.0394   -37.2   <2e-16 ***
+x1            0.7702     0.0206    37.4   <2e-16 ***
+IMRX1         1.1613     0.0495    23.5   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.12 on 4700 degrees of freedom
+Multiple R-squared:  0.231,	Adjusted R-squared:  0.23 
+F-statistic:  705 on 2 and 4700 DF,  p-value: <2e-16
+
+> 
+> # estimation for y2* <= 0
+> selection <- !myData$y2
+> # OLS estimation
+> olsX0 <- lm( y0 ~ x1, data = myData, subset = selection )
+> summary( olsX0 )
+
+Call:
+lm(formula = y0 ~ x1, data = myData, subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-4.991 -0.817  0.036  0.835  5.185 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -2.2608     0.0176  -128.5   <2e-16 ***
+x1            0.5600     0.0180    31.1   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.21 on 5295 degrees of freedom
+Multiple R-squared:  0.154,	Adjusted R-squared:  0.154 
+F-statistic:  965 on 1 and 5295 DF,  p-value: <2e-16
+
+> # heckman type estimation
+> heckitX0 <- lm( y0 ~ x1 + IMRX0, data = cbind( myData, imr ),
++    subset = selection )
+> summary( heckitX0 )
+
+Call:
+lm(formula = y0 ~ x1 + IMRX0, data = cbind(myData, imr), subset = selection)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.115 -0.729  0.056  0.790  4.685 
+
+Coefficients:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -1.4624     0.0365   -40.1   <2e-16 ***
+x1            0.8521     0.0208    41.0   <2e-16 ***
+IMRX0         1.2582     0.0511    24.6   <2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.15 on 5294 degrees of freedom
+Multiple R-squared:  0.241,	Adjusted R-squared:  0.241 
+F-statistic:  841 on 2 and 5294 DF,  p-value: <2e-16
+
+> 
+> proc.time()
+   user  system elapsed 
+ 10.984   0.087  11.071 

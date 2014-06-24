@@ -23,7 +23,9 @@
 
 \author{Arne Henningsen}
 
-\seealso{\code{\link{selection}},
-   \code{\link{model.frame}}, and \code{\link{model.frame.binaryChoice}}}
+\seealso{
+   \code{\link{model.frame}}, \code{\link{selection}},
+   \code{\link{model.matrix.selection}}, and \code{\link{selection-methods}}.
+}
 
 \keyword{methods}

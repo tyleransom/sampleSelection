@@ -40,7 +40,10 @@
 \author{Arne Henningsen, Ott
   Toomet \email{otoomet@ut.ee}}
 
-\seealso{\code{\link{selection}}}
+\seealso{
+   \code{\link{summary}}, \code{\link{selection}},
+   and \code{\link{selection-methods}}.
+}
 
 \examples{
 ## Wooldridge( 2003 ): example 17.5, page 590

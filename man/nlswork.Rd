@@ -68,10 +68,15 @@ National Longitudinal Survey. Young Women 14-26 years of age in 1968,
 
 \examples{
 data( "nlswork" )
+summary( nlswork )
+
+\dontrun{
 library( "plm" )
 nlswork <- plm.data( nlswork, c( "idcode", "year" ) )
 plmResult <- plm( ln_wage ~ union + age + grade + not_smsa + south + occ_code,
    data = nlswork, model = "random" )
+summary( plmResult )
+}
 }
 
 \keyword{datasets}

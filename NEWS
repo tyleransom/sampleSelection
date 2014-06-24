@@ -5,6 +5,59 @@ A full ChangeLog is available in the log messages of the SVN repository
 on R-Forge.
 
 
+   CHANGES IN VERSION 1.0-2 (2014-06-24)
+
+* changed/simplified a few examples in order to reduce their execution time
+
+
+   CHANGES IN VERSION 1.0-0 (2014-06-24)
+
+* bug fix: selection() did not pass some arguments to other functions, e.g.
+argument "inst" was ignored so that the second step of heckit-2 models was
+estimated by OLS rather than by IV estimation although argument "inst" was
+specified
+
+* fixed bug in residuals.selection( , part = "selection" ) that occured when
+the dependent variable of the selection model was a factor
+
+* fixed bug that made residuals( object, part = "outcome" ) not work if
+"object" was a sample selection model with a constructed variable
+(e.g. "log(wage)") estimated by ML
+
+* residuals.selection( , part = "outcome" ) now works for models with binary
+dependent outcome variables
+
+* probit models, tobit-2 models, and binary selection models can now be
+estimated with observation-specific weights
+
+* in case of a binary dependent variable of the outcome equation,
+fitted( object, part = "outcome" ) now returns the probabilities rather than
+the linear prdictors
+
+* added a predict() method for probit models
+
+* added a logLik() method for probit models
+
+* added nobs() and nObs() methods for probit and selection models
+
+* added argument "maxMethod" to heckit2fit() and heckit5fit() that specifies
+the maximisation method that is used for estimating the probit model (1st stage)
+
+* the default df.residual() method works for probit models
+
+* this package no longer depends on package 'systemfit' but it imports function
+systemfit from package "systemfit"
+
+* minor adjustments in invMillsRatio() so that it works with bivariate
+probit models estimated by the current version of the VGAM package (0.9-4)
+
+* improved documentation
+
+* modified some internal calculations so that they are numerically nore stable 
+
+* removed the deprecated function tobit2()
+
+
    CHANGES IN VERSION 0.7-2 (2012-08-14)
 
 * fixed a bug in the calculation of the Hessian of the log likelihood function 

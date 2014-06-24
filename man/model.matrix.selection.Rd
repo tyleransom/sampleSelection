@@ -34,7 +34,9 @@
 
 \author{Arne Henningsen}
 
-\seealso{\code{\link{selection}},
-   \code{\link{model.matrix}}, and \code{\link{model.matrix.binaryChoice}}}
+\seealso{
+   \code{\link{model.matrix}}, \code{\link{selection}},
+   \code{\link{model.frame.selection}}, and \code{\link{selection-methods}}.
+}
 
 \keyword{methods}

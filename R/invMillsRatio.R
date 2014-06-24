@@ -16,7 +16,7 @@ invMillsRatio <- function( x, all = FALSE ) {
    } else if(inherits(x, "probit")) {
       # Note: 'probit' need not to be the first component in the class
       result <- data.frame( no = seq(length=nObs(x)),
-         row.names = rownames( model.frame( x ) ) )
+         row.names = rownames( model.matrix( x ) ) )
       result$IMR1 <- dnorm(linearPredictors(x))/pnorm(linearPredictors(x))
       result$delta1 <- result$IMR1 * ( result$IMR1 + linearPredictors(x))
       result$IMR0 <- dnorm(linearPredictors(x))/pnorm(-linearPredictors(x))
@@ -35,13 +35,13 @@ invMillsRatio <- function( x, all = FALSE ) {
       } else {
          vglmLink <- x@misc$link[ "rho" ]
       }
-      if( vglmLink == "identity" ) {
+      if( vglmLink %in% c( "identity", "identitylink" ) ) {
          rho <- x@predictors[ , 3 ]
       } else if( vglmLink == "rhobit" ){
          rho <- rhobit( x@predictors[ , 3 ], inverse = TRUE )
       } else {
          stop( "the bivariate probit (binom2.rho) must be either estimated",
-            " with link 'rhobit' or 'identity'" )
+            " with link 'rhobit' or 'identity'/'identitylink'" )
       }
       if( max( rho ) > 1 ) {
          stop( "the correlation between the error terms (rho) is larger",

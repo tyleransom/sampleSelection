@@ -33,8 +33,11 @@
    Ott Toomet \email{otoomet@ut.ee}
 }
 
-\seealso{\code{\link[stats]{vcov}}, \code{\link{selection}},
-   \code{\link{coef.selection}}.}
+\seealso{
+   \code{\link[stats]{vcov}}, \code{\link{selection}},
+   \code{\link{coef.selection}}, and \code{\link{selection-methods}}.
+}
+   
 \examples{
 ## Estimate a simple female wage model taking into account the labour
 ## force participation

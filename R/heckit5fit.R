@@ -3,7 +3,7 @@ heckit5fit <- function(selection, outcome1, outcome2,
                     ys=FALSE, yo=FALSE,
                     xs=FALSE, xo=FALSE,
                     mfs=FALSE, mfo=FALSE,
-                    print.level=0, ... ) {
+                    print.level=0, maxMethod = "Newton-Raphson", ... ) {
    checkIMRcollinearity <- function(X, tol=1e6) {
       ## This small utility checks whether inverse Mills ratio is (virtually) collinear to the other explanatory
       ## variables.  IMR is in the last columns.
@@ -105,7 +105,7 @@ heckit5fit <- function(selection, outcome1, outcome2,
          formula1 <- outcome1[[1]]
          formula2 <- outcome1[[2]]
                                         # Now we have extracted both formulas
-         m <- match(c("outcome1", "data", "subset", "weights",
+         m <- match(c("outcome1", "data", "subset",
                       "offset"), names(mf), 0)
          ## replace the outcome list by the first equation and evaluate it
          oArg <- match("outcome1", names(mf), 0)
@@ -166,7 +166,7 @@ heckit5fit <- function(selection, outcome1, outcome2,
    N1 <- length(YO1)
    N2 <- length(YO2)
    ## and run the model: selection
-   probitResult <- probit(YS ~ XS - 1)
+   probitResult <- probit(YS ~ XS - 1, maxMethod = maxMethod )
    if( print.level > 0) {
       cat("The probit part of the model:\n")
       print(summary(probitResult))

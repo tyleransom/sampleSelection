@@ -8,7 +8,7 @@ summary.probit <- function(object, ...) {
           nObs=nObs(object),
           N0=object$param$N0,
           N1=object$param$N1,
-          df=object$df,
+          df.residual = object$df.residual,
           levels=list(object$param$levels))
    class(a) <- c("summary.probit", class(summaryML))
    a

@@ -1,7 +1,6 @@
 \name{selection}
 \alias{selection}
 \alias{heckit}
-\alias{print.selection}
 \title{Heckman-style selection models}
 \description{
   This is the frontend for estimating Heckman-style selection models either with
@@ -14,7 +13,7 @@
 
 \usage{
 selection(selection, outcome, data = sys.frame(sys.parent()),
-   subset, method = "ml", start = NULL, 
+   weights = NULL, subset, method = "ml", start = NULL, 
    ys = FALSE, xs = FALSE, yo = FALSE, xo = FALSE,
    mfs = FALSE, mfo = FALSE, print.level = 0, ...)
 
@@ -31,6 +30,9 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
           variables in the model.  If not found in \code{data}, the
           variables are taken from \code{environment(formula)}, typically
           the environment from which \code{selection} is called.}
+  \item{weights}{an optional vector of \sQuote{prior weights} 
+    to be used in the fitting process. Should be NULL or a numeric vector.
+    Weights are currently only supported in type-2 models.}
   \item{subset}{an optional index vector specifying a subset of
     observations to be used in the fitting process.}
   \item{method}{how to estimate the model.  Either \code{"ml"} for Maximum
@@ -47,7 +49,8 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
     value gives more information.}
   \item{\dots}{additional parameters for the corresponding fitting
     functions \code{\link{tobit2fit}}, \code{\link{tobit5fit}},
-    \code{\link{heckit2fit}}, and \code{\link{heckit5fit}}.}
+    \code{\link{heckit2fit}}, \code{\link{heckit5fit}},
+    and \code{\link{tobit2Bfit}}.}
 }
 \details{
    The endogenous variable of the argument 'selection' must have exactly
@@ -87,31 +90,31 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
   assumption for a particular problem.  Note also that standard errors
   tend to be large without a strong
   exclusion restriction.
+  
+  If argument \code{method} is equal to \code{"ml"} (the default),
+  the estimation is done by the maximum likelihood method,
+  where the Newton-Raphson algorithm is used by default.
+  Argument \code{maxMethod} (see \code{\link{tobit2fit}}) 
+  can be used to chose other algorithms for the maximisation 
+  of the (log) likelihood function.
 
-  The (generic) function 'coef' ('\code{\link{coef.selection}}')
-  can be used to extract the estimated coefficients.
-  The (generic) function 'vcov' ('\code{\link{vcov.selection}}')
-  can be used to extract the estimated variance covariance matrix 
-  of the coefficients.
-  The (generic) function 'print' ('\code{print.selection}')
-  can be used to print a few results.
-  The (generic) function 'summary' ('\code{\link{summary.selection}}')
-  can be used to obtain and print detailed results.
+  Methods that can be applied to objects returned by \code{selection()}
+  are described on the help page \code{\link{selection-methods}}.
 }
 \value{
   'selection' returns an object of class "selection".
   If the model estimated by Maximum Likelihood (argument method = "ml"),
-  this object is a list, which has all the components of 'maxLik', and in
-  addition the elements 'twoStep', 'start, 'param', termS, termO,
-  and if requested 'ys', 'xs', 'yo', 'xo', 'mfs', and 'mfo'.
+  this object is a list, which has all the components of a 'maxLik' object, and in
+  addition the elements 'twoStep', 'start, 'param', 'termS', 'termO',
+  'binaryOutcome', and if requested 'ys', 'xs', 'yo', 'xo', 'mfs', and 'mfo'.
   If a tobit-2 (sample selection) model is estimated by the
   two-step method (argument method = "2step"),
-  the returned object is list with components
+  the returned object is a list with components
   'probit', 'coefficients', 'param', 'vcov', 'lm', 'sigma', 'rho',
   'invMillsRatio', and 'imrDelta'.
-  If a tobit-2 (sample selection) model is estimated by the
+  If a tobit-5 (switching regression) model is estimated by the
   two-step method (argument method = "2step"),
-  the returned object is list with components
+  the returned object is a list with components
   'coefficients', 'vcov', 'probit', 'lm1', 'lm2', 'rho1', 'rho2',
   'sigma1', 'sigma2', 'termsS', 'termsO', 'param',
   and if requested 'ys', 'xs', 'yo', 'xo', 'mfs', and 'mfo'.
@@ -165,6 +168,8 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
     the 1st step probit estimation.}
   \item{imrDelta}{the \eqn{\delta}s calculated from the inverse Mills Ratios and
     the results of the 1st step probit estimation.}
+  \item{binaryOutcome}{logical value indicating whether the dependent variable
+    of the outcome equation is binary.}
 }
 
 \references{
@@ -208,7 +213,10 @@ heckit( selection, outcome, data = sys.frame(sys.parent()),
 \author{Arne Henningsen,
    Ott Toomet \email{otoomet@ut.ee}}
 
-\seealso{\code{\link{lm}}, \code{\link{glm}}, \code{\link{binomial}}}
+\seealso{
+   \code{\link{summary.selection}}, \code{\link{selection-methods}},
+   \code{\link{probit}}, and \code{\link{lm}}.
+}
 
 \examples{
 ## Greene( 2003 ): example 22.8, page 786
@@ -231,18 +239,12 @@ summary( heckit( lfp ~ nwifeinc + educ + exper + I( exper^2 ) + age +
 ## Example using binary outcome for selection model.
 ## We estimate the probability of womens' education on their
 ## chances to get high wage (> $5/hr in 1975 USD), using PSID data
-## We use education, age, experience as explanatory variables
-## and add kids, other family income, marginal tax rate, and parents
-## education as exclusion restrictions.
-## Note: this is slow
+## We use education as explanatory variable
+## and add age, kids, and non-work income as exclusion restrictions.
 data(Mroz87)
-m <- selection(lfp~educ + poly(age,3) + kids5 + kids618
-               + huseduc + mtr + motheduc + fatheduc
-               + poly(exper,2) + nwifeinc,
-               wage >= 5 ~ educ + poly(age,2)
-               + poly(exper,2),
-               data=Mroz87)
-print(summary(m))
+m <- selection(lfp ~ educ + age + kids5 + kids618 + nwifeinc,
+   wage >= 5 ~ educ, data = Mroz87 )
+summary(m)
 
 
 ## Cameron and Trivedi (2005): Section 16.6, page 553ff
@@ -259,10 +261,10 @@ cameron <- selection( selectEq, outcomeEq, data = RandHIE[ subsample, ] )
 summary( cameron )
 
 ## example using random numbers
-library( MASS )
+library( "mvtnorm" )
 nObs <- 1000
 sigma <- matrix( c( 1, -0.7, -0.7, 1 ), ncol = 2 )
-errorTerms <- mvrnorm( nObs, c( 0, 0 ), sigma )
+errorTerms <- rmvnorm( nObs, c( 0, 0 ), sigma )
 myData <- data.frame( no = c( 1:nObs ), x1 = rnorm( nObs ), x2 = rnorm( nObs ),
    u1 = errorTerms[ , 1 ], u2 =  errorTerms[ , 2 ] )
 myData$y <- 2 + myData$x1 + myData$u1
@@ -274,10 +276,10 @@ myHeckit <- heckit( s ~ x1 + x2, y ~ x1, myData, print.level = 1 )
 summary( myHeckit )
 
 ## example using random numbers with IV/2SLS estimation
-library( MASS )
+library( "mvtnorm" )
 nObs <- 1000
 sigma <- matrix( c( 1, 0.5, 0.1, 0.5, 1, -0.3, 0.1, -0.3, 1 ), ncol = 3 )
-errorTerms <- mvrnorm( nObs, c( 0, 0, 0 ), sigma )
+errorTerms <- rmvnorm( nObs, c( 0, 0, 0 ), sigma )
 myData <- data.frame( no = c( 1:nObs ), x1 = rnorm( nObs ), x2 = rnorm( nObs ),
    u1 = errorTerms[ , 1 ], u2 = errorTerms[ , 2 ], u3 = errorTerms[ , 3 ] )
 myData$w <- 1 + myData$x1 + myData$u1

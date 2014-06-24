@@ -8,7 +8,7 @@ print.summary.probit <- function( x, ... ) {
       cat("Model: Y == '", x$levels[2], "' in contrary to '", x$levels[1], "'\n", sep="")
       cat(x$nObs, " observations (", x$N0, " 'negative' and ", x$N1, " 'positive') and ",
           x$NActivePar, " free parameters (df = ",
-          x$nObs - x$NActivePar, ")\n", sep="")
+          x$df.residual, ")\n", sep="")
       cat("Estimates:\n")
       printCoefmat( x$estimate, ... )
    }

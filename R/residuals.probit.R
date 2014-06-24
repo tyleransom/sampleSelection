@@ -13,8 +13,12 @@ residuals.probit <- function( object, type = "deviance", ... ) {
       stop( "argument 'type' must be either 'deviance', 'pearson',",
          " or 'response'" )
    }
-
    result <- drop( result )
+   
+   if( !is.null( object$weights ) && type %in% c( "pearson", "deviance" ) ) {
+      result <- result * sqrt( object$weights )
+   }
+
    names( result ) <- names( fitted( object ) )
    return( result )
 }

@@ -27,7 +27,7 @@
 
 \author{Arne Henningsen}
 
-\seealso{\code{\link{probit}}}
+\seealso{\code{\link{probit}} and \code{\link{probit-methods}}.}
 
 \keyword{models}
 

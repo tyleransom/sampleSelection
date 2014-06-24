@@ -33,19 +33,20 @@ model.frame.selection <- function( formula, ... ) {
             if( !varName %in% names( result ) ) {
                result[[ varName ]] <- NA
             }
-            result[[ varName ]][ response == ( eq - 1 ) ] <- mf[[ eq ]]$YO
-            for( i in 1:( ncol( mf[[ eq ]]$XO ) - 1 ) ) {
-               varName <- colnames( mf[[ eq ]]$XO )[ i ]
+            result[[ varName ]][ response == ( eq - 1 ) ] <-
+               mf[[ eq ]][[ paste( "YO", eq, sep = "" ) ]]
+            XO <- mf[[ eq ]][[ paste( "XO", eq, sep = "" ) ]]
+            for( i in 1:( ncol( XO ) - 1 ) ) {
+               varName <- colnames( XO )[ i ]
                if( !varName %in% names( result ) ) {
                   result[[ varName ]] <- NA
                }
-               result[[ varName ]][ response == ( eq - 1 ) ] <-
-                  mf[[ eq ]]$XO[ , i ]
+               result[[ varName ]][ response == ( eq - 1 ) ] <- XO[ , i ]
             }
             varName <- paste( "invMillsRatio", eq, sep = "" )
             result[[ varName ]] <- NA
             result[[ varName ]][ response == ( eq - 1 ) ] <-
-               mf[[ eq ]]$XO[ , "invMillsRatio" ]
+               XO[ , "invMillsRatio" ]
          }
       } else {
          stop( "unknown tobit type '",  formula$tobitType,

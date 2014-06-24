@@ -1,5 +1,6 @@
 selection <- function(selection, outcome,
                       data=sys.frame(sys.parent()),
+                      weights = NULL,
                       subset,
                       method="ml",
                       start=NULL,
@@ -62,7 +63,7 @@ selection <- function(selection, outcome,
           stop("argument 'outcome' must contain 1 or 2 components")
    }
    else
-       stop("argument 'selection' must be either a formula or a list of two formulas" )
+       stop("argument 'outcome' must be either a formula or a list of two formulas" )
    if(!missing(data)) {
       if(!inherits(data, "environment") & !inherits(data, "data.frame") & !inherits(data, "list")) {
          stop("'data' must be either environment, data.frame, or list (currently a ", class(data), ")")
@@ -76,13 +77,19 @@ selection <- function(selection, outcome,
       stop( "the left hand side of 'selection' has to contain",
          " exactly two levels (e.g. FALSE and TRUE)" )
    }
+   
+   if( !is.null( weights ) && type != 2 ) {
+      warning( "argument 'weights' is ignored in type-", type, " models" )
+      weights <- NULL
+   }
+   
    # data$probitDummy <- probitEndogenous == probitLevels[ 2 ]
    ## now check whether two-step method was requested
    cl <- match.call()
    if(method == "2step") {
       if(type == 2)
           twoStep <- heckit2fit(selection, outcome, data=data,
-            print.level = print.level)
+            weights = weights, print.level = print.level, ... )
       else if(type == 5)
           twoStep <- heckit5fit(selection, outcome, data=data,
             print.level = print.level, ... )
@@ -127,7 +134,7 @@ selection <- function(selection, outcome,
    if(type == 2) {
       oArg <- match("outcome", names(mf), 0)
                                         # find the outcome argument
-      m <- match(c("outcome", "data", "subset", "weights", 
+      m <- match(c("outcome", "data", "subset",
                    "offset"), names(mf), 0)
       ## replace the outcome list by the first equation and evaluate it
       mfO <- mf[c(1, m)]
@@ -151,6 +158,15 @@ selection <- function(selection, outcome,
       badRow <- badRow | (is.na(YO) & (!is.na(YS) & YS == 1))
       badRow <- badRow | (apply(XO, 1, function(v) any(is.na(v))) & (!is.na(YS) & YS == 1))
                                         # rows in outcome, which contain NA and are observable -> bad too
+
+      if( !is.null( weights ) ) {
+         if( length( weights ) != length( badRow ) ) {
+            stop( "number of weights (", length( weights ), ") is not equal",
+               " to the number of observations (", length( badRow ), ")" )
+         }
+         badRow <- badRow | is.na( weights )
+      }   
+      
       if(print.level > 0) {
          cat(sum(badRow), "invalid observations\n")
       }
@@ -163,6 +179,7 @@ selection <- function(selection, outcome,
       YS <- YS[!badRow]
       XO <- XO[!badRow,, drop=FALSE]
       YO <- YO[!badRow]
+      weightsNoNA <- weights[ !badRow ]
       YO[ YS == 0 ] <- NA
       XO[ YS == 0, ] <- NA
       NXS <- ncol(XS)
@@ -181,7 +198,7 @@ selection <- function(selection, outcome,
                            # start values by Heckman 2-step method
          start <- numeric(nParam)
          twoStep <- heckit2fit(selection, outcome, data=data,
-            print.level = print.level)
+            print.level = print.level, weights = weights )
          coefs <- coef(twoStep, part="full")
          start[iGamma] <- coefs[twoStep$param$index$betaS]
          if(!binaryOutcome) {
@@ -206,12 +223,12 @@ selection <- function(selection, outcome,
                               "rho")
       }                                        # add names to start values if not present
       if(!binaryOutcome) {
-         estimation <- tobit2fit(YS, XS, YO, XO, start,
+         estimation <- tobit2fit(YS, XS, YO, XO, start, weights = weightsNoNA,
                                  print.level=print.level, ...)
          iErrTerms <- c(sigma=iSigma, rho=iRho )
       }
       else {
-         estimation <- tobit2Bfit(YS, XS, YO, XO, start,
+         estimation <- tobit2Bfit(YS, XS, YO, XO, start, weights = weightsNoNA,
                                  print.level=print.level, ...)
          iErrTerms <- c(rho=iRho)
       }
@@ -241,7 +258,7 @@ selection <- function(selection, outcome,
       # if(!("formula" %in% class(formula2)))
           formula2 <- outcome[[2]]
                                         # Now we have extracted both formulas
-      m <- match(c("outcome", "data", "subset", "weights",
+      m <- match(c("outcome", "data", "subset",
                    "offset"), names(mf), 0)
       ## replace the outcome list by the first equation and evaluate it
       mf[[oArg]] <- formula1
@@ -353,6 +370,9 @@ selection <- function(selection, outcome,
                "TRUE"=switch(as.character(type), "2"=list(mfO[!badRow,]),
                   "5"=list(mf1[!badRow,], mf2[!badRow,]), "FALSE"=NULL))
                )
+
+   result$binaryOutcome <- binaryOutcome
+
    class( result ) <- class( estimation ) 
    return(result)
 }

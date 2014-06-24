@@ -23,6 +23,8 @@
 \author{Arne Henningsen,
    Ott Toomet \email{otoomet@ut.ee}}
 
-\seealso{\code{\link{probit}}, and \code{\link{model.frame}}}
+\seealso{\code{\link{binaryChoice}}, \code{\link{probit}},
+   \code{\link{model.frame}}, \code{\link{model.matrix.binaryChoice}},
+   and \code{\link{probit-methods}}.}
 
 \keyword{methods}

@@ -1,7 +1,7 @@
 heckit2fit <- function( selection, outcome,
                    data=sys.frame(sys.parent()),
-                   inst = NULL,
-                   print.level = 0) {
+                   weights = NULL, inst = NULL,
+                   print.level = 0, maxMethod="Newton-Raphson" ) {
    ## selection     formula, selection equation
    ## 
    checkIMRcollinearity <- function(X, tol=1e6) {
@@ -44,7 +44,7 @@ heckit2fit <- function( selection, outcome,
    ## Now extract model frames etc.
    ## Selection equation
    mf <- match.call(expand.dots = FALSE)
-   m <- match(c("selection", "data", "subset", "weights", 
+   m <- match(c("selection", "data", "subset",
                 "offset"), names(mf), 0)
    mfS <- mf[c(1, m)]
    mfS$na.action <- na.pass
@@ -74,7 +74,7 @@ heckit2fit <- function( selection, outcome,
    names( YS ) <- ysNames
 
    ## Outcome equation
-   m <- match(c("outcome", "data", "subset", "weights",
+   m <- match(c("outcome", "data", "subset",
                 "offset"), names(mf), 0)
    mfO <- mf[c(1, m)]
    mfO$na.action <- na.pass
@@ -97,6 +97,15 @@ heckit2fit <- function( selection, outcome,
    badRow <- badRow | (is.na(YO) & (!is.na(YS) & YS == 1))
    badRow <- badRow | (apply(XO, 1, function(v) any(is.na(v))) & (!is.na(YS) & YS == 1))
                                         # rows in outcome, which contain NA and are observable -> bad too
+   
+   if( !is.null( weights ) ) {
+      if( length( weights ) != length( badRow ) ) {
+         stop( "number of weights (", length( weights ), ") is not equal",
+            " to the number of observations (", length( badRow ), ")" )
+      }
+      badRow <- badRow | is.na( weights )
+   }   
+   
    if(print.level > 0) {
       cat(sum(badRow), "invalid observations\n")
    }
@@ -104,6 +113,7 @@ heckit2fit <- function( selection, outcome,
    YS <- YS[!badRow]
    XO <- XO[!badRow,,drop=FALSE]
    YO <- YO[!badRow]
+   weightsNoNA <- weights[ !badRow ]
    ## Now indices for packing the separate outcomes into full outcome vectors.  Note we treat
    ## invMillsRatio as a separate parameter
    iBetaS <- seq(length=NXS)
@@ -120,7 +130,9 @@ heckit2fit <- function( selection, outcome,
    if( print.level > 0 ) {
       cat ( "\nEstimating 1st step Probit model . . ." )
    }
-   result$probit <- probit(YS ~ XS - 1, x=TRUE, print.level=print.level - 1, iterlim=30)
+   result$probit <- probit(YS ~ XS - 1, x=TRUE, 
+      weights = weightsNoNA, print.level=print.level - 1, iterlim=30,
+      maxMethod = maxMethod )
                                         # a large iterlim may help with weakly identified models
    if( print.level > 0 ) {
        cat( " OK\n" )
@@ -135,8 +147,8 @@ heckit2fit <- function( selection, outcome,
       if(checkIMRcollinearity(cbind(XO, imrData$IMR1))) {
          warning("Inverse Mills Ratio is (virtually) collinear to the rest of the explanatory variables")
       }
-      outcomeMod <- lm(YO ~ -1 + XO + imrData$IMR1,
-                      subset = YS == 1)
+      outcomeMod <- lm(YO ~ -1 + XO + imrData$IMR1, weights = weightsNoNA,
+                      subset = YS == 1 )
       intercept <- any(apply(model.matrix(outcomeMod), 2,
                              function(v) (v[1] > 0) & (all(v == v[1]))))
                                         # we have determine whether the outcome model has intercept.
@@ -148,6 +160,9 @@ heckit2fit <- function( selection, outcome,
           cat( " OK\n" )
    }
    else {
+      if( !is.null( weights ) ) {
+         warning( "weights are ignored in instrumental variable estimations" )
+      }
       data$invMillsRatio <- imrData$IMR1
       if( print.level > 0 ) {
          cat ( "Estimating 2nd step 2SLS/IV model . . ." )
@@ -156,7 +171,6 @@ heckit2fit <- function( selection, outcome,
                                         "+ invMillsRatio" ) )
       formulaList <- list( step2formula )
       instImr <- as.formula( paste( "~", inst[ 2 ], "+ invMillsRatio" ) )
-      library( systemfit )
       outcomeMod <- systemfit( formulaList, method = "2SLS", inst = instImr,
                              data = data[ YS == 1, ] )
       intercept = FALSE
@@ -214,6 +228,7 @@ heckit2fit <- function( selection, outcome,
    result$lm <- outcomeMod
    result$tobitType <- 2
    result$method <- "2step"
+   result$weights <- weights
    class( result ) <- c( "selection", class(result))
    return( result )
 }

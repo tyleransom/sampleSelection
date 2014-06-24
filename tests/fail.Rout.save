@@ -1,0 +1,81 @@
+
+R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
+Copyright (C) 2013 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library( "sampleSelection" )
+Loading required package: maxLik
+Loading required package: miscTools
+
+Please cite the 'maxLik' package as:
+Henningsen, Arne and Toomet, Ott (2011). maxLik: A package for maximum likelihood estimation in R. Computational Statistics 26(3), 443-458. DOI 10.1007/s00180-010-0217-1.
+
+If you have questions, suggestions, or comments regarding the 'maxLik' package, please use a forum or 'tracker' at maxLik's R-Forge site:
+https://r-forge.r-project.org/projects/maxlik/
+> 
+> # tobit 2
+> 
+> try( selection( s ~ z1, y ~ x1 ) )
+Error in eval(expr, envir, enclos) : object 's' not found
+> 
+> try( selection( "s ~ z1", y ~ x1 ) )
+Error in selection("s ~ z1", y ~ x1) : 
+  argument 'selection' must be a formula
+> 
+> try( selection( ~ z1, y ~ x1 ) )
+Error in selection(~z1, y ~ x1) : 
+  argument 'selection' must be a 2-sided formula
+> 
+> try( selection( s ~ z1, "y ~ x1" ) )
+Error in selection(s ~ z1, "y ~ x1") : 
+  argument 'outcome' must be either a formula or a list of two formulas
+> 
+> try( selection( s ~ z1, ~ x1 ) )
+Error in selection(s ~ z1, ~x1) : 
+  argument 'outcome' must be a 2-sided formula
+> 
+> # tobit 5
+> 
+> try( selection( s ~ z1, list( y1 ~ x1, y2 ~ x1 ) ) )
+Error in eval(expr, envir, enclos) : object 's' not found
+> 
+> try( selection( "s ~ z1", list( y1 ~ x1, y2 ~ x1 ) ) )
+Error in selection("s ~ z1", list(y1 ~ x1, y2 ~ x1)) : 
+  argument 'selection' must be a formula
+> 
+> try( selection( ~ z1, list( y1 ~ x1, y2 ~ x1 ) ) )
+Error in selection(~z1, list(y1 ~ x1, y2 ~ x1)) : 
+  argument 'selection' must be a 2-sided formula
+> 
+> try( selection( s ~ z1, list( "y1 ~ x1", y2 ~ x1 ) ) )
+Error in selection(s ~ z1, list("y1 ~ x1", y2 ~ x1)) : 
+  argument 'outcome[[1]]' must be either a formula or a list of two formulas
+> 
+> try( selection( s ~ z1, list( ~ x1, y2 ~ x1 ) ) )
+Error in selection(s ~ z1, list(~x1, y2 ~ x1)) : 
+  argument 'outcome[[1]]' must be a 2-sided formula
+> 
+> try( selection( s ~ z1, list( y1 ~ x1, "y2 ~ x1" ) ) )
+Error in selection(s ~ z1, list(y1 ~ x1, "y2 ~ x1")) : 
+  argument 'outcome[[2]]' must be either a formula or a list of two formulas
+> 
+> try( selection( s ~ z1, list( y1 ~ x1, ~ x1 ) ) )
+Error in selection(s ~ z1, list(y1 ~ x1, ~x1)) : 
+  argument 'outcome[[2]]' must be a 2-sided formula
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  1.787   0.068   1.835 

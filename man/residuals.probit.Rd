@@ -60,6 +60,6 @@
 }
 
 \seealso{\code{\link{probit}}, \code{\link[stats]{residuals}},
-   \code{\link[stats]{residuals.glm}}.}
+   \code{\link[stats]{residuals.glm}}, and \code{\link{probit-methods}}.}
 
 \keyword{methods}

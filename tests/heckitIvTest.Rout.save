@@ -1,0 +1,122 @@
+
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: x86_64-pc-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library( "sampleSelection" )
+Loading required package: maxLik
+Loading required package: miscTools
+
+Please cite the 'maxLik' package as:
+Henningsen, Arne and Toomet, Ott (2011). maxLik: A package for maximum likelihood estimation in R. Computational Statistics 26(3), 443-458. DOI 10.1007/s00180-010-0217-1.
+
+If you have questions, suggestions, or comments regarding the 'maxLik' package, please use a forum or 'tracker' at maxLik's R-Forge site:
+https://r-forge.r-project.org/projects/maxlik/
+> library( "mvtnorm" )
+> options( digits = 3 )
+> set.seed( 123 )
+> 
+> nObs <- 1000
+> sigma <- matrix( c( 1, 0.5, 0.1, 0.5, 1, -0.3, 0.1, -0.3, 1 ), ncol = 3 )
+> errorTerms <- rmvnorm( nObs, c( 0, 0, 0 ), sigma )
+> myData <- data.frame( no = c( 1:nObs ), x1 = rnorm( nObs ), x2 = rnorm( nObs ),
++    u1 = errorTerms[ , 1 ], u2 = errorTerms[ , 2 ], u3 = errorTerms[ , 3 ] )
+> myData$w <- 1 + myData$x1 + myData$u1
+> myData$y <- 2 + myData$w + myData$u2
+> myData$s <- ( 2 * myData$x1 + myData$x2 + myData$u3 - 0.2 ) > 0
+> myData$y[ !myData$s ] <- NA
+> myHeckit <- heckit( s ~ x1 + x2, y ~ w, data = myData )
+> summary( myHeckit )  # biased!
+--------------------------------------------
+Tobit 2 model (sample selection model)
+2-step Heckman / heckit estimation
+1000 observations (542 censored and 458 observed)
+8 free parameters (df = 993)
+Probit selection equation:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.2036     0.0601   -3.39  0.00073 ***
+x1            1.9961     0.1229   16.24  < 2e-16 ***
+x2            1.0642     0.0821   12.97  < 2e-16 ***
+Outcome equation:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   1.1380     0.0909    12.5   <2e-16 ***
+w             1.4317     0.0367    39.0   <2e-16 ***
+Multiple R-Squared:0.785,	Adjusted R-Squared:0.784
+Error terms:
+              Estimate Std. Error t value Pr(>|t|)
+invMillsRatio   0.1034     0.0965    1.07     0.28
+sigma           0.8747         NA      NA       NA
+rho             0.1182         NA      NA       NA
+--------------------------------------------
+> myHeckitIv <- heckit( s ~ x1 + x2, y ~ w, data = myData, inst = ~ x1 )
+> summary( myHeckitIv ) # unbiased
+--------------------------------------------
+Tobit 2 model (sample selection model)
+2-step Heckman / heckit estimation
+1000 observations (542 censored and 458 observed)
+8 free parameters (df = 993)
+Probit selection equation:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.2036     0.0601   -3.39  0.00073 ***
+x1            1.9961     0.1229   16.24  < 2e-16 ***
+x2            1.0642     0.0821   12.97  < 2e-16 ***
+Outcome equation:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   2.0381     0.1046    19.5   <2e-16 ***
+w             0.9892     0.0422    23.4   <2e-16 ***
+Multiple R-Squared:0.717,	Adjusted R-Squared:0.716
+Error terms:
+              Estimate Std. Error t value Pr(>|t|)  
+invMillsRatio   -0.278      0.110   -2.52    0.012 *
+sigma            1.013         NA      NA       NA  
+rho             -0.274         NA      NA       NA  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------
+> 
+> myHeckitIvWe <- heckit( s ~ x1 + x2, y ~ w, data = myData, inst = ~ x1,
++    weights = rep( 0.5, nObs ) )
+Warning message:
+In heckit2fit(selection, outcome, data = data, weights = weights,  :
+  weights are ignored in instrumental variable estimations
+> summary( myHeckitIvWe )
+--------------------------------------------
+Tobit 2 model (sample selection model)
+2-step Heckman / heckit estimation
+1000 observations (542 censored and 458 observed)
+8 free parameters (df = 993)
+Probit selection equation:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.2036     0.0849   -2.40    0.017 *  
+x1            1.9961     0.1738   11.49   <2e-16 ***
+x2            1.0642     0.1161    9.17   <2e-16 ***
+Outcome equation:
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   2.0381     0.1049    19.4   <2e-16 ***
+w             0.9892     0.0423    23.4   <2e-16 ***
+Multiple R-Squared:0.717,	Adjusted R-Squared:0.716
+Error terms:
+              Estimate Std. Error t value Pr(>|t|)  
+invMillsRatio   -0.278      0.111    -2.5    0.012 *
+sigma            1.013         NA      NA       NA  
+rho             -0.274         NA      NA       NA  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+--------------------------------------------
+> 
+> 
+> proc.time()
+   user  system elapsed 
+  2.012   0.051   2.051 

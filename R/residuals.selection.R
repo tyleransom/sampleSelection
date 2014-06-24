@@ -29,8 +29,17 @@ residuals.selection <- function( object, part = "outcome",
    } else if( object$method == "ml" ) {
       mf <- model.frame( object )
       sResponse <- mf[[
-         as.character( formula( object$termsS )[[ 2 ]] ) ]]
+         as.character( formula( object$termsS ) )[2] ]]
       if( part == "selection" ) {
+         sResponseLevels <- levels( as.factor( sResponse ) )
+         if( length( sResponseLevels ) != 2 ) {
+            stop( "internal error: the dependent variable of the 'selection'",
+               " model must have exactly two levels but it has ", 
+               length( sResponseLevels ), " levels.",
+               " Please send a reproducible example to the maintainer",
+               " of the 'sampleSelection' package" )
+         }
+         sResponse <- as.integer( sResponse == sResponseLevels[ 2 ] )
          fitVal <- fitted( object, part = "selection" )
          if( type == "response" ) {
             result <- sResponse - fitVal
@@ -46,12 +55,12 @@ residuals.selection <- function( object, part = "outcome",
       } else if( part == "outcome" ) {
          if( object$tobitType == 2 ) {
             oResponse <- mf[[
-               as.character( formula( object$termsO )[[ 2 ]] ) ]]
+               as.character( formula( object$termsO ) )[2] ]]
          } else if( object$tobitType == 5 ) {
             o1Response <- mf[[
-               as.character( formula( object$termsO1 )[[ 2 ]] ) ]]
+               as.character( formula( object$termsO1 ) )[2] ]]
             o2Response <- mf[[
-               as.character( formula( object$termsO2 )[[ 2 ]] ) ]]
+               as.character( formula( object$termsO2 ) )[2] ]]
             oResponse <- rep( NA, length( sResponse ) )
             oResponse[ sResponse == 0 ] <- o1Response[ sResponse == 0 ]
             oResponse[ sResponse == 1 ] <- o2Response[ sResponse == 1 ]
@@ -59,7 +68,31 @@ residuals.selection <- function( object, part = "outcome",
             stop( "unknown tobit type '",  object$tobitType,
                "' in object$tobitType" )
          }
-         result <- oResponse - fitted( object )
+         fitVal <- fitted( object, part = "outcome" )
+         if( object$binaryOutcome ) {
+            oResponseLevels <- levels( as.factor( oResponse ) )
+            if( length( oResponseLevels ) != 2 ) {
+               stop( "internal error: the dependent variable of the 'outcome'",
+                  " model must have exactly two levels but it has ", 
+                  length( oResponseLevels ), " levels.",
+                  " Please send a reproducible example to the maintainer",
+                  " of the 'sampleSelection' package" )
+            }
+            oResponse <- as.integer( oResponse == oResponseLevels[ 2 ] )
+            if( type == "response" ) {
+               result <- oResponse - fitVal
+            } else if( type == "deviance" ) {
+               result <- ifelse( oResponse == 1,
+                  sqrt( -2 * log( fitVal ) ), -sqrt( -2 * log( 1 - fitVal ) ) )
+            } else if( type == "pearson" ) {
+               result <- ( oResponse - fitVal ) / sqrt( fitVal * ( 1 - fitVal ) )
+            } else {
+               stop( "argument 'type' must be either 'deviance', 'pearson',",
+                  " or 'response'" )
+            }
+         } else {
+            result <- oResponse - fitVal
+         }
       } else {
          stop( "argument 'part' must be either 'outcome' or 'selection'" )
       }
