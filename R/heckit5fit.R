@@ -3,7 +3,12 @@ heckit5fit <- function(selection, outcome1, outcome2,
                     ys=FALSE, yo=FALSE,
                     xs=FALSE, xo=FALSE,
                     mfs=FALSE, mfo=FALSE,
-                    print.level=0, maxMethod = "Newton-Raphson", ... ) {
+                    print.level=0, maxMethod="Newton-Raphson", ... )
+{
+   ## internal function: 2-step estimator for tobit-5 model
+   ## 
+   ## maxMethod     maximization method for probit regression
+   ## 
    checkIMRcollinearity <- function(X, tol=1e6) {
       ## This small utility checks whether inverse Mills ratio is (virtually) collinear to the other explanatory
       ## variables.  IMR is in the last columns.

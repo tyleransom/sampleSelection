@@ -23,60 +23,21 @@ selection <- function(selection, outcome,
    ##              the model frame of outcome and selection equation(s)
    ## First the consistency checks
    ## ...          additional arguments for tobit2fit and tobit5fit
-   type <- 0
-   if(!inherits( selection, "formula" )) {
-      stop( "argument 'selection' must be a formula" )
-   }
-   if( length( selection ) != 3 ) {
-      stop( "argument 'selection' must be a 2-sided formula" )
-   }
-                                        #
-   if(inherits(outcome, "formula")) {
-      if( length( outcome ) != 3 ) {
-         stop( "argument 'outcome' must be a 2-sided formula" )
-      }
-      type <- 2
-   }
-   else if(inherits(outcome, "list")) {
-      if(length(outcome) == 1) {
-         outcome <- outcome[[1]]
-         type <- 2
-      }
-      else if(length(outcome) == 2) {
-         if(inherits(outcome[[1]], "formula")) {
-            if( length( outcome[[1]] ) != 3 ) {
-               stop( "argument 'outcome[[1]]' must be a 2-sided formula" )
-            }
-         }
-         else
-             stop( "argument 'outcome[[1]]' must be either a formula or a list of two formulas" )
-         if(inherits(outcome[[2]], "formula")) {
-            if( length( outcome[[2]] ) != 3 ) {
-               stop( "argument 'outcome[[2]]' must be a 2-sided formula" )
-            }
-         }
-         else
-             stop( "argument 'outcome[[2]]' must be either a formula or a list of two formulas" )
-         type <- 5
-      }
-      else
-          stop("argument 'outcome' must contain 1 or 2 components")
-   }
-   else
-       stop("argument 'outcome' must be either a formula or a list of two formulas" )
+   ## 
+   type <- detectModelType(selection, outcome)
+   if(print.level > 0)
+       cat("Tobit", type, "model\n")
    if(!missing(data)) {
       if(!inherits(data, "environment") & !inherits(data, "data.frame") & !inherits(data, "list")) {
          stop("'data' must be either environment, data.frame, or list (currently a ", class(data), ")")
       }
    }
-   if(print.level > 0)
-       cat("Tobit", type, "model\n")
-   probitEndogenous <- model.frame( selection, data = data)[ , 1 ]
-   probitLevels <- levels( as.factor( probitEndogenous ) )
-   if( length( probitLevels ) != 2 ) {
-      stop( "the left hand side of 'selection' has to contain",
-         " exactly two levels (e.g. FALSE and TRUE)" )
-   }
+   ## probitEndogenous <- model.frame( selection, data = data)[ , 1 ]
+   ## probitLevels <- levels( as.factor( probitEndogenous ) )
+   ## if( length( probitLevels ) != 2 ) {
+   ##    stop( "the left hand side of 'selection' has to contain",
+   ##       " exactly two levels (e.g. FALSE and TRUE)" )
+   ## }
    
    if( !is.null( weights ) && type != 2 ) {
       warning( "argument 'weights' is ignored in type-", type, " models" )
@@ -115,12 +76,18 @@ selection <- function(selection, outcome,
    XS <- model.matrix(mtS, mfS)
    YS <- model.response(mfS)
    YSLevels <- levels( as.factor( YS ) )
-   if( length( YSLevels ) != 2 ) {
-      stop( "the left hand side of the 'selection' formula has to contain",
-         " exactly two levels (e.g. FALSE and TRUE)" )
-   }
-   YS <- as.integer(YS == YSLevels[ 2 ])
-                                        # selection will be kept as integer internally
+                           # Here we might test if the selection
+                           # outcome is a binary variable.  However,
+                           # we do it later to allow model.frame()
+                           # to work with only selected/unselected
+                           # data for prediction purposes.
+   ## if( length( YSLevels ) != 2 ) {
+   ##    stop( "the left hand side of the 'selection' formula has to contain",
+   ##       " exactly two levels (e.g. FALSE and TRUE)" )
+   ## }
+   YS <- as.integer(YS == tail(YSLevels, 1))
+                           # selection will be kept as integer
+                           # internally
    ## check for NA-s.  Because we have to find NA-s in several frames, we cannot use the standard na.
    ## functions here.  Find bad rows and remove them later.
    ## We check XS and YS separately, because mfS may be a data frame with complex structure (e.g.
@@ -174,6 +141,11 @@ selection <- function(selection, outcome,
          mf <- mfS
          mf <- cbind( mf, mfO[ , ! names( mfO ) %in% names( mf ), drop = FALSE ] )
          return( mf[ !badRow, ] )
+      }
+      if( length( YSLevels ) != 2 ) {
+         stop( "the left hand side of the 'selection' formula\n",
+              "has to contain",
+              " exactly two levels (e.g. FALSE and TRUE)" )
       }
       XS <- XS[!badRow,, drop=FALSE]
       YS <- YS[!badRow]
@@ -290,9 +262,14 @@ selection <- function(selection, outcome,
       badRow <- badRow | (apply(XO2, 1, function(v) any(is.na(v))) & (!is.na(YS) & YS == 1))
       if( method == "model.frame" ) {
          mf <- mfS
-         mf <- cbind( mf, mf1[ , ! names( mf1 ) %in% names( mf ) ] )
-         mf <- cbind( mf, mf2[ , ! names( mf2 ) %in% names( mf ) ] )
+         mf <- cbind( mf, mf1[ , ! names( mf1 ) %in% names( mf ), drop = FALSE ] )
+         mf <- cbind( mf, mf2[ , ! names( mf2 ) %in% names( mf ), drop = FALSE ] )
          return( mf[ !badRow, ] )
+      }
+      if( length( YSLevels ) != 2 ) {
+         stop( "the left hand side of the 'selection' formula\n",
+              "has to contain",
+              " exactly two levels (e.g. FALSE and TRUE)" )
       }
       ## indices in for the parameter vector.  These are returned in order to provide the user a way
       ## to extract certain components from the coefficients
@@ -350,7 +327,8 @@ selection <- function(selection, outcome,
                            # levels[1]: selection 1; levels[2]: selection 2
                     )
    }
-   ## now fit the model
+   ## now add the additional parameters into the resulting
+   ## structure
    result <- c(estimation,
                twoStep=list(twoStep),
                start=list(start),

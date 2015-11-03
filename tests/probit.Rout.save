@@ -1,6 +1,6 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -1061,8 +1061,8 @@ Coefficients:
 > summary( lfpResult )
 --------------------------------------------
 Probit binary choice model/Maximum Likelihood estimation
-Newton-Raphson maximisation, 5 iterations
-Return code 1: gradient close to zero
+Newton-Raphson maximisation, 4 iterations
+Return code 2: successive function values within tolerance limit
 Log-Likelihood: -435 
 Model: Y == '1' in contrary to '0'
 753 observations (325 'negative' and 428 'positive') and 10 free parameters (df = 743)
@@ -6920,4 +6920,4 @@ chi2(1) = 2.98 (p=0.0844)
 > 
 > proc.time()
    user  system elapsed 
-  3.592   0.165   3.736 
+  2.868   0.184   3.048 

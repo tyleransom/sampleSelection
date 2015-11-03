@@ -1,4 +1,8 @@
-model.matrix.selection <- function( object, part = "outcome", ... ) {
+model.matrix.selection <- function( object, part = "outcome",
+                                   ... ) {
+   ## part   'outcome' or 'selection'
+   ##        find the design matrix for that submodel
+   ##        
    if( !( part %in% c( "outcome", "selection" ) ) ) {
       stop( "argument 'part' must be either 'outcome' or 'selection'" )
    }
@@ -11,7 +15,7 @@ model.matrix.selection <- function( object, part = "outcome", ... ) {
          response <- model.frame( object$probit )[ , 1 ]
          nObs <- length( response )
          obsNames <- row.names( model.frame( object$probit ) )
-         if( object$tobitType == 2 ) {
+         if( tobitType(object) == 2 ) {
             mm <- model.matrix( object$lm, ... )
             result <- matrix( NA, nrow = nObs, ncol = ncol( mm ) )
             result[ response == 1, ] <- mm
@@ -41,16 +45,18 @@ model.matrix.selection <- function( object, part = "outcome", ... ) {
       } else {
          stop( "argument 'part' must be either 'outcome' or 'selection'" )
       }
-   # maximum likelihood estimation
-   } else if( object$method == "ml" ) {
+   }
+   ## maximum likelihood estimation
+   else if( object$method == "ml" ) {
       if( part == "selection" ) {
          if( ! is.null( object$xs ) ) {
             result <- object$xs
          } else {
             mf <- model.frame( object )
-            result <- model.matrix( object$termsS, mf )
+            result <- model.matrix( object$termsS, mf)
          }
-      } else if( part == "outcome" ) {
+      }
+      else if( part == "outcome" ) {
          response <- model.frame( object )[ , 1 ]
          nObs <- length( response )
          if( object$tobitType == 2 ) {
@@ -62,8 +68,9 @@ model.matrix.selection <- function( object, part = "outcome", ... ) {
                result <- model.matrix( object$termsO, mf )
                result[ response == 0, ] <- NA
             }
-         } else if( object$tobitType == 5 ) {
-            result <- list()
+         }
+         else if( object$tobitType == 5 ) {
+            result <- list("1"=NULL, "2"=NULL)
             if( ! is.null( object$xo1 ) && ! is.null( object$xo2 ) ) {
                result[[ 1 ]] <- object$xo1
                result[[ 2 ]] <- object$xo2
@@ -75,6 +82,19 @@ model.matrix.selection <- function( object, part = "outcome", ... ) {
                result[[ 1 ]][ response == 1, ] <- NA
                result[[ 2 ]][ response == 0, ] <- NA
             }
+         }
+         else if(tobitType(object) == "treatment" ) {
+            ## It is like tobit5, just one outcome, and everything is
+            ## observed 
+              if( ! is.null( object$xo ) ) {
+                 result <- object$xo
+              }
+              else {
+                 mf <- model.frame( object, ... )
+                           # '...' passes 'data' argument
+                 attributes( mf )$na.action <- na.pass
+                 result <- model.matrix( object$termsO, mf)
+              }
          }
       }
    }

@@ -23,11 +23,9 @@ invMillsRatio <- function( x, all = FALSE ) {
       result$delta0 <- result$IMR0 * ( result$IMR0 + linearPredictors(x))
 
    } else if(inherits(x, "vglm")) {
-      library( VGAM )
       if( x@family@blurb[1] != "Bivariate probit model\n"  ) {
          stop( errorMessage )
       }
-      library( mvtnorm )
       result <- data.frame( no = 1:nrow( x@predictors ),
          row.names = rownames( x@predictors ) )
       if( length( x@misc$link ) == 1 ) {

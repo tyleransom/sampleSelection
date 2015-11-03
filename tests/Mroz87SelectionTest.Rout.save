@@ -1,6 +1,6 @@
 
-R version 3.1.0 (2014-04-10) -- "Spring Dance"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.2.2 (2015-08-14) -- "Fire Safety"
+Copyright (C) 2015 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -76,7 +76,7 @@ I(exper^2)   0.000137   0.001878    0.07     0.94
 educ         0.417017   0.100250    4.16  3.6e-05 ***
 city         0.443838   0.315898    1.41     0.16    
 Multiple R-Squared:0.126,	Adjusted R-Squared:0.116
-Error terms:
+   Error terms:
               Estimate Std. Error t value Pr(>|t|)
 invMillsRatio   -1.098      1.266   -0.87     0.39
 sigma            3.200         NA      NA       NA
@@ -4152,8 +4152,8 @@ S:(Intercept)          S:age     S:I(age^2)       S:faminc     S:kidsTRUE
 --------------------------------------------
 Tobit 2 model (sample selection model)
 Maximum Likelihood estimation
-Newton-Raphson maximisation, 6 iterations
-Return code 1: gradient close to zero
+Newton-Raphson maximisation, 5 iterations
+Return code 2: successive function values within tolerance limit
 Log-Likelihood: -1581 
 753 observations (325 censored and 428 observed)
 13 free parameters (df = 740)
@@ -4172,7 +4172,7 @@ exper        0.027868   0.061551    0.45    0.65
 I(exper^2)  -0.000104   0.001839   -0.06    0.95    
 educ         0.457005   0.073230    6.24 4.4e-10 ***
 city         0.446529   0.315921    1.41    0.16    
-Error terms:
+   Error terms:
       Estimate Std. error t value Pr(> t)    
 sigma    3.108      0.114    27.3  <2e-16 ***
 rho     -0.132      0.165    -0.8    0.42    
@@ -7458,7 +7458,7 @@ educ         0.109066   0.015523    7.03  4.8e-12 ***
 exper        0.043887   0.016261    2.70   0.0071 ** 
 I(exper^2)  -0.000859   0.000439   -1.96   0.0507 .  
 Multiple R-Squared:0.157,	Adjusted R-Squared:0.149
-Error terms:
+   Error terms:
               Estimate Std. Error t value Pr(>|t|)
 invMillsRatio   0.0323     0.1336    0.24     0.81
 sigma           0.6636         NA      NA       NA
@@ -7490,8 +7490,8 @@ F-statistic:  288 on 5 and 423 DF,  p-value: <2e-16
 > print( summary( wooldridge$probit ) )
 --------------------------------------------
 Probit binary choice model/Maximum Likelihood estimation
-Newton-Raphson maximisation, 5 iterations
-Return code 1: gradient close to zero
+Newton-Raphson maximisation, 4 iterations
+Return code 2: successive function values within tolerance limit
 Log-Likelihood: -401 
 Model: Y == '1' in contrary to '0'
 753 observations (325 'negative' and 428 'positive') and 8 free parameters (df = 745)
@@ -12237,7 +12237,7 @@ Outcome equation:
 educ         0.108350   0.014861    7.29 3.1e-13 ***
 exper        0.042837   0.014879    2.88   0.004 ** 
 I(exper^2)  -0.000837   0.000417   -2.01   0.045 *  
-Error terms:
+   Error terms:
       Estimate Std. error t value Pr(> t)    
 sigma   0.6634     0.0227   29.21  <2e-16 ***
 rho     0.0266     0.1471    0.18    0.86    
@@ -15473,4 +15473,4 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > 
 > proc.time()
    user  system elapsed 
-  3.575   0.198   3.765 
+  3.540   0.416   3.953 

@@ -2,12 +2,14 @@ summary.selection <- function(object, ...) {
    ## object      object of class "selection"
 
    if( object$method == "ml" ) {
-      s <- maxLik:::summary.maxLik(object, ...)
+      s <- NextMethod( "summary", object, ...)
    } else if( object$method == "2step" )  {
       s <- list()  # list for results that will be returned
       RSq <- function(model, intercept) {
-         ## Calculate r-squared.  Note that the way lm() finds R2 is a bit naive -- it checks for intercept
-         ## in the formula, but not whether the intercept is present in any of the data vectors (or matrices)
+         ## Calculate r-squared.  Note that the way lm() finds R2 is
+         ## a bit naive -- it checks for intercept
+         ## in the formula, but not whether the intercept is present
+         ## in any of the data vectors (or matrices)
          if(class(model) == "lm") {
             y <- model.response(model.frame(model))
             if(intercept) {
@@ -79,11 +81,20 @@ print.summary.selection <- function(x,
       cat( x$param$nObs, "observations" )
       if( x$tobitType == 2 ) {
          cat( " (", x$param$N0, " censored and ", x$param$N1, " observed)\n",
-            sep = "" )
-      } else {
-         cat( ": ", x$param$N1, " selection 1 (", x$param$levels[1], ") and ",
-            x$param$N2, " selection 2 (", x$param$levels[2], ")\n", sep = "" )
+             sep = "" )
       }
+      else if(x$tobitType == 5) {
+         cat( ": ", x$param$N1, " selection 1 (", x$param$levels[1], ") and ",
+             x$param$N2, " selection 2 (", x$param$levels[2], ")\n", sep = "" )
+      }
+      else if(x$tobitType == "treatment") {
+         cat( ": ", x$param$N0, " non-participants (selection ",
+             x$param$levels[1], ") and ",
+             x$param$N1, " participants (selection ",
+             x$param$levels[2], ")\n", sep = "", fill=TRUE)
+      }
+      else
+         stop("Tobit type must be either '2', '5', or 'treatment'")
       cat(sum(x$activePar), "free parameters" )
       cat( " (df = ", x$param$df, ")\n", sep="")
       if(part == "full") {
@@ -118,8 +129,18 @@ print.summary.selection <- function(x,
             "\n", sep="")
          }
       }
+      else if(x$tobitType == "treatment") {
+         cat("Outcome equation:\n")
+         printCoefmat( x$estimate[ x$param$index$betaO,,drop=FALSE],
+            signif.legend = ( part != "full" ), digits = digits )
+         if( x$method == "2step" ) {
+            cat("Multiple R-Squared:", round(x$rSquared$R2, digits),
+               ",\tAdjusted R-Squared:", round(x$rSquared$R2adj, digits),
+               "\n", sep="")
+         }
+      }
       if(part=="full") {
-         cat("Error terms:\n")
+         cat("   Error terms:\n")
          printCoefmat( x$estimate[ x$param$index$errTerms,,drop=FALSE],
             digits = digits )
       }

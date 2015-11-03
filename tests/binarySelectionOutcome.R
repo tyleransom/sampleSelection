@@ -1,9 +1,11 @@
 
 options( digits = 3 )
+library( "sampleSelection" )
+set.seed(0)
+                           # Note: library() may change RNG state!
 
 ## Leeman Lucas (and many others): binary outcome
 
-set.seed(0)
 N <- 500
 rho <- 0.7
 library( "mvtnorm" )
@@ -16,7 +18,6 @@ simDat$yoX <- -1 + 2 * simDat$xo + eps[,2]
 simDat$yo <- factor( (simDat$yoX > 0) * (simDat$ys > 0))
                            # binary outcome, only observable if ys>0
 print(table(simDat$ys, simDat$yo, exclude=NULL))
-library( "sampleSelection" )
 
 # estimation with BHHH method
 ss <- selection( ys ~ xs, yo ~ xo, data = simDat, steptol = 1e-12 )

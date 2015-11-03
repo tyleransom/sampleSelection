@@ -1,6 +1,7 @@
 \name{heckit2fit}
 \alias{heckit2fit}
 \alias{heckit5fit}
+\alias{heckitTfit}
 
 \title{2-step Heckman (heckit) estimation}
 
@@ -21,9 +22,11 @@ heckit2fit( selection, outcome, data=sys.frame(sys.parent()),
 heckit5fit( selection, outcome1, outcome2, data = sys.frame(sys.parent()),
    ys = FALSE, yo = FALSE, xs = FALSE, xo = FALSE, mfs = FALSE,
    mfo = FALSE, print.level = 0, maxMethod = "Newton-Raphson", ... )
+
+heckitTfit(selection, outcome, data=sys.frame(sys.parent()),
+   ys=FALSE, yo=FALSE, xs=FALSE, xo=FALSE, mfs=FALSE, mfo=FALSE,
+   print.level=0, maxMethod="Newton-Raphson", ... )
 }
-
-
 \arguments{
   \item{selection}{formula for the probit estimation (1st step)
     (see \code{\link{selection}}).}

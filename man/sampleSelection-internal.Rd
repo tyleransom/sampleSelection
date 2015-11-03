@@ -1,5 +1,8 @@
 \name{sampleSelection-internal}
 \alias{sampleSelection-internal}
+\alias{tobitTfit}
+\alias{lambda}
+\alias{CB}
 % Document the following:
 
 %%%%

@@ -142,7 +142,6 @@ tobit2Bfit <- function(YS, XS, YO, XO, start,
    # range(numericGradient(loglik, t0=start)-gradlik(start))
    
    ## estimate
-   library(mvtnorm)
    result <- maxLik(loglik, 
                     start=start,
                     method=maxMethod,

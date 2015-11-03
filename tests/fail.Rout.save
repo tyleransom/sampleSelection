@@ -1,6 +1,6 @@
 
-R version 3.0.2 (2013-09-25) -- "Frisbee Sailing"
-Copyright (C) 2013 The R Foundation for Statistical Computing
+R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
+Copyright (C) 2014 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -31,20 +31,20 @@ https://r-forge.r-project.org/projects/maxlik/
 Error in eval(expr, envir, enclos) : object 's' not found
 > 
 > try( selection( "s ~ z1", y ~ x1 ) )
-Error in selection("s ~ z1", y ~ x1) : 
-  argument 'selection' must be a formula
+Error in detectModelType(selection, outcome) : 
+  argument 'selection' must be a formula in function 'selection()'
 > 
 > try( selection( ~ z1, y ~ x1 ) )
-Error in selection(~z1, y ~ x1) : 
-  argument 'selection' must be a 2-sided formula
+Error in detectModelType(selection, outcome) : 
+  argument 'selection' must be a 2-sided formula in function 'selection()'
 > 
 > try( selection( s ~ z1, "y ~ x1" ) )
-Error in selection(s ~ z1, "y ~ x1") : 
-  argument 'outcome' must be either a formula or a list of two formulas
+Error in detectModelType(selection, outcome) : 
+  argument 'outcome' must be either a formula or a list of two formulas in function 'selection()'
 > 
 > try( selection( s ~ z1, ~ x1 ) )
-Error in selection(s ~ z1, ~x1) : 
-  argument 'outcome' must be a 2-sided formula
+Error in detectModelType(selection, outcome) : 
+  argument 'outcome' must be a 2-sided formula in function 'selection()'
 > 
 > # tobit 5
 > 
@@ -52,30 +52,30 @@ Error in selection(s ~ z1, ~x1) :
 Error in eval(expr, envir, enclos) : object 's' not found
 > 
 > try( selection( "s ~ z1", list( y1 ~ x1, y2 ~ x1 ) ) )
-Error in selection("s ~ z1", list(y1 ~ x1, y2 ~ x1)) : 
-  argument 'selection' must be a formula
+Error in detectModelType(selection, outcome) : 
+  argument 'selection' must be a formula in function 'selection()'
 > 
 > try( selection( ~ z1, list( y1 ~ x1, y2 ~ x1 ) ) )
-Error in selection(~z1, list(y1 ~ x1, y2 ~ x1)) : 
-  argument 'selection' must be a 2-sided formula
+Error in detectModelType(selection, outcome) : 
+  argument 'selection' must be a 2-sided formula in function 'selection()'
 > 
 > try( selection( s ~ z1, list( "y1 ~ x1", y2 ~ x1 ) ) )
-Error in selection(s ~ z1, list("y1 ~ x1", y2 ~ x1)) : 
-  argument 'outcome[[1]]' must be either a formula or a list of two formulas
+Error in detectModelType(selection, outcome) : 
+  argument 'outcome[[1]]' must be a formula in function 'selection()'
 > 
 > try( selection( s ~ z1, list( ~ x1, y2 ~ x1 ) ) )
-Error in selection(s ~ z1, list(~x1, y2 ~ x1)) : 
-  argument 'outcome[[1]]' must be a 2-sided formula
+Error in detectModelType(selection, outcome) : 
+  argument 'outcome[[1]]' must be a 2-sided formula in function 'selection()'
 > 
 > try( selection( s ~ z1, list( y1 ~ x1, "y2 ~ x1" ) ) )
-Error in selection(s ~ z1, list(y1 ~ x1, "y2 ~ x1")) : 
-  argument 'outcome[[2]]' must be either a formula or a list of two formulas
+Error in detectModelType(selection, outcome) : 
+  argument 'outcome[[2]]' must be a formula in function 'selection()'
 > 
 > try( selection( s ~ z1, list( y1 ~ x1, ~ x1 ) ) )
-Error in selection(s ~ z1, list(y1 ~ x1, ~x1)) : 
-  argument 'outcome[[2]]' must be a 2-sided formula
+Error in detectModelType(selection, outcome) : 
+  argument 'outcome[[2]]' must be a 2-sided formula in function 'selection()'
 > 
 > 
 > proc.time()
    user  system elapsed 
-  1.787   0.068   1.835 
+  2.825   0.065   2.878 

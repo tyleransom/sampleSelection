@@ -5,7 +5,7 @@ vcov.selection <- function( object, part = "full", ... ) {
    }
 
    if( object$method == "ml" ){
-      result <- maxLik:::vcov.maxLik( object, ... )
+      result <- NextMethod( "vcov", object, ...)
    } else if( object$method == "2step" ) {
       result <- object$vcov
    }

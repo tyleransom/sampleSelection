@@ -24,12 +24,13 @@
    the design matrix of the selection equation is returned.
 
    If argument \code{part} is \code{"outcome"},
-   the design matrix of the outcome equation of a tobit-2 model
-   or a list that contains the design matrices of the (two) outcome equations
-   of a tobit-5 model is returned.
-   All values of observations (rows of the design matrix)
-   that were not selected for estimating the corresponding outcome equation
-   are set to \code{NA}.
+   the design matrix of the outcome equation (tobit-2)
+   or a list of two outcome matrices (tobit-5 model) is returned.
+   All unobserved outcomes, including the corresponding explanatory
+   variables
+   are set to \code{NA}, even in case where
+   valid values were supplied
+   for estimation.
 }
 
 \author{Arne Henningsen}

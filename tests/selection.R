@@ -23,6 +23,8 @@ t5Dat$xo1[sample(N, NNA)] <- NA
 t5Dat$xo2[sample(N, NNA)] <- NA
 t5Dat$yo1[sample(N, NNA)] <- NA
 t5Dat$yo2[sample(N, NNA)] <- NA
+
+## 2-step estimation
 testTobit5TwoStep <- selection(ys~xs, list(yo1 ~ xo1, yo2 ~ xo2), 
    method = "2step", data = t5Dat )
 print( testTobit5TwoStep )
@@ -114,6 +116,59 @@ mfTestTobit5TwoStep <- model.frame( testTobit5TwoStep )
 print( mfTestTobit5TwoStep )
 try( logLik( testTobit5TwoStep ) )
 
+# the same dependent variables in both of the outcome equations
+testTobit5STwoStep <- selection( ys~xs, list(yo1 ~ xo1, yo2 ~ xo1 ),
+   method = "2step", data = t5Dat )
+print( testTobit5STwoStep )
+print( summary( testTobit5STwoStep ) )
+nobs( testTobit5STwoStep )
+nObs( testTobit5STwoStep )
+fitted( testTobit5STwoStep, part = "outcome" )
+residuals( testTobit5STwoStep, part = "outcome" )
+all.equal( residuals( testTobit5STwoStep ),
+   residuals( testTobit5STwoStep, part = "outcome" ) )
+t5SSamp <- rownames( t5Dat ) %in% names( residuals( testTobit5STwoStep ) )
+round( predict( testTobit5STwoStep, newdata = t5Dat, type = "unconditional" ), 3 )
+all( is.na( predict( testTobit5STwoStep, type = "unconditional" )[
+   cbind( t5Dat$ys, !t5Dat$ys )[ t5SSamp, ] ] ) )
+all.equal( predict( testTobit5STwoStep, type = "unconditional" )[
+   !t5Dat$ys[ t5SSamp ], 1 ], 
+   predict( testTobit5STwoStep, newdata = t5Dat[ t5SSamp & !t5Dat$ys, ],
+      type = "unconditional" )[ , 1 ] )
+all.equal( predict( testTobit5STwoStep, type = "unconditional" )[
+   t5Dat$ys[ t5SSamp ], 2 ], 
+   predict( testTobit5STwoStep, newdata = t5Dat[ t5SSamp & t5Dat$ys, ],
+      type = "unconditional" )[ , 2 ] )
+all.equal(
+   rowSums( predict( testTobit5STwoStep, type = "conditional" )[ , c(1,4)], na.rm = TRUE ),
+   fitted( testTobit5STwoStep ), check.attributes = FALSE )
+all.equal(
+   predict( testTobit5STwoStep, newdata = t5Dat[ , c( "xo1", "xo2" ) ],
+      type = "unconditional" ),
+   predict( testTobit5STwoStep, newdata = t5Dat, type = "unconditional" ) )
+round( predict( testTobit5STwoStep, newdata = t5Dat, type = "conditional" ), 3 )
+all( is.na( predict( testTobit5STwoStep, type = "conditional" )[
+   cbind( t5Dat$ys, t5Dat$ys, !t5Dat$ys, !t5Dat$ys )[ t5SSamp, ] ] ) )
+all.equal( predict( testTobit5STwoStep, type = "conditional" )[
+   !t5Dat$ys[ t5SSamp ], 1 ], 
+   predict( testTobit5STwoStep, newdata = t5Dat[ t5SSamp & !t5Dat$ys, ],
+      type = "conditional" )[ , 1 ] )
+all.equal( predict( testTobit5STwoStep, type = "conditional" )[
+   t5Dat$ys[ t5SSamp ], 4 ], 
+   predict( testTobit5STwoStep, newdata = t5Dat[ t5SSamp & t5Dat$ys, ],
+      type = "conditional" )[ , 4 ] )
+all.equal(
+   predict( testTobit5STwoStep, newdata = t5Dat[ , c( "xs", "xo1", "xo2" ) ],
+      type = "conditional" ),
+   predict( testTobit5STwoStep, newdata = t5Dat, type = "conditional" ) )
+mmsTestTobit5STwoStep <- model.matrix( testTobit5STwoStep, part = "selection" )
+print( mmsTestTobit5STwoStep )
+mmoTestTobit5STwoStep <- model.matrix( testTobit5STwoStep, part = "outcome" )
+print( mmoTestTobit5STwoStep )
+mfTestTobit5STwoStep <- model.frame( testTobit5STwoStep )
+print( mfTestTobit5STwoStep )
+
+## Tobit-5: ML estimatiom
 testTobit5Ml <- selection(ys~xs, list(yo1 ~ xo1, yo2 ~ xo2), method = "ml",
    data = t5Dat )
 print( testTobit5Ml )
@@ -241,6 +296,58 @@ all.equal( mfTestTobit5Ml, mfTestTobit5MlMf )
 all.equal( selection( ys~xs, list( yo1 ~ xo1, yo2 ~ xo2 ),
    method = "model.frame", data = t5Dat ), mfTestTobit5MlMf )
 
+# the same dependent variables in both of the outcome equations
+testTobit5SMl <- selection( ys~xs, list(yo1 ~ xo1, yo2 ~ xo1 ), method = "ml",
+   data = t5Dat )
+print( testTobit5SMl )
+print( summary( testTobit5SMl ) )
+nobs( testTobit5SMl )
+nObs( testTobit5SMl )
+fitted( testTobit5SMl, part = "outcome" )
+residuals( testTobit5SMl, part = "outcome" )
+all.equal( residuals( testTobit5SMl ),
+   residuals( testTobit5SMl, part = "outcome" ) )
+round( predict( testTobit5SMl, newdata = t5Dat, type = "unconditional" ), 3 )
+all( is.na( predict( testTobit5SMl, type = "unconditional" )[
+   cbind( t5Dat$ys, !t5Dat$ys )[ t5SSamp, ] ] ) )
+all.equal( predict( testTobit5SMl, type = "unconditional" )[
+   !t5Dat$ys[ t5SSamp ], 1 ], 
+   predict( testTobit5SMl, newdata = t5Dat[ t5SSamp & !t5Dat$ys, ],
+      type = "unconditional" )[ , 1 ] )
+all.equal( predict( testTobit5SMl, type = "unconditional" )[
+   t5Dat$ys[ t5SSamp ], 2 ], 
+   predict( testTobit5SMl, newdata = t5Dat[ t5SSamp & t5Dat$ys, ],
+      type = "unconditional" )[ , 2 ] )
+all.equal(
+   rowSums( predict( testTobit5SMl, type = "unconditional" ), na.rm = TRUE ),
+   fitted( testTobit5SMl ), check.attributes = FALSE )
+all.equal(
+   predict( testTobit5SMl, newdata = t5Dat[ , c( "xo1", "xo2" ) ],
+      type = "unconditional" ),
+   predict( testTobit5SMl, newdata = t5Dat, type = "unconditional" ) )
+round( predict( testTobit5SMl, newdata = t5Dat, type = "conditional" ), 3 )
+all( is.na( predict( testTobit5SMl, type = "conditional" )[
+   cbind( t5Dat$ys, t5Dat$ys, !t5Dat$ys, !t5Dat$ys )[ t5SSamp, ] ] ) )
+all.equal( predict( testTobit5SMl, type = "conditional" )[
+   !t5Dat$ys[ t5SSamp ], 1 ], 
+   predict( testTobit5SMl, newdata = t5Dat[ t5SSamp & !t5Dat$ys, ],
+      type = "conditional" )[ , 1 ] )
+all.equal( predict( testTobit5SMl, type = "conditional" )[
+   t5Dat$ys[ t5SSamp ], 4 ], 
+   predict( testTobit5SMl, newdata = t5Dat[ t5SSamp & t5Dat$ys, ],
+      type = "conditional" )[ , 4 ] )
+all.equal(
+   predict( testTobit5SMl, newdata = t5Dat[ , c( "xs", "xo1", "xo2" ) ],
+      type = "conditional" ),
+   predict( testTobit5SMl, newdata = t5Dat, type = "conditional" ) )
+mmsTestTobit5SMl <- model.matrix( testTobit5SMl, part = "selection" )
+print( mmsTestTobit5SMl )
+mmoTestTobit5SMl <- model.matrix( testTobit5SMl, part = "outcome" )
+print( mmoTestTobit5SMl )
+mfTestTobit5SMl <- model.frame( testTobit5SMl )
+print( mfTestTobit5SMl )
+logLik( testTobit5SMl )
+
 # factors as dependent variable (from Achim Zeileis)
 testTobit5FacTwoStep <- selection( factor( ys ) ~ xs,
    list( yo1 ~ xo1, yo2 ~ xo2 ), method = "2step", data = t5Dat )
@@ -254,12 +361,12 @@ all.equal( testTobit5YesTwoStep$param[ -c( 12 ) ],
 
 testTobit5FacMl <- selection( factor( ys ) ~ xs,
    list( yo1 ~ xo1, yo2 ~ xo2 ), data = t5Dat )
-all.equal( testTobit5FacMl[ -c( 14, 17, 18 ) ],
-   testTobit5Ml[ -c( 14, 17, 18 ) ] )
+all.equal( testTobit5FacMl[ -c( 15, 18, 19 ) ],
+   testTobit5Ml[ -c( 15, 18, 19 ) ] )
 testTobit5YesMl <- selection( factor( ys, labels = c( "no", "yes" ) ) ~ xs,
    list( yo1 ~ xo1, yo2 ~ xo2 ), data = t5Dat )
-all.equal( testTobit5YesMl[ -c( 14, 16, 17, 18 ) ],
-   testTobit5Ml[ -c( 14, 16, 17, 18 ) ] )
+all.equal( testTobit5YesMl[ -c( 15, 17, 18, 19 ) ],
+   testTobit5Ml[ -c( 15, 17, 18, 19 ) ] )
 all.equal( testTobit5YesMl$param[ -c( 10 ) ], testTobit5Ml$param[ -c( 10 ) ] )
 
 # with pre-defined list of outcome equations (works since revision 1420)
@@ -275,12 +382,12 @@ testTobit5LiYesTwoStep <- selection( factor( ys, labels = c( "no", "yes" ) )
 all.equal( testTobit5LiYesTwoStep[ -8 ],  testTobit5YesTwoStep[ -8 ] )
 
 testTobit5LiMl <- selection( ys ~ xs, oList, data = t5Dat )
-all.equal( testTobit5LiMl[ -17 ],  testTobit5Ml[ -17 ] )
+all.equal( testTobit5LiMl[ -18 ],  testTobit5Ml[ -18 ] )
 testTobit5LiFacMl <- selection( factor( ys ) ~ xs, oList, data = t5Dat )
-all.equal( testTobit5LiFacMl[ -17 ],  testTobit5FacMl[ -17 ] )
+all.equal( testTobit5LiFacMl[ -18 ],  testTobit5FacMl[ -18 ] )
 testTobit5LiYesMl <- selection( factor( ys, labels = c( "no", "yes" ) )
    ~ xs, oList, data = t5Dat )
-all.equal( testTobit5LiYesMl[ -17 ],  testTobit5YesMl[ -17 ] )
+all.equal( testTobit5LiYesMl[ -18 ],  testTobit5YesMl[ -18 ] )
 
 # return just the model.frame
 selection( factor( ys ) ~ xs, list( yo1 ~ xo1, yo2 ~ xo2 ),
@@ -303,7 +410,7 @@ all.equal( testTobit5TwoStepWe[-8], testTobit5TwoStep[-8] )
 
 testTobit5MlWe <- selection( ys ~ xs, list( yo1 ~ xo1, yo2 ~ xo2), 
    method = "ml", weights = rep( 0.5, N ), data = t5Dat )
-all.equal( testTobit5MlWe[-17], testTobit5Ml[-17] )
+all.equal( testTobit5MlWe[-18], testTobit5Ml[-18] )
 
 ## data directly in the workspace
 ys <- t5Dat$ys
@@ -636,7 +743,7 @@ all.equal(
    residuals( testTobit2TwoStep, part = "selection", type = "response" ) )
 
 testTobit2FacMl <- selection( factor( ys ) ~ xs, yo ~ xo, data = t2Dat )
-all.equal( testTobit2FacMl[-c(17,18)], testTobit2Ml[-c(17,18)] )
+all.equal( testTobit2FacMl[-c(18,19)], testTobit2Ml[-c(18,19)] )
 all.equal( fitted( testTobit2FacMl, part = "selection" ),
    fitted( testTobit2Ml, part = "selection" ) )
 all.equal(
@@ -651,7 +758,7 @@ all.equal(
 
 testTobit2YesMl <- selection( factor( ys, labels = c( "no", "yes" ) ) ~ xs,
    yo ~ xo, data = t2Dat )
-all.equal( testTobit2YesMl[-c(16:18)], testTobit2Ml[-c(16:18)] )
+all.equal( testTobit2YesMl[-c(17:19)], testTobit2Ml[-c(17:19)] )
 all.equal( testTobit2YesMl$param[-9], testTobit2Ml$param[-9] )
 all.equal( fitted( testTobit2YesMl, part = "selection" ),
    fitted( testTobit2Ml, part = "selection" ) )
@@ -682,7 +789,8 @@ testTobit2MlStart <- selection( ys ~ xs, yo ~ xo, data = t2Dat, method = "ml",
    start = init )
 print( summary( testTobit2MlStart ) )
                            # Note: should be only 1 iteration
-all.equal( testTobit2Ml[ -c(2,9,14,15,17)], testTobit2MlStart[ -c(2,9,14,15,17)] )
+all.equal( testTobit2Ml[ -c(2,5,6,9,15,16,18)],
+   testTobit2MlStart[ -c(2,5,6,9,15,16,18)], tol = 1e-5 )
 
 ## Chris Hane: dummy variable (factor) as explanatory variable
 t2Dat$xF <- rbinom( nrow( t2Dat ), 1, 0.5 )

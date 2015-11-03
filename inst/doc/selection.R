@@ -281,7 +281,8 @@ rhieML <- selection( selectEq, outcomeEq, data = RandHIE[ subsample, ] )
 ###################################################
 greeneStart <- selection( lfp ~ age + I( age^2 ) + faminc + kids + educ,
    wage ~ exper + I( exper^2 ) + educ + city,
-   data = Mroz87, start = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.9))
+   data = Mroz87, start = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.9),
+   control = list( qrtol = 1e-14 ) )
 
 cat( greeneStart$message )
 
@@ -305,7 +306,7 @@ cat( greeneStartSANN$message )
 
 
 ###################################################
-### code chunk number 25: selection.Rnw:1212-1214
+### code chunk number 25: selection.Rnw:1213-1215
 ###################################################
 logLik( greeneML )
 logLik( greeneStartSANN )
@@ -318,7 +319,7 @@ set.seed(0)
 x <- runif(1000)
 y <- x + rnorm(1000)
 ys <- y > 0
-tobitML <- selection(ys~x, y~x)
+tobitML <- selection( ys~x, y~x, control = list( qrtol = 1e-14 ) )
 cat( tobitML$message )
 coef( summary( tobitML ) )[ "rho", ]
 
