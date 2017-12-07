@@ -1,7 +1,8 @@
 heckit2fit <- function( selection, outcome,
                    data=sys.frame(sys.parent()),
                    weights = NULL, inst = NULL,
-                   print.level = 0, maxMethod="Newton-Raphson" ) {
+                       printLevel=print.level, print.level = 0,
+                       maxMethod="Newton-Raphson" ) {
    ## selection     formula, selection equation
    ## 
    checkIMRcollinearity <- function(X, tol=1e6) {

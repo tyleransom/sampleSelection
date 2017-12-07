@@ -47,8 +47,11 @@ fitted.selection <- function( object, part = "outcome", ... ) {
             stop( "unknown tobit type '",  object$tobitType,
                "' in object$tobitType" )
          } 
-         if( object$binaryOutcome ) {
+         if( object$outcomeVar == "binary" ) {
             result <- pnorm( result )
+         } else if( object$outcomeVar != "continuous" ) {
+            stop( "Internal error ('fitted'). Please contact the maintainer",
+               " of this package" )
          }
       } else {
          stop( "argument 'part' must be either 'outcome' or 'selection'" )

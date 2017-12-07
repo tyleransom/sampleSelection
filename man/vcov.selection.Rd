@@ -11,13 +11,15 @@
 }
 \arguments{
    \item{object}{object of class "selection".}
-   \item{part}{character string indication which parts
+   \item{part}{character string indicating which parts
       of the variance-covariance matrix to extract:
-      "full" for all estimated parameters (selection estimates,
-      outcome estimates, error variance and correlation)
-      or "outcome" for the outcome estimates only
+      \code{"full"} for all parameters (selection estimates,
+      outcome estimates, error variance and correlation,
+      including parameters that were calculated based on estimated parameters),
+      \code{"outcome"} for the outcome estimates only
       (including the coefficient of the inverse Mill's ratio
-      in case of a two-step estimation).}
+      in case of a two-step estimation), or
+      \code{"est"} for all estimated parameters.}
    \item{\dots}{currently not used.}
 }
 \details{

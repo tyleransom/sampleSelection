@@ -2,7 +2,7 @@
 ### Encoding: UTF-8
 
 ###################################################
-### code chunk number 1: selection.Rnw:67-68
+### code chunk number 1: selection.Rnw:68-69
 ###################################################
 options( prompt = "R> ", ctinue = "+  " )
 
@@ -28,13 +28,13 @@ yo <- yoX*(ys > 0)
 
 
 ###################################################
-### code chunk number 4: selection.Rnw:700-701
+### code chunk number 4: selection.Rnw:701-702
 ###################################################
   m <- selection(ys~xs, yo ~xo)
 
 
 ###################################################
-### code chunk number 5: selection.Rnw:719-730
+### code chunk number 5: selection.Rnw:720-731
 ###################################################
 par(mar=c(3,3,0,0) + 0.1,
     mgp=c(2,1,0))
@@ -50,7 +50,7 @@ abline(a=cf[1], b=cf[2], lty=3)
 
 
 ###################################################
-### code chunk number 6: selection.Rnw:742-745
+### code chunk number 6: selection.Rnw:743-746
 ###################################################
 yoX <- xs + eps[,2]
 yo <- yoX*(ys > 0)
@@ -58,7 +58,7 @@ summary(selection(ys ~ xs, yo ~ xs))
 
 
 ###################################################
-### code chunk number 7: selection.Rnw:764-775
+### code chunk number 7: selection.Rnw:765-776
 ###################################################
 par(mar=c(3,3,0,0) + 0.1,
     mgp=c(2,1,0))
@@ -74,7 +74,7 @@ abline(a=cf[1], b=cf[2], lty=3)
 
 
 ###################################################
-### code chunk number 8: selection.Rnw:801-806
+### code chunk number 8: selection.Rnw:802-807
 ###################################################
   xs <- runif(500, -5, 5)
   ys <- xs + eps[,1] > 0
@@ -84,13 +84,13 @@ yoX <- xs + eps[,2]
 
 
 ###################################################
-### code chunk number 9: selection.Rnw:808-809
+### code chunk number 9: selection.Rnw:809-810
 ###################################################
   m <- selection(ys ~ xs, yo ~ xs)
 
 
 ###################################################
-### code chunk number 10: selection.Rnw:822-833
+### code chunk number 10: selection.Rnw:823-834
 ###################################################
 par(mar=c(3,3,0,0) + 0.1,
     mgp=c(2,1,0))
@@ -106,7 +106,7 @@ abline(a=cf[1], b=cf[2], lty=3)
 
 
 ###################################################
-### code chunk number 11: selection.Rnw:848-859
+### code chunk number 11: selection.Rnw:849-860
 ###################################################
   set.seed(0)
   vc <- diag(3)
@@ -122,13 +122,13 @@ abline(a=cf[1], b=cf[2], lty=3)
 
 
 ###################################################
-### code chunk number 12: selection.Rnw:874-875
+### code chunk number 12: selection.Rnw:875-876
 ###################################################
   summary(selection(ys~xs, list(yo1 ~ xo1, yo2 ~ xo2)))
 
 
 ###################################################
-### code chunk number 13: selection.Rnw:885-896
+### code chunk number 13: selection.Rnw:886-897
 ###################################################
 set.seed(5)
 eps <- rmvnorm(1000, rep(0, 3), vc)
@@ -155,7 +155,7 @@ summary(tmp <- selection(ys~xs, list(yo1 ~ xs, yo2 ~ xs), iterlim=20))
 
 
 ###################################################
-### code chunk number 15: selection.Rnw:928-989
+### code chunk number 15: selection.Rnw:929-990
 ###################################################
    EUlower <- function(alpha) {
       alpha[alpha >= 1] <- NA
@@ -221,7 +221,7 @@ text(1, -1.4,
 
 
 ###################################################
-### code chunk number 16: selection.Rnw:1011-1013
+### code chunk number 16: selection.Rnw:1012-1014
 ###################################################
   coef(summary(lm(yo1~xs, subset=ys==0)))
   coef(summary(lm(yo2~xs, subset=ys==1)))
@@ -281,8 +281,7 @@ rhieML <- selection( selectEq, outcomeEq, data = RandHIE[ subsample, ] )
 ###################################################
 greeneStart <- selection( lfp ~ age + I( age^2 ) + faminc + kids + educ,
    wage ~ exper + I( exper^2 ) + educ + city,
-   data = Mroz87, start = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.9),
-   control = list( qrtol = 1e-14 ) )
+   data = Mroz87, start = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.9))
 
 cat( greeneStart$message )
 
@@ -319,7 +318,7 @@ set.seed(0)
 x <- runif(1000)
 y <- x + rnorm(1000)
 ys <- y > 0
-tobitML <- selection( ys~x, y~x, control = list( qrtol = 1e-14 ) )
+tobitML <- selection(ys~x, y~x)
 cat( tobitML$message )
 coef( summary( tobitML ) )[ "rho", ]
 

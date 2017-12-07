@@ -1,10 +1,12 @@
 vcov.selection <- function( object, part = "full", ... ) {
 
-   if( !( part %in% c( "full", "outcome" ) ) ) {
-      stop( "argument 'part' must be either 'full' or 'outcome'" )
+   if( !( part %in% c( "full", "outcome", "est" ) ) ) {
+      stop( "argument 'part' must be either 'full', 'outcome', or 'est'" )
    }
 
-   if( object$method == "ml" ){
+   if( part == "full" & !is.null( object$vcovAll ) ){
+      result <- object$vcovAll
+   } else if( object$method == "ml" ){
       result <- NextMethod( "vcov", object, ...)
    } else if( object$method == "2step" ) {
       result <- object$vcov

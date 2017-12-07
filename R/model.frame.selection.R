@@ -1,4 +1,7 @@
 model.frame.selection <- function( formula, ... ) {
+   ## Model frame for selection models.  We combine the data for
+   ## both selection and outcome equations into a single frame.
+   ## 
    ## 2-step estimation: have to hassle with invMillsRatio
    if( formula$method == "2step" ) {
       result <- model.frame( formula$probit, ... )
@@ -52,18 +55,22 @@ model.frame.selection <- function( formula, ... ) {
          stop( "unknown tobit type '",  formula$tobitType,
             "' in formula$tobitType" )
       }
-      ## maximum likelihood estimation
+      ## maximum likelihood estimation: no InvMillsRatio
    } else if( formula$method == "ml" ) {
-      if( formula$tobitType == 2 ) {
-         if( !is.null( formula$mfs ) && !is.null( formula$mfo ) ){
-            result <- formula$mfs
-            result <- cbind( result,
-               formula$mfo[ , ! names( formula$mfo ) %in% names( result ) ] )
+      if( formula$tobitType %in% c(2, "treatment")) {
+         if( !is.null( formula$mfs ) & !is.null( formula$mfo ) ){
+                           # the frames were saved -> return these
+            result <- cbind(formula$mfs,
+                            formula$mfo[, !(names(formula$mfo) %in%
+                                                names(formula$mfs)),
+                                        drop=FALSE])
+                           # note: cbind retains original variable names,
+                           # like data.frame(..., check.names=FALSE)
             return( result )
          }
       }
       else if( formula$tobitType == 5 ) {
-         if( !is.null( formula$mfs ) && !is.null( formula$mfo1 ) &&
+         if( !is.null( formula$mfs ) & !is.null( formula$mfo1 ) &&
                !is.null( formula$mfo2 ) ){
             result <- formula$mfs
             result <- cbind( result,
@@ -73,45 +80,57 @@ model.frame.selection <- function( formula, ... ) {
             return( result )
          }
       }
-      else if( formula$tobitType == "treatment" ) {
-         if( !is.null( formula$mfs ) && !is.null( formula$mfo )) {
-            result <- formula$mfs
-            result <- cbind(result,
-                            formula$mfo[, !names( formula$mfo ) %in% names( result ) ] )
-            return( result )
-         }
-      }
       else {
          stop( "unknown tobit type '",  formula$tobitType,
             "' in formula$tobitType" )
       }
       ## The frame was not saved, evaluate it
       dots <- list(...)
-      nargs <- dots[match(c("data", "na.action", "subset"), names(dots), 
-                          0)]
-      if(length(nargs) | is.null(formula$model)) {
+      nargs <- dots[match(c("data", "na.action", "subset"),
+                          names(dots), 0)]
+      if(length(nargs) |
+         is.null(formula$mfS) | is.null(formula$mfO)) {
+                           # either new arguments or '...' supplied,
+                           # or frames not saved
+                           # -> re-evaluate data
          fcall <- formula$call
+         fcall$selection <- formula$termsS
+         if(tobitType(formula) == 5) {
+            fcall$outcome <- list(formula$termsO1, formula$termsO2)
+         }
+         else {
+            fcall$outcome <- formula$termsO
+                           # assume everything else besides tobit 5 has single
+                           # outcome formula
+         }
          m <- match(c("selection", "outcome",
                       "data", "subset", "weights", 
                       "na.action"), names(fcall), 0L)
          fcall <- fcall[c(1L, m)]
+                           # terms's keep formulas in the real
+                           # variable names, call does not if called
+                           # from another function
          fcall$method <- "model.frame"
          fcall$drop.unused.levels <- TRUE
          fcall[[ 1 ]] <- as.name("selection")
-         # fcall$formula <- terms(formula)
+         ## fcall$selection <- formula$termsS
+         ## fcall$outcome <- formula$termsO
                            # should create a 'terms' method
                            # (what does it do?)
          fcall[names(nargs)] <- nargs
          env <- environment( formula$termsS )
-                           # Assume here that all equations are evaluated in the same environment
-                           # (termsS -- in this case the environment for the selection equation)
+                           # Assume here that all equations are
+                           # evaluated in the same environment
+                           # (termsS -- in this case the environment
+                           # for the selection equation)
                            # Can it be done better?
          if( is.null( env ) ) {
             env <- parent.frame()
          }
          result <- eval( fcall, env, parent.frame() )
          attr(result, "terms") <- formula$termsS
-                           # apparently 'model.frame.defaul' uses the existence of this attribute to
+                           # apparently 'model.frame.default' uses
+                           # this attribute to
                            # check is this is a model.frame or simply
                            # a data.frame
       }

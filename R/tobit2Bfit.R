@@ -35,11 +35,11 @@ tobit2Bfit <- function(YS, XS, YO, XO, start,
       rho <- beta[iRho]
       if( ( rho < -1) || ( rho > 1)) return(NA)
       Sigma <- matrix(c(1,rho,rho,1), 2, 2)
-      XS00.b <- drop(XS[i00,] %*% betaS)
-      XS10.b <- drop(XS[i10,] %*% betaS)
-      XS11.b <- drop(XS[i11,] %*% betaS)
-      XO10.b <- drop(XO[i10,] %*% betaO)
-      XO11.b <- drop(XO[i11,] %*% betaO)
+      XS00.b <- drop(XS[i00, , drop = FALSE ] %*% betaS)
+      XS10.b <- drop(XS[i10, , drop = FALSE ] %*% betaS)
+      XS11.b <- drop(XS[i11, , drop = FALSE ] %*% betaS)
+      XO10.b <- drop(XO[i10, , drop = FALSE ] %*% betaO)
+      XO11.b <- drop(XO[i11, , drop = FALSE ] %*% betaO)
       lik <- loglik <- numeric(nObs)
          # lik is the *unweighted* likelihood function needed for the gradient
       ## YS == 0, YO == 0

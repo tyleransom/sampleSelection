@@ -4,9 +4,7 @@ logLik.selection <- function( object, ... ) {
          " by maximum likelihood (ML)",
          " but it does not work for models estimated by the 2-step method." )
    }
-   obj <- object
-   class( obj ) <- "maxLik"
-   result <- logLik( obj )
+   result <- NextMethod( object )
    attr( result, "nobs" ) <- nObs( object )
    attr( result, "df" ) <- sum( activePar( object ) )
    class( result ) <- "logLik"

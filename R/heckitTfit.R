@@ -3,7 +3,7 @@ heckitTfit <- function(selection, outcome,
                        ys=FALSE, yo=FALSE,
                        xs=FALSE, xo=FALSE,
                        mfs=FALSE, mfo=FALSE,
-                       print.level=0,
+                       printLevel=0,
                        maxMethod="Newton-Raphson", ... ) {
    ## 2-step all-normal treatment effect estimator
    ## not public API
@@ -82,7 +82,7 @@ heckitTfit <- function(selection, outcome,
    N1 <- sum(i1)
    ## and run the model: selection
    probitResult <- probit(YS ~ XS - 1, maxMethod = maxMethod )
-   if( print.level > 1) {
+   if( printLevel > 1) {
       cat("The probit part of the model:\n")
       print(summary(probitResult))
    }
@@ -100,7 +100,7 @@ heckitTfit <- function(selection, outcome,
    ## }
    olm <- lm(YO ~ -1 + XO)
                            # XO includes the constant (probably)
-   if(print.level > 1) {
+   if(printLevel > 1) {
       cat("Raw outcome equation\n")
       print(summary(olm))
    }
@@ -116,7 +116,7 @@ heckitTfit <- function(selection, outcome,
    sigma1.2 <- mean((residuals(olm)[i1])^2)*nObs/(nObs - NXS)
                            # residual variance: differs for
                            # treated/non-treated
-   if(print.level > 2) {
+   if(printLevel > 2) {
       s2 <- 1
       rho <- 0.8
       th0.2 <- s2 + rho^2*s2*mean(z[i0]*invMillsRatio0) -

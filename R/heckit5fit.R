@@ -3,7 +3,8 @@ heckit5fit <- function(selection, outcome1, outcome2,
                     ys=FALSE, yo=FALSE,
                     xs=FALSE, xo=FALSE,
                     mfs=FALSE, mfo=FALSE,
-                    print.level=0, maxMethod="Newton-Raphson", ... )
+                       printLevel=print.level, print.level=0,
+                       maxMethod="Newton-Raphson", ... )
 {
    ## internal function: 2-step estimator for tobit-5 model
    ## 

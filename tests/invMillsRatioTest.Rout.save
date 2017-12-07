@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.3.3 (2017-03-06) -- "Another Canoe"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -82,13 +82,14 @@ Call:
 vglm(formula = cbind(y1, y2) ~ x1 + x2, family = binom2.rho, 
     data = myData)
 
+
 Pearson residuals:
               Min     1Q Median    3Q  Max
 probit(mu1) -6.98 -0.887  0.441 0.747 2.74
 probit(mu2) -5.74 -0.671 -0.182 0.676 7.88
 rhobit(rho) -8.60 -0.620  0.236 0.517 9.39
 
-Coefficients:
+Coefficients: 
               Estimate Std. Error z value Pr(>|z|)    
 (Intercept):1   0.3031     0.0134   22.70  < 2e-16 ***
 (Intercept):2  -0.1004     0.0141   -7.14  9.6e-13 ***
@@ -104,8 +105,6 @@ Number of linear predictors:  3
 
 Names of linear predictors: probit(mu1), probit(mu2), rhobit(rho)
 
-Dispersion Parameter for binom2.rho family:   1
-
 Log-likelihood: -10858 on 29993 degrees of freedom
 
 Number of iterations: 2 
@@ -119,13 +118,14 @@ Call:
 vglm(formula = cbind(y1, y2) ~ x1 + x2, family = binom2.rho(lrho = "identitylink"), 
     data = myData)
 
+
 Pearson residuals:
               Min     1Q Median    3Q  Max
 probit(mu1) -6.97 -0.889  0.438 0.753 2.74
 probit(mu2) -5.64 -0.671 -0.180 0.677 7.62
 rho         -8.80 -0.602  0.245 0.519 9.23
 
-Coefficients:
+Coefficients: 
               Estimate Std. Error z value Pr(>|z|)    
 (Intercept):1   0.3031     0.0134   22.70  < 2e-16 ***
 (Intercept):2  -0.1004     0.0141   -7.14  9.6e-13 ***
@@ -140,8 +140,6 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 Number of linear predictors:  3 
 
 Names of linear predictors: probit(mu1), probit(mu2), rho
-
-Dispersion Parameter for binom2.rho family:   1
 
 Log-likelihood: -10858 on 29993 degrees of freedom
 
@@ -597,4 +595,4 @@ F-statistic:  841 on 2 and 5294 DF,  p-value: <2e-16
 > 
 > proc.time()
    user  system elapsed 
-  13.31    0.11   13.42 
+ 10.572   0.072  10.742 

@@ -69,7 +69,7 @@ residuals.selection <- function( object, part = "outcome",
                "' in object$tobitType" )
          }
          fitVal <- fitted( object, part = "outcome" )
-         if( object$binaryOutcome ) {
+         if( object$outcomeVar == "binary" ) {
             oResponseLevels <- levels( as.factor( oResponse ) )
             if( length( oResponseLevels ) != 2 ) {
                stop( "internal error: the dependent variable of the 'outcome'",
@@ -90,8 +90,11 @@ residuals.selection <- function( object, part = "outcome",
                stop( "argument 'type' must be either 'deviance', 'pearson',",
                   " or 'response'" )
             }
-         } else {
+         } else if( object$outcomeVar == "continuous" ) {
             result <- oResponse - fitVal
+         } else {
+            stop( "Internal error ('resid'). Please contact the maintainer",
+               " of this package" )
          }
       } else {
          stop( "argument 'part' must be either 'outcome' or 'selection'" )

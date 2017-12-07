@@ -1,6 +1,6 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.4.0 (2017-04-21) -- "You Stupid Darkness"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -24802,23 +24802,23 @@ Log-Likelihood: -2777
 1483 observations: 472 selection 1 (FALSE) and 1011 selection 2 (TRUE)
 10 free parameters (df = 1473)
 Probit selection equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  -0.0104     0.0599   -0.17    0.86    
-xs            1.0160     0.1032    9.85  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.0104     0.0599   -0.17     0.86    
+xs            1.0160     0.1032    9.85   <2e-16 ***
 Outcome equation 1:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  -0.0269     0.1136   -0.24    0.81    
-xo1           0.9942     0.1051    9.46  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.0269     0.1136   -0.24     0.81    
+xo1           0.9942     0.1051    9.46   <2e-16 ***
 Outcome equation 2:
-            Estimate Std. error t value Pr(> t)    
-(Intercept) -0.00607    0.10333   -0.06    0.95    
-xo2          1.01509    0.10474    9.69  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.00607    0.10333   -0.06     0.95    
+xo2          1.01509    0.10474    9.69   <2e-16 ***
    Error terms:
-       Estimate Std. error t value Pr(> t)    
-sigma1   1.0121     0.0615    16.5  <2e-16 ***
-sigma2   1.0236     0.0455    22.5  <2e-16 ***
-rho1     0.8718     0.0334    26.1  <2e-16 ***
-rho2     0.4649     0.1501     3.1   0.002 ** 
+       Estimate Std. Error t value Pr(>|t|)    
+sigma1   1.0121     0.0615    16.5   <2e-16 ***
+sigma2   1.0236     0.0455    22.5   <2e-16 ***
+rho1     0.8718     0.0334    26.1   <2e-16 ***
+rho2     0.4649     0.1501     3.1    0.002 ** 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 --------------------------------------------
@@ -24831,23 +24831,23 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 (Intercept)          xo1  (Intercept)          xo2  
    -0.02694      0.99421     -0.00607      1.01509  
 > print( coef( summary( testTobit5Ml ) ) )
-            Estimate Std. error t value   Pr(> t)
+            Estimate Std. Error t value  Pr(>|t|)
 (Intercept) -0.01045     0.0599 -0.1744  8.62e-01
-xs           1.01595     0.1032  9.8452  7.19e-23
+xs           1.01595     0.1032  9.8452  3.42e-22
 (Intercept) -0.02694     0.1136 -0.2370  8.13e-01
-xo1          0.99421     0.1051  9.4641  2.96e-21
-sigma1       1.01208     0.0615 16.4619  6.89e-61
-rho1         0.87183     0.0334 26.1103 2.78e-150
+xo1          0.99421     0.1051  9.4641  1.13e-20
+sigma1       1.01208     0.0615 16.4619  5.05e-56
+rho1         0.87183     0.0334 26.1103 7.98e-124
 (Intercept) -0.00607     0.1033 -0.0588  9.53e-01
-xo2          1.01509     0.1047  9.6919  3.26e-22
-sigma2       1.02363     0.0455 22.5217 2.55e-112
-rho2         0.46491     0.1501  3.0965  1.96e-03
+xo2          1.01509     0.1047  9.6919  1.42e-21
+sigma2       1.02363     0.0455 22.5217  9.20e-97
+rho2         0.46491     0.1501  3.0965  2.00e-03
 > print( coef( summary( testTobit5Ml ), part = "outcome" ) )
-            Estimate Std. error t value  Pr(> t)
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept) -0.02694      0.114 -0.2370 8.13e-01
-xo1          0.99421      0.105  9.4641 2.96e-21
+xo1          0.99421      0.105  9.4641 1.13e-20
 (Intercept) -0.00607      0.103 -0.0588 9.53e-01
-xo2          1.01509      0.105  9.6919 3.26e-22
+xo2          1.01509      0.105  9.6919 1.42e-21
 > stdEr( testTobit5Ml )
 (Intercept)          xs (Intercept)         xo1      sigma1        rho1 
      0.0599      0.1032      0.1136      0.1051      0.0615      0.0334 
@@ -36162,23 +36162,23 @@ Log-Likelihood: -2821
 1482 observations: 472 selection 1 (FALSE) and 1010 selection 2 (TRUE)
 10 free parameters (df = 1472)
 Probit selection equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  -0.0100     0.0595   -0.17    0.87    
-xs            1.0137     0.1023    9.91  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.0100     0.0595   -0.17     0.87    
+xs            1.0137     0.1023    9.91   <2e-16 ***
 Outcome equation 1:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  -0.0266     0.1135   -0.23    0.81    
-xo1           0.9941     0.1050    9.46  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.0266     0.1135   -0.23     0.81    
+xo1           0.9941     0.1050    9.46   <2e-16 ***
 Outcome equation 2:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)   0.4250     0.1043    4.07 4.6e-05 ***
-xo1           0.0461     0.1116    0.41    0.68    
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)   0.4250     0.1043    4.07  4.9e-05 ***
+xo1           0.0461     0.1116    0.41     0.68    
    Error terms:
-       Estimate Std. error t value Pr(> t)    
-sigma1   1.0125     0.0614   16.49 < 2e-16 ***
-sigma2   1.0940     0.0503   21.75 < 2e-16 ***
-rho1     0.8721     0.0333   26.20 < 2e-16 ***
-rho2     0.5379     0.1294    4.16 3.2e-05 ***
+       Estimate Std. Error t value Pr(>|t|)    
+sigma1   1.0125     0.0614   16.49  < 2e-16 ***
+sigma2   1.0940     0.0503   21.75  < 2e-16 ***
+rho1     0.8721     0.0333   26.20  < 2e-16 ***
+rho2     0.5379     0.1294    4.16  3.4e-05 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 --------------------------------------------
@@ -60609,17 +60609,17 @@ Log-Likelihood: -2215
 1483 observations (455 censored and 1028 observed)
 6 free parameters (df = 1477)
 Probit selection equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept) -0.00444    0.06332   -0.07    0.94    
-xs           1.06605    0.11525    9.25  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.00444    0.06332   -0.07     0.94    
+xs           1.06605    0.11525    9.25   <2e-16 ***
 Outcome equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  -0.0578     0.0735   -0.79    0.43    
-xo            1.0425     0.0943   11.06  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.0578     0.0735   -0.79     0.43    
+xo            1.0425     0.0943   11.06   <2e-16 ***
    Error terms:
-      Estimate Std. error t value Pr(> t)    
-sigma   1.0241     0.0416   24.60  <2e-16 ***
-rho    -0.7010     0.0719   -9.75  <2e-16 ***
+      Estimate Std. Error t value Pr(>|t|)    
+sigma   1.0241     0.0416   24.60   <2e-16 ***
+rho    -0.7010     0.0719   -9.75   <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 --------------------------------------------
@@ -60632,17 +60632,17 @@ S:(Intercept)           S:xs  O:(Intercept)           O:xo          sigma
 (Intercept)           xo  
     -0.0578       1.0425  
 > print( coef( summary( testTobit2Ml ) ) )
-            Estimate Std. error t value   Pr(> t)
+            Estimate Std. Error t value  Pr(>|t|)
 (Intercept) -0.00444     0.0633 -0.0701  9.44e-01
-xs           1.06605     0.1153  9.2499  2.25e-20
+xs           1.06605     0.1153  9.2499  7.62e-20
 (Intercept) -0.05780     0.0735 -0.7859  4.32e-01
-xo           1.04251     0.0943 11.0597  1.97e-28
-sigma        1.02408     0.0416 24.6036 1.15e-133
-rho         -0.70099     0.0719 -9.7458  1.92e-22
+xo           1.04251     0.0943 11.0597  2.26e-27
+sigma        1.02408     0.0416 24.6036 2.64e-112
+rho         -0.70099     0.0719 -9.7458  8.58e-22
 > print( coef( summary( testTobit2Ml ), part = "outcome" ) )
-            Estimate Std. error t value  Pr(> t)
+            Estimate Std. Error t value Pr(>|t|)
 (Intercept)  -0.0578     0.0735  -0.786 4.32e-01
-xo            1.0425     0.0943  11.060 1.97e-28
+xo            1.0425     0.0943  11.060 2.26e-27
 > stdEr( testTobit2Ml )
 (Intercept)          xs (Intercept)          xo       sigma         rho 
      0.0633      0.1153      0.0735      0.0943      0.0416      0.0719 
@@ -69367,17 +69367,17 @@ Log-Likelihood: -1550
 1483 observations (455 censored and 1028 observed)
 6 free parameters (df = 1477)
 Probit selection equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept) -0.00444    0.07568   -0.06    0.95    
-xs           1.06605    0.13775    7.74   1e-14 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.00444    0.07568   -0.06     0.95    
+xs           1.06605    0.13775    7.74  1.8e-14 ***
 Outcome equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  -0.0578     0.0879   -0.66    0.51    
-xo            1.0425     0.1127    9.25  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.0578     0.0879   -0.66     0.51    
+xo            1.0425     0.1127    9.25   <2e-16 ***
    Error terms:
-      Estimate Std. error t value Pr(> t)    
-sigma   1.0241     0.0497   20.58 < 2e-16 ***
-rho    -0.7010     0.0860   -8.15 3.5e-16 ***
+      Estimate Std. Error t value Pr(>|t|)    
+sigma   1.0241     0.0497   20.58  < 2e-16 ***
+rho    -0.7010     0.0860   -8.15  7.4e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 --------------------------------------------
@@ -69454,17 +69454,17 @@ Log-Likelihood: -2186
 1483 observations (455 censored and 1028 observed)
 6 free parameters (df = 1477)
 Probit selection equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  -0.0522     0.0646   -0.81    0.42    
-xs            1.1419     0.1191    9.58  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.0522     0.0646   -0.81     0.42    
+xs            1.1419     0.1191    9.58   <2e-16 ***
 Outcome equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  -0.1102     0.0784   -1.41    0.16    
-xo            1.0331     0.0960   10.77  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.1102     0.0784   -1.41     0.16    
+xo            1.0331     0.0960   10.77   <2e-16 ***
    Error terms:
-      Estimate Std. error t value Pr(> t)    
-sigma   0.9847     0.0408   24.15 < 2e-16 ***
-rho    -0.6133     0.0930   -6.59 4.3e-11 ***
+      Estimate Std. Error t value Pr(>|t|)    
+sigma   0.9847     0.0408   24.15   <2e-16 ***
+rho    -0.6133     0.0930   -6.59    6e-11 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 --------------------------------------------
@@ -74065,17 +74065,17 @@ Log-Likelihood: -2215
 1483 observations (455 censored and 1028 observed)
 6 free parameters (df = 1477)
 Probit selection equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept) -0.00444    0.06332   -0.07    0.94    
-xs           1.06605    0.11525    9.25  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.00444    0.06332   -0.07     0.94    
+xs           1.06605    0.11525    9.25   <2e-16 ***
 Outcome equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  -0.0578     0.0735   -0.79    0.43    
-xo            1.0425     0.0943   11.06  <2e-16 ***
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -0.0578     0.0735   -0.79     0.43    
+xo            1.0425     0.0943   11.06   <2e-16 ***
    Error terms:
-      Estimate Std. error t value Pr(> t)    
-sigma   1.0241     0.0416   24.60  <2e-16 ***
-rho    -0.7010     0.0719   -9.75  <2e-16 ***
+      Estimate Std. Error t value Pr(>|t|)    
+sigma   1.0241     0.0416   24.60   <2e-16 ***
+rho    -0.7010     0.0719   -9.75   <2e-16 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 --------------------------------------------
@@ -75126,4 +75126,4 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > 
 > proc.time()
    user  system elapsed 
-  10.58    1.23   11.81 
+ 20.052   0.784  21.008 

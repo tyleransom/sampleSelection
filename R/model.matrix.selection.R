@@ -57,7 +57,8 @@ model.matrix.selection <- function( object, part = "outcome",
          }
       }
       else if( part == "outcome" ) {
-         response <- model.frame( object )[ , 1 ]
+         response <- model.frame( object, ... )[ , 1 ]
+                           # '...' pass the 'data' argument
          nObs <- length( response )
          if( object$tobitType == 2 ) {
             if( ! is.null( object$xo ) ) {

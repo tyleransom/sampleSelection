@@ -20,12 +20,15 @@
 \arguments{
   \item{object}{object of class \code{selection}
     or \code{summary.selection}.}
-  \item{part}{character string indication which parts to extract:
-   \code{"full"} for all estimated parameters (selection estimates,
-   outcome estimates, error variance and correlation)
-   or \code{"outcome"} for the outcome estimates only
+  \item{part}{character string indicating
+   which parts of the coefficients to extract:
+   \code{"full"} for all parameters (selection estimates,
+   outcome estimates, error variance and correlation,
+   including parameters that were calculated based on estimated parameters),
+   \code{"outcome"} for the outcome estimates only
    (including the coefficient of the inverse Mill's ratio
-   in case of a two-step estimation).}
+   in case of a two-step estimation), or
+   \code{"est"} for all estimated parameters.}
   \item{x}{object returned by \code{coef.selection}.}
   \item{prefix}{logical. Add a prefix to the names of the coefficients
    that indicates to which equation the coefficient belongs.}

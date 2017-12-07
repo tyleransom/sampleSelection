@@ -1,8 +1,8 @@
 tobitTfit <- function(YS, XS, YO, XO, start,
-                      print.level=0,
+                      weights=NULL, print.level=0,
                       maxMethod="Newton-Raphson",
                       index=NULL,
-                      binaryOutcome=FALSE,
+                      outcomeVar = "continuous",
                       ...) {
 ### Tobit treatment models:
 ### The latent variable is:
@@ -193,16 +193,22 @@ tobitTfit <- function(YS, XS, YO, XO, start,
    i1 <- YS==1
    NO1 <- length( YS[i0])
    NO2 <- length( YS[i1])
+   if(!is.null(weights)) {
+      warning("Argument 'weight' is ignored by tobitTfit")
+   }
    ## indices in for the parameter vector
    if(is.null(index)) {
       iBetaS <- 1:NXS
       iBetaO <- max(iBetaS) + seq(length=NXO)
-      if(!binaryOutcome) {
+      if( outcomeVar == "continuous" ) {
          iSigma <- max(iBetaO) + 1
          iRho <- max(iSigma) + 1
-      }
-      else
+      } else if( outcomeVar == "binary" ) {
          iRho <- max(iBetaO) + 1
+      } else {
+         stop( "Internal error ('treat-iRho'). Please contact the maintainer",
+            " of this package" )
+      }
       nParam <- iRho
    }
    else {

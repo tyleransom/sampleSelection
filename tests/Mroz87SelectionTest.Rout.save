@@ -1,6 +1,6 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.4.0 (2017-04-21) -- "You Stupid Darkness"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -4158,24 +4158,24 @@ Log-Likelihood: -1581
 753 observations (325 censored and 428 observed)
 13 free parameters (df = 740)
 Probit selection equation:
-             Estimate Std. error t value Pr(> t)    
-(Intercept) -4.12e+00   1.40e+00   -2.94 0.00327 ** 
-age          1.84e-01   6.59e-02    2.79 0.00521 ** 
-I(age^2)    -2.41e-03   7.72e-04   -3.12 0.00182 ** 
-faminc       5.68e-06   4.42e-06    1.29 0.19838    
-kidsTRUE    -4.51e-01   1.30e-01   -3.46 0.00054 ***
-educ         9.53e-02   2.32e-02    4.12 3.9e-05 ***
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -4.12e+00   1.40e+00   -2.94  0.00337 ** 
+age          1.84e-01   6.59e-02    2.79  0.00535 ** 
+I(age^2)    -2.41e-03   7.72e-04   -3.12  0.00189 ** 
+faminc       5.68e-06   4.42e-06    1.29  0.19878    
+kidsTRUE    -4.51e-01   1.30e-01   -3.46  0.00057 ***
+educ         9.53e-02   2.32e-02    4.12  4.3e-05 ***
 Outcome equation:
-             Estimate Std. error t value Pr(> t)    
-(Intercept) -1.963024   1.198221   -1.64    0.10    
-exper        0.027868   0.061551    0.45    0.65    
-I(exper^2)  -0.000104   0.001839   -0.06    0.95    
-educ         0.457005   0.073230    6.24 4.4e-10 ***
-city         0.446529   0.315921    1.41    0.16    
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -1.963024   1.198221   -1.64     0.10    
+exper        0.027868   0.061551    0.45     0.65    
+I(exper^2)  -0.000104   0.001839   -0.06     0.95    
+educ         0.457005   0.073230    6.24  7.3e-10 ***
+city         0.446529   0.315921    1.41     0.16    
    Error terms:
-      Estimate Std. error t value Pr(> t)    
-sigma    3.108      0.114    27.3  <2e-16 ***
-rho     -0.132      0.165    -0.8    0.42    
+      Estimate Std. Error t value Pr(>|t|)    
+sigma    3.108      0.114    27.3   <2e-16 ***
+rho     -0.132      0.165    -0.8     0.42    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 --------------------------------------------
@@ -4190,26 +4190,26 @@ S:(Intercept)          S:age     S:I(age^2)       S:faminc     S:kidsTRUE
 (Intercept)        exper   I(exper^2)         educ         city  
   -1.963024     0.027868    -0.000104     0.457005     0.446529  
 > print( coef( summary( greeneMl ) ) )
-             Estimate Std. error t value   Pr(> t)
-(Intercept) -4.12e+00   1.40e+00 -2.9416  3.27e-03
-age          1.84e-01   6.59e-02  2.7937  5.21e-03
-I(age^2)    -2.41e-03   7.72e-04 -3.1189  1.82e-03
-faminc       5.68e-06   4.42e-06  1.2862  1.98e-01
-kidsTRUE    -4.51e-01   1.30e-01 -3.4613  5.38e-04
-educ         9.53e-02   2.32e-02  4.1152  3.87e-05
-(Intercept) -1.96e+00   1.20e+00 -1.6383  1.01e-01
+             Estimate Std. Error t value  Pr(>|t|)
+(Intercept) -4.12e+00   1.40e+00 -2.9416  3.37e-03
+age          1.84e-01   6.59e-02  2.7937  5.35e-03
+I(age^2)    -2.41e-03   7.72e-04 -3.1189  1.89e-03
+faminc       5.68e-06   4.42e-06  1.2862  1.99e-01
+kidsTRUE    -4.51e-01   1.30e-01 -3.4613  5.68e-04
+educ         9.53e-02   2.32e-02  4.1152  4.30e-05
+(Intercept) -1.96e+00   1.20e+00 -1.6383  1.02e-01
 exper        2.79e-02   6.16e-02  0.4528  6.51e-01
 I(exper^2)  -1.04e-04   1.84e-03 -0.0565  9.55e-01
-educ         4.57e-01   7.32e-02  6.2407  4.36e-10
+educ         4.57e-01   7.32e-02  6.2407  7.33e-10
 city         4.47e-01   3.16e-01  1.4134  1.58e-01
-sigma        3.11e+00   1.14e-01 27.3065 3.55e-164
+sigma        3.11e+00   1.14e-01 27.3065 4.20e-114
 rho         -1.32e-01   1.65e-01 -0.7991  4.24e-01
 > print( coef( summary( greeneMl ), part = "outcome" ) )
-             Estimate Std. error t value  Pr(> t)
-(Intercept) -1.963024    1.19822 -1.6383 1.01e-01
+             Estimate Std. Error t value Pr(>|t|)
+(Intercept) -1.963024    1.19822 -1.6383 1.02e-01
 exper        0.027868    0.06155  0.4528 6.51e-01
 I(exper^2)  -0.000104    0.00184 -0.0565 9.55e-01
-educ         0.457005    0.07323  6.2407 4.36e-10
+educ         0.457005    0.07323  6.2407 7.33e-10
 city         0.446529    0.31592  1.4134 1.58e-01
 > print( vcov( greeneMl ) )
             (Intercept)       age  I(age^2)    faminc  kidsTRUE      educ
@@ -12222,25 +12222,25 @@ Log-Likelihood: -833
 753 observations (325 censored and 428 observed)
 14 free parameters (df = 739)
 Probit selection equation:
-            Estimate Std. error t value Pr(> t)    
-(Intercept)  0.26645    0.50896    0.52  0.6006    
-nwifeinc    -0.01213    0.00488   -2.49  0.0129 *  
-educ         0.13134    0.02538    5.17 2.3e-07 ***
-exper        0.12328    0.01872    6.58 4.6e-11 ***
-I(exper^2)  -0.00189    0.00060   -3.14  0.0017 ** 
-age         -0.05283    0.00848   -6.23 4.7e-10 ***
-kids5       -0.86740    0.11865   -7.31 2.7e-13 ***
-kids618      0.03587    0.04347    0.83  0.4093    
+            Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.26645    0.50896    0.52   0.6008    
+nwifeinc    -0.01213    0.00488   -2.49   0.0131 *  
+educ         0.13134    0.02538    5.17  2.9e-07 ***
+exper        0.12328    0.01872    6.58  8.7e-11 ***
+I(exper^2)  -0.00189    0.00060   -3.14   0.0017 ** 
+age         -0.05283    0.00848   -6.23  7.8e-10 ***
+kids5       -0.86740    0.11865   -7.31  6.9e-13 ***
+kids618      0.03587    0.04347    0.83   0.4096    
 Outcome equation:
-             Estimate Std. error t value Pr(> t)    
-(Intercept) -0.552696   0.260379   -2.12   0.034 *  
-educ         0.108350   0.014861    7.29 3.1e-13 ***
-exper        0.042837   0.014879    2.88   0.004 ** 
-I(exper^2)  -0.000837   0.000417   -2.01   0.045 *  
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept) -0.552696   0.260379   -2.12   0.0341 *  
+educ         0.108350   0.014861    7.29  7.9e-13 ***
+exper        0.042837   0.014879    2.88   0.0041 ** 
+I(exper^2)  -0.000837   0.000417   -2.01   0.0452 *  
    Error terms:
-      Estimate Std. error t value Pr(> t)    
-sigma   0.6634     0.0227   29.21  <2e-16 ***
-rho     0.0266     0.1471    0.18    0.86    
+      Estimate Std. Error t value Pr(>|t|)    
+sigma   0.6634     0.0227   29.21   <2e-16 ***
+rho     0.0266     0.1471    0.18     0.86    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 --------------------------------------------
@@ -12255,27 +12255,27 @@ S:(Intercept)     S:nwifeinc         S:educ        S:exper   S:I(exper^2)
 (Intercept)         educ        exper   I(exper^2)  
   -0.552696     0.108350     0.042837    -0.000837  
 > print( coef( summary( wooldridgeMl ) ) )
-             Estimate Std. error t value   Pr(> t)
+             Estimate Std. Error t value  Pr(>|t|)
 (Intercept)  0.266449   0.508958   0.524  6.01e-01
-nwifeinc    -0.012132   0.004877  -2.488  1.29e-02
-educ         0.131341   0.025382   5.175  2.28e-07
-exper        0.123282   0.018724   6.584  4.58e-11
-I(exper^2)  -0.001886   0.000600  -3.142  1.68e-03
-age         -0.052829   0.008479  -6.230  4.65e-10
-kids5       -0.867399   0.118651  -7.311  2.66e-13
-kids618      0.035872   0.043475   0.825  4.09e-01
-(Intercept) -0.552696   0.260379  -2.123  3.38e-02
-educ         0.108350   0.014861   7.291  3.08e-13
-exper        0.042837   0.014879   2.879  3.99e-03
-I(exper^2)  -0.000837   0.000417  -2.006  4.49e-02
-sigma        0.663398   0.022707  29.215 1.25e-187
+nwifeinc    -0.012132   0.004877  -2.488  1.31e-02
+educ         0.131341   0.025382   5.175  2.95e-07
+exper        0.123282   0.018724   6.584  8.68e-11
+I(exper^2)  -0.001886   0.000600  -3.142  1.75e-03
+age         -0.052829   0.008479  -6.230  7.81e-10
+kids5       -0.867399   0.118651  -7.311  6.93e-13
+kids618      0.035872   0.043475   0.825  4.10e-01
+(Intercept) -0.552696   0.260379  -2.123  3.41e-02
+educ         0.108350   0.014861   7.291  7.93e-13
+exper        0.042837   0.014879   2.879  4.10e-03
+I(exper^2)  -0.000837   0.000417  -2.006  4.52e-02
+sigma        0.663398   0.022707  29.215 2.49e-125
 rho          0.026607   0.147078   0.181  8.56e-01
 > print( coef( summary( wooldridgeMl ), part = "outcome" ) )
-             Estimate Std. error t value  Pr(> t)
-(Intercept) -0.552696   0.260379   -2.12 3.38e-02
-educ         0.108350   0.014861    7.29 3.08e-13
-exper        0.042837   0.014879    2.88 3.99e-03
-I(exper^2)  -0.000837   0.000417   -2.01 4.49e-02
+             Estimate Std. Error t value Pr(>|t|)
+(Intercept) -0.552696   0.260379   -2.12 3.41e-02
+educ         0.108350   0.014861    7.29 7.93e-13
+exper        0.042837   0.014879    2.88 4.10e-03
+I(exper^2)  -0.000837   0.000417   -2.01 4.52e-02
 > print( vcov( wooldridgeMl ) )
             (Intercept)  nwifeinc      educ     exper I(exper^2)       age
 (Intercept)    2.59e-01  2.69e-04 -7.77e-03 -1.57e-03   6.07e-05 -3.34e-03
@@ -15473,4 +15473,4 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > 
 > proc.time()
    user  system elapsed 
-  3.540   0.416   3.953 
+  5.188   0.236   5.422 

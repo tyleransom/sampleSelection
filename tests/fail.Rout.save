@@ -1,6 +1,6 @@
 
-R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
-Copyright (C) 2014 The R Foundation for Statistical Computing
+R version 3.4.2 (2017-09-28) -- "Short Summer"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -25,57 +25,131 @@ Henningsen, Arne and Toomet, Ott (2011). maxLik: A package for maximum likelihoo
 If you have questions, suggestions, or comments regarding the 'maxLik' package, please use a forum or 'tracker' at maxLik's R-Forge site:
 https://r-forge.r-project.org/projects/maxlik/
 > 
+> try( selection( s ~ z1, y ~ x1, type = "w" ) )
+Error in checkModelType(type, selection, outcome) : 
+  'type' in 'selection()' must be either '2', '5', or 'teatment'
+Currently w
+> 
+> 
 > # tobit 2
 > 
 > try( selection( s ~ z1, y ~ x1 ) )
-Error in eval(expr, envir, enclos) : object 's' not found
+Error in eval(predvars, data, env) : object 's' not found
+> 
+> try( selection( s ~ z1, y ~ x1, type = "2" ) )
+Error in eval(predvars, data, env) : object 's' not found
 > 
 > try( selection( "s ~ z1", y ~ x1 ) )
-Error in detectModelType(selection, outcome) : 
+Error in checkModelType(type, selection, outcome) : 
+  argument 'selection' must be a formula in function 'selection()'
+> 
+> try( selection( "s ~ z1", y ~ x1, type = "2" ) )
+Error in checkModelType(type, selection, outcome) : 
   argument 'selection' must be a formula in function 'selection()'
 > 
 > try( selection( ~ z1, y ~ x1 ) )
-Error in detectModelType(selection, outcome) : 
+Error in checkModelType(type, selection, outcome) : 
+  argument 'selection' must be a 2-sided formula in function 'selection()'
+> 
+> try( selection( ~ z1, y ~ x1, type = "2" ) )
+Error in checkModelType(type, selection, outcome) : 
   argument 'selection' must be a 2-sided formula in function 'selection()'
 > 
 > try( selection( s ~ z1, "y ~ x1" ) )
 Error in detectModelType(selection, outcome) : 
+  argument 'outcome' must be a formula or a list of formulas
+> 
+> try( selection( s ~ z1, "y ~ x1", type = "2" ) )
+Error in checkModelType(type, selection, outcome) : 
   argument 'outcome' must be either a formula or a list of two formulas in function 'selection()'
 > 
 > try( selection( s ~ z1, ~ x1 ) )
-Error in detectModelType(selection, outcome) : 
+Error in checkModelType(type, selection, outcome) : 
   argument 'outcome' must be a 2-sided formula in function 'selection()'
+> 
+> try( selection( s ~ z1, ~ x1, type = "2" ) )
+Error in checkModelType(type, selection, outcome) : 
+  argument 'outcome' must be a 2-sided formula in function 'selection()'
+> 
+> try( selection( s ~ z1, list( y ~ x1, y ~ x1 ), type = "2" ) )
+Error in checkModelType(type, selection, outcome) : 
+  type-2 and treatment models require a single outcome
+in function 'selection()'.  Currently a list of length 2
+> 
 > 
 > # tobit 5
 > 
 > try( selection( s ~ z1, list( y1 ~ x1, y2 ~ x1 ) ) )
-Error in eval(expr, envir, enclos) : object 's' not found
+Error in eval(predvars, data, env) : object 's' not found
+> 
+> try( selection( s ~ z1, list( y1 ~ x1, y2 ~ x1 ), type = "5" ) )
+Error in eval(predvars, data, env) : object 's' not found
 > 
 > try( selection( "s ~ z1", list( y1 ~ x1, y2 ~ x1 ) ) )
-Error in detectModelType(selection, outcome) : 
+Error in checkModelType(type, selection, outcome) : 
   argument 'selection' must be a formula in function 'selection()'
 > 
 > try( selection( ~ z1, list( y1 ~ x1, y2 ~ x1 ) ) )
-Error in detectModelType(selection, outcome) : 
+Error in checkModelType(type, selection, outcome) : 
   argument 'selection' must be a 2-sided formula in function 'selection()'
 > 
 > try( selection( s ~ z1, list( "y1 ~ x1", y2 ~ x1 ) ) )
-Error in detectModelType(selection, outcome) : 
+Error in checkModelType(type, selection, outcome) : 
   argument 'outcome[[1]]' must be a formula in function 'selection()'
 > 
 > try( selection( s ~ z1, list( ~ x1, y2 ~ x1 ) ) )
-Error in detectModelType(selection, outcome) : 
-  argument 'outcome[[1]]' must be a 2-sided formula in function 'selection()'
+Error in checkModelType(type, selection, outcome) : 
+  argument 'outcome[[1]]' must be a 2-sided formula in
+in 'selection(~x1y2 ~ x1~sz1)'
 > 
 > try( selection( s ~ z1, list( y1 ~ x1, "y2 ~ x1" ) ) )
-Error in detectModelType(selection, outcome) : 
+Error in checkModelType(type, selection, outcome) : 
   argument 'outcome[[2]]' must be a formula in function 'selection()'
 > 
 > try( selection( s ~ z1, list( y1 ~ x1, ~ x1 ) ) )
-Error in detectModelType(selection, outcome) : 
+Error in checkModelType(type, selection, outcome) : 
   argument 'outcome[[2]]' must be a 2-sided formula in function 'selection()'
+> 
+> try( selection( s ~ z1, y1 ~ x1, type = "5" ) )
+Error in checkModelType(type, selection, outcome) : 
+  type '5' selection models need dual outcomes as
+a list of two formulas
+> 
+> try( selection( s ~ z1, "y1 ~ x1", type = "5" ) )
+Error in checkModelType(type, selection, outcome) : 
+  argument 'outcome' must be either a formula or a list of two formulas in function 'selection()'
+> 
+> 
+> # treatment effects models
+> 
+> try( selection( s ~ z1, y1 ~ s + x1, type = "treatment" ) )
+Error in eval(predvars, data, env) : object 's' not found
+> 
+> try( selection( s ~ z1, y1 ~ x1, type = "treatment" ) )
+Error in eval(predvars, data, env) : object 's' not found
+> 
+> try( selection( "s ~ z1", y1 ~ s + x1, type = "treatment" ) )
+Error in checkModelType(type, selection, outcome) : 
+  argument 'selection' must be a formula in function 'selection()'
+> 
+> try( selection(  ~ z1, y1 ~ s + x1, type = "treatment" ) )
+Error in checkModelType(type, selection, outcome) : 
+  argument 'selection' must be a 2-sided formula in function 'selection()'
+> 
+> try( selection( s ~ z1, "y1 ~ s + x1", type = "treatment" ) )
+Error in checkModelType(type, selection, outcome) : 
+  argument 'outcome' must be either a formula or a list of two formulas in function 'selection()'
+> 
+> try( selection( s ~ z1, ~ s + x1, type = "treatment" ) )
+Error in checkModelType(type, selection, outcome) : 
+  argument 'outcome' must be a 2-sided formula in function 'selection()'
+> 
+> try( selection( s ~ z1, list( y1 ~ s + x1, y1 ~ s + x1 ), type = "treatment" ) )
+Error in checkModelType(type, selection, outcome) : 
+  type-2 and treatment models require a single outcome
+in function 'selection()'.  Currently a list of length 2
 > 
 > 
 > proc.time()
    user  system elapsed 
-  2.825   0.065   2.878 
+  2.780   0.044   2.810 

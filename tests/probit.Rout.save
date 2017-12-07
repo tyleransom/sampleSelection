@@ -1,6 +1,6 @@
 
-R version 3.2.2 (2015-08-14) -- "Fire Safety"
-Copyright (C) 2015 The R Foundation for Statistical Computing
+R version 3.4.0 (2017-04-21) -- "You Stupid Darkness"
+Copyright (C) 2017 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -673,7 +673,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 > probitResultWe2 <- glm( (y > 0) ~ x, family = binomial( link = "probit" ),
 +    weights = simDat$we, data = simDat )
 Warning message:
-In eval(expr, envir, enclos) : non-integer #successes in a binomial glm!
+In eval(family$initialize) : non-integer #successes in a binomial glm!
 > all.equal( coef( probitResultWe ), coef( probitResultWe2 ), tol = 1e-4 )
 [1] TRUE
 > all.equal( stdEr( probitResultWe ), stdEr( probitResultWe2 ), tol = 1e-1 )
@@ -1005,7 +1005,7 @@ Model 2: (y > 0) ~ 1
 +    family = binomial( link = "probit" ), weights = simDatSamp$wStrat,
 +    data = simDatSamp )
 Warning message:
-In eval(expr, envir, enclos) : non-integer #successes in a binomial glm!
+In eval(family$initialize) : non-integer #successes in a binomial glm!
 > all.equal( coef( probitResultStratW ), coef( probitResultStratW2 ), tol = 1e-4 )
 [1] TRUE
 > all.equal( stdEr( probitResultStratW ), stdEr( probitResultStratW2 ), tol = 1e-1 )
@@ -6920,4 +6920,4 @@ chi2(1) = 2.98 (p=0.0844)
 > 
 > proc.time()
    user  system elapsed 
-  2.868   0.184   3.048 
+  3.584   0.264   3.848 

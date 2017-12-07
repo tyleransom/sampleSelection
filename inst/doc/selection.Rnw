@@ -1,7 +1,7 @@
 \documentclass[article,nojss]{jss}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,bbm}
-%% need no \usepackage{Sweave.sty}
+\usepackage{Sweave}
 
 \newcommand{\dnorm}{\phi}% normal density
 \newcommand{\loglik}{\ell}% log likelihood
@@ -13,7 +13,7 @@
    \And Arne Henningsen\\University of Copenhagen}
 \Plainauthor{Ott Toomet, Arne Henningsen}
 
-\title{Sample Selection Models in \proglang{R}: Package~\pkg{sampleSelection}}
+\title{Sample Selection Models in \proglang{R}: Package \pkg{sampleSelection}}
 \Plaintitle{Sample Selection Models in R: Package sampleSelection}
 
 \Abstract{ 
@@ -58,6 +58,7 @@
 }
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 % initialisation stuff
 \SweaveOpts{engine=R}
 %\VignetteIndexEntry{Sample Selection Models}
@@ -1177,8 +1178,7 @@ the variance):
 <<Greene22.8NoConvergence>>=
 greeneStart <- selection( lfp ~ age + I( age^2 ) + faminc + kids + educ,
    wage ~ exper + I( exper^2 ) + educ + city,
-   data = Mroz87, start = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.9),
-   control = list( qrtol = 1e-14 ) )
+   data = Mroz87, start = c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 0.9))
 
 cat( greeneStart$message )
 
@@ -1242,7 +1242,7 @@ set.seed(0)
 x <- runif(1000)
 y <- x + rnorm(1000)
 ys <- y > 0
-tobitML <- selection( ys~x, y~x, control = list( qrtol = 1e-14 ) )
+tobitML <- selection(ys~x, y~x)
 cat( tobitML$message )
 coef( summary( tobitML ) )[ "rho", ]
 @ 
