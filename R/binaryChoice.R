@@ -124,11 +124,12 @@ binaryChoice <- function(formula, subset, na.action,
    mt <- attr(mf, "terms")
    Y <- model.response( mf )
    YLevels <- levels( as.factor( Y ) )
-  print(paste0("number of levels of Y is:   ",length(YLevels)))
+  print( paste0( "model formula is:   ", mf ) )
+  print( paste0( "number of levels of Y is:   ", length( YLevels ) ) )
    if( length( YLevels ) != 2 ) {
       stop( "the left hand side of the 'formula' has to contain",
          " exactly two levels (e.g. FALSE and TRUE).",
-         paste0(" Yours has  ",length(YLevels)))
+         paste0( " Yours has  ", length( YLevels ) ) )
    }
    Y <- as.integer(Y == YLevels[ 2 ])
                                         # selection will be kept as integer internally
