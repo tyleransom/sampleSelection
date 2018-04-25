@@ -127,7 +127,8 @@ binaryChoice <- function(formula, subset, na.action,
   print(paste0("number of levels of Y is:   ",length(YLevels)))
    if( length( YLevels ) != 2 ) {
       stop( "the left hand side of the 'formula' has to contain",
-         " exactly two levels (e.g. FALSE and TRUE)" )
+         " exactly two levels (e.g. FALSE and TRUE).",
+         paste0(" Yours has  ",length(YLevels)))
    }
    Y <- as.integer(Y == YLevels[ 2 ])
                                         # selection will be kept as integer internally
